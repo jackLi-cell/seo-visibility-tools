@@ -368,6 +368,24 @@ const guideContent = {
 'nextjs-canonical': `
 <h2>Next.js App Router 中的 Canonical</h2>
 <p>Next.js 13+ App Router 使用 metadata API 来设置页面的 canonical URL。配置不当是导致收录问题的常见原因。</p>
+<h2>常见原因</h2>
+<ul>
+<li>忘记在 generateMetadata 中设置 canonical</li>
+<li>使用 process.env.NEXT_PUBLIC_URL 但环境变量未设置</li>
+<li>canonical 中包含查询参数或 hash</li>
+<li>开发环境用 localhost，生产环境忘记改</li>
+<li>动态路由中 canonical 没有包含实际的 slug</li>
+</ul>
+<h2>排查步骤</h2>
+<ol class="step-list">
+<li>查看部署后页面源码，搜索 rel="canonical" 确认输出</li>
+<li>检查 canonical URL 是否为完整的绝对路径（含 https://）</li>
+<li>确认动态路由页面的 canonical 包含正确的 slug 参数</li>
+<li>检查 metadataBase 是否在 layout.tsx 中正确设置</li>
+<li>验证环境变量 NEXT_PUBLIC_URL 在生产环境中有值</li>
+<li>对比开发环境和生产环境的 canonical 输出</li>
+<li>检查是否有中间件或插件覆盖了 canonical 设置</li>
+</ol>
 <h2>静态 Metadata 配置</h2>
 <pre><code>// app/blog/[slug]/page.tsx
 export const metadata = {
@@ -386,20 +404,20 @@ export async function generateMetadata({ params }) {
     },
   };
 }</code></pre>
-<h2>常见错误</h2>
-<ul>
-<li>忘记在 generateMetadata 中设置 canonical</li>
-<li>使用 process.env.NEXT_PUBLIC_URL 但环境变量未设置</li>
-<li>canonical 中包含查询参数或 hash</li>
-<li>开发环境用 localhost，生产环境忘记改</li>
-<li>动态路由中 canonical 没有包含实际的 slug</li>
-</ul>
 <h2>Layout 级别的默认配置</h2>
 <pre><code>// app/layout.tsx
 export const metadata = {
   metadataBase: new URL('https://example.com'),
 };
 // 设置 metadataBase 后，canonical 可以使用相对路径</code></pre>
+<h2>修复方法</h2>
+<ul>
+<li>在 app/layout.tsx 中设置 metadataBase 为生产域名</li>
+<li>为每个动态路由页面实现 generateMetadata</li>
+<li>确保环境变量在所有部署环境中正确配置</li>
+<li>使用 Next.js 的 metadata 验证工具检查输出</li>
+<li>在 CI/CD 中添加 canonical 检查步骤</li>
+</ul>
 <h2>验证方法</h2>
 <p>部署后查看页面源码，确认 canonical 输出了正确的完整 URL。使用 <a href="/tools/canonical-checker.html">Canonical 检查器</a> 验证。</p>`,
 
@@ -521,6 +539,24 @@ curl -s https://example.com/page | grep -i "h1\|title\|description"</code></pre>
 'structured-data': `
 <h2>什么是结构化数据</h2>
 <p>结构化数据是用标准格式（通常是 JSON-LD）向搜索引擎描述页面内容的方式。它帮助搜索引擎理解页面的类型、内容和关系。</p>
+<h2>常见原因（结构化数据问题）</h2>
+<ul>
+<li>JSON 格式错误（缺少逗号、引号不匹配）</li>
+<li>使用了不存在的 schema 类型或属性</li>
+<li>结构化数据内容与页面可见内容不一致</li>
+<li>缺少必需属性</li>
+<li>日期格式不正确（应使用 ISO 8601）</li>
+</ul>
+<h2>排查步骤</h2>
+<ol class="step-list">
+<li>查看页面源码，找到所有 script type="application/ld+json" 标签</li>
+<li>将 JSON-LD 内容粘贴到 JSON 验证器中检查格式</li>
+<li>使用 Google 富媒体搜索结果测试工具验证 schema 有效性</li>
+<li>对比结构化数据中的内容与页面可见内容是否一致</li>
+<li>检查是否缺少必需属性（如 Article 需要 headline、author）</li>
+<li>确认日期格式为 ISO 8601（如 2024-01-15）</li>
+<li>验证 URL 字段使用绝对路径而非相对路径</li>
+</ol>
 <h2>JSON-LD 基础</h2>
 <pre><code>&lt;script type="application/ld+json"&gt;
 {
@@ -568,16 +604,278 @@ curl -s https://example.com/page | grep -i "h1\|title\|description"</code></pre>
   }
 }
 &lt;/script&gt;</code></pre>
-<h2>常见错误</h2>
+<h2>修复方法</h2>
 <ul>
-<li>JSON 格式错误（缺少逗号、引号不匹配）</li>
-<li>使用了不存在的 schema 类型或属性</li>
-<li>结构化数据内容与页面可见内容不一致</li>
-<li>缺少必需属性</li>
-<li>日期格式不正确（应使用 ISO 8601）</li>
+<li>使用在线 JSON 验证器修复格式错误</li>
+<li>参考 schema.org 官方文档确认属性名称</li>
+<li>确保结构化数据与页面可见内容完全一致</li>
+<li>添加所有必需属性，补充推荐属性</li>
+<li>统一使用 ISO 8601 日期格式</li>
 </ul>
 <h2>验证方法</h2>
-<p>使用 <a href="/tools/html-checker.html">HTML 可读性检查工具</a> 检查 JSON-LD 格式是否有效。也可以使用 Google 的富媒体搜索结果测试工具在线验证。</p>`
+<p>使用 <a href="/tools/html-checker.html">HTML 可读性检查工具</a> 检查 JSON-LD 格式是否有效。也可以使用 Google 的富媒体搜索结果测试工具在线验证。</p>`,
+
+'bing-vs-gsc': `
+<h2>Bing Webmaster Tools 与 GSC 概述</h2>
+<p>Bing Webmaster Tools（BWT）和 Google Search Console（GSC）是两大搜索引擎提供的站长工具。虽然功能类似，但在数据展示、收录机制和优化建议上有显著差异。</p>
+<h2>常见原因（只关注 GSC 忽略 BWT）</h2>
+<ul>
+<li>认为 Bing 流量占比小不值得优化</li>
+<li>不了解 BWT 独有的功能（如 IndexNow、URL 提交配额更高）</li>
+<li>两个平台的收录状态报告格式不同，难以对比</li>
+<li>BWT 的 SEO 报告提供了 GSC 没有的具体建议</li>
+</ul>
+<h2>排查步骤</h2>
+<ol class="step-list">
+<li>注册并验证 Bing Webmaster Tools 账号（支持直接导入 GSC 数据）</li>
+<li>对比两个平台的索引覆盖率数据，找出差异页面</li>
+<li>检查 BWT 的 SEO 报告中列出的具体问题</li>
+<li>查看 BWT 的抓取信息，确认 Bingbot 的抓取频率</li>
+<li>使用 BWT 的 URL 检查工具测试具体页面</li>
+<li>检查 robots.txt 是否对 Bingbot 有特殊限制</li>
+<li>确认 sitemap 已在 BWT 中提交</li>
+</ol>
+<h2>功能对比</h2>
+<div class="table-wrap"><table>
+<tr><th>功能</th><th>Google Search Console</th><th>Bing Webmaster Tools</th></tr>
+<tr><td>URL 提交</td><td>每天约 10 条（URL 检查）</td><td>每天最多 10,000 条</td></tr>
+<tr><td>IndexNow 支持</td><td>不支持</td><td>原生支持</td></tr>
+<tr><td>SEO 建议</td><td>无具体建议</td><td>提供页面级 SEO 建议</td></tr>
+<tr><td>反向链接</td><td>有（采样数据）</td><td>有（更详细）</td></tr>
+<tr><td>关键词研究</td><td>无</td><td>内置关键词研究工具</td></tr>
+<tr><td>站点扫描</td><td>无</td><td>内置站点扫描和 SEO 审计</td></tr>
+</table></div>
+<h2>修复方法</h2>
+<ul>
+<li>同时在两个平台提交 sitemap</li>
+<li>利用 BWT 的高配额 URL 提交加速新页面收录</li>
+<li>根据 BWT SEO 报告修复列出的问题</li>
+<li>配置 IndexNow 实现内容更新即时通知</li>
+<li>定期对比两个平台的数据差异</li>
+</ul>
+<h2>验证方法</h2>
+<p>在 BWT 中使用 URL 检查工具确认页面状态。对比 GSC 和 BWT 的索引覆盖率报告，确保两个平台的收录数据趋于一致。</p>`,
+
+'indexnow-protocol': `
+<h2>什么是 IndexNow</h2>
+<p>IndexNow 是一个开放协议，允许网站主动通知搜索引擎内容已更新。支持 IndexNow 的搜索引擎包括 Bing、Yandex、Seznam 和 Naver。Google 目前不支持但在评估中。</p>
+<h2>常见原因（收录延迟）</h2>
+<ul>
+<li>依赖搜索引擎自然发现，没有主动通知机制</li>
+<li>Sitemap 更新频率低，搜索引擎不知道内容已变化</li>
+<li>新页面发布后没有任何推送动作</li>
+<li>不了解 IndexNow 可以显著加速 Bing 收录</li>
+</ul>
+<h2>排查步骤</h2>
+<ol class="step-list">
+<li>确认网站是否已配置 IndexNow（检查根目录是否有 key 文件）</li>
+<li>生成 IndexNow API key（32 位十六进制字符串）</li>
+<li>将 key 文件放置在网站根目录（如 /abc123.txt）</li>
+<li>测试 API 调用是否返回 200 状态码</li>
+<li>检查 CMS 或部署流程是否集成了 IndexNow 推送</li>
+<li>验证推送的 URL 列表是否正确</li>
+</ol>
+<h2>配置方法</h2>
+<pre><code># 1. 生成 key 文件
+echo "your-api-key-here" > public/your-api-key-here.txt
+
+# 2. 单个 URL 推送
+curl "https://api.indexnow.org/indexnow?url=https://example.com/new-page&key=your-api-key-here"
+
+# 3. 批量推送（POST 请求）
+curl -X POST "https://api.indexnow.org/indexnow" \\
+  -H "Content-Type: application/json" \\
+  -d '{
+    "host": "example.com",
+    "key": "your-api-key-here",
+    "urlList": [
+      "https://example.com/page1",
+      "https://example.com/page2"
+    ]
+  }'</code></pre>
+<h2>CMS 集成</h2>
+<ul>
+<li>WordPress：安装 IndexNow 官方插件</li>
+<li>Next.js：在 build 后脚本中调用 API</li>
+<li>Hugo/Jekyll：在 CI/CD 部署后触发推送</li>
+<li>自定义 CMS：在内容发布 hook 中集成</li>
+</ul>
+<h2>修复方法</h2>
+<ul>
+<li>生成 API key 并放置验证文件</li>
+<li>在内容发布流程中集成 IndexNow 推送</li>
+<li>批量推送已有但未收录的页面</li>
+<li>设置自动化：每次部署后自动推送变更 URL</li>
+</ul>
+<h2>验证方法</h2>
+<p>推送后在 Bing Webmaster Tools 中查看 URL 提交记录。通常 Bing 会在几小时内抓取推送的 URL。使用 <a href="/tools/sitemap-audit.html">Sitemap 审计工具</a> 检查 URL 列表格式。</p>`,
+
+'core-web-vitals': `
+<h2>什么是 Core Web Vitals</h2>
+<p>Core Web Vitals（核心网页指标）是 Google 用来衡量用户体验的三个关键指标：LCP（最大内容绘制）、INP（交互到下一次绘制）和 CLS（累积布局偏移）。这些指标直接影响搜索排名。</p>
+<h2>常见原因（指标不达标）</h2>
+<ul>
+<li>LCP 过慢：大图片未优化、服务器响应慢、渲染阻塞资源多</li>
+<li>INP 过高：JavaScript 执行时间长、主线程阻塞、事件处理器复杂</li>
+<li>CLS 过大：图片/广告没有预留尺寸、动态内容插入、字体加载闪烁</li>
+<li>第三方脚本拖慢页面性能</li>
+<li>未使用 CDN 或缓存策略不当</li>
+</ul>
+<h2>排查步骤</h2>
+<ol class="step-list">
+<li>在 GSC 的 Core Web Vitals 报告中查看整站状态</li>
+<li>使用 PageSpeed Insights 测试具体页面得分</li>
+<li>在 Chrome DevTools Performance 面板录制页面加载</li>
+<li>检查 LCP 元素是什么（通常是首屏大图或标题）</li>
+<li>分析 INP 最差的交互是哪个（点击、输入等）</li>
+<li>使用 Layout Shift Debugger 定位 CLS 来源</li>
+<li>检查第三方脚本对性能的影响</li>
+</ol>
+<h2>达标阈值</h2>
+<div class="table-wrap"><table>
+<tr><th>指标</th><th>良好</th><th>需改进</th><th>差</th></tr>
+<tr><td>LCP</td><td>&le; 2.5s</td><td>2.5s - 4.0s</td><td>&gt; 4.0s</td></tr>
+<tr><td>INP</td><td>&le; 200ms</td><td>200ms - 500ms</td><td>&gt; 500ms</td></tr>
+<tr><td>CLS</td><td>&le; 0.1</td><td>0.1 - 0.25</td><td>&gt; 0.25</td></tr>
+</table></div>
+<h2>修复方法</h2>
+<ul>
+<li>LCP：压缩图片、使用 WebP/AVIF、预加载关键资源、优化 TTFB</li>
+<li>INP：拆分长任务、使用 Web Worker、延迟非关键 JS</li>
+<li>CLS：为图片/视频设置 width/height、避免动态插入内容、使用 font-display: swap</li>
+<li>启用 CDN 和浏览器缓存</li>
+<li>延迟加载非首屏资源</li>
+</ul>
+<h2>验证方法</h2>
+<p>修复后使用 PageSpeed Insights 重新测试。注意 CrUX 数据（真实用户数据）需要 28 天才能更新。GSC 报告也会在数据积累后反映改善。</p>`,
+
+'hreflang-check': `
+<h2>什么是 hreflang</h2>
+<p>hreflang 是一个 HTML 属性，告诉搜索引擎页面有哪些语言/地区版本。正确配置可以避免多语言页面互相竞争排名，确保用户看到正确语言的页面。</p>
+<h2>常见原因（hreflang 配置错误）</h2>
+<ul>
+<li>hreflang 标签缺少自引用（每个页面必须包含指向自己的 hreflang）</li>
+<li>语言代码格式错误（应使用 ISO 639-1，如 zh 而非 chinese）</li>
+<li>缺少 x-default 标签</li>
+<li>hreflang 不是双向的（A 指向 B，但 B 没有指向 A）</li>
+<li>URL 使用相对路径而非绝对路径</li>
+</ul>
+<h2>排查步骤</h2>
+<ol class="step-list">
+<li>查看页面源码中所有 link rel="alternate" hreflang 标签</li>
+<li>确认每个页面都有自引用的 hreflang 标签</li>
+<li>验证语言代码格式正确（zh-CN、en-US、ja 等）</li>
+<li>检查所有 hreflang 是否双向对应</li>
+<li>确认存在 x-default 标签指向默认版本</li>
+<li>验证 hreflang 中的 URL 都返回 200 且没有重定向</li>
+<li>检查 sitemap 中是否也包含了 hreflang 信息</li>
+</ol>
+<h2>正确配置示例</h2>
+<pre><code>&lt;!-- 中文页面 (zh-CN) --&gt;
+&lt;link rel="alternate" hreflang="zh-CN" href="https://example.com/zh/page" /&gt;
+&lt;link rel="alternate" hreflang="en" href="https://example.com/en/page" /&gt;
+&lt;link rel="alternate" hreflang="ja" href="https://example.com/ja/page" /&gt;
+&lt;link rel="alternate" hreflang="x-default" href="https://example.com/en/page" /&gt;
+
+&lt;!-- Sitemap 中的 hreflang --&gt;
+&lt;url&gt;
+  &lt;loc&gt;https://example.com/zh/page&lt;/loc&gt;
+  &lt;xhtml:link rel="alternate" hreflang="zh-CN" href="https://example.com/zh/page"/&gt;
+  &lt;xhtml:link rel="alternate" hreflang="en" href="https://example.com/en/page"/&gt;
+&lt;/url&gt;</code></pre>
+<h2>修复方法</h2>
+<ul>
+<li>为每个语言版本页面添加完整的 hreflang 标签集</li>
+<li>确保所有 hreflang 关系是双向的</li>
+<li>添加 x-default 指向默认语言版本</li>
+<li>使用绝对 URL，确保协议和域名一致</li>
+<li>在 sitemap 中也声明 hreflang 关系</li>
+</ul>
+<h2>验证方法</h2>
+<p>使用 <a href="/tools/html-checker.html">HTML 可读性检查工具</a> 检查 hreflang 标签格式。在 GSC 中查看国际定位报告，确认没有 hreflang 错误。</p>`,
+
+'js-rendering-seo': `
+<h2>搜索引擎如何处理 JavaScript</h2>
+<p>Google 使用两阶段索引：先抓取初始 HTML，再将页面放入渲染队列执行 JavaScript。渲染队列可能有数天延迟，且不保证完整执行所有 JS。Bing 对 JS 渲染的支持更有限。</p>
+<h2>常见原因（JS 渲染导致收录问题）</h2>
+<ul>
+<li>SPA（单页应用）初始 HTML 只有空 div，内容完全依赖 JS</li>
+<li>关键内容通过 AJAX/fetch 异步加载</li>
+<li>使用 client-side routing，服务器对所有路由返回相同 HTML shell</li>
+<li>JS 执行依赖用户交互（如滚动加载）</li>
+<li>第三方 JS 错误导致页面渲染失败</li>
+</ul>
+<h2>排查步骤</h2>
+<ol class="step-list">
+<li>使用 curl 获取页面初始 HTML，检查是否包含核心内容</li>
+<li>在 GSC URL 检查工具中对比"已抓取的页面"和"实时测试"</li>
+<li>禁用浏览器 JavaScript 后访问页面，观察可见内容</li>
+<li>检查 Google 缓存版本是否包含完整内容</li>
+<li>查看 GSC 抓取统计中的渲染错误</li>
+<li>使用 Chrome DevTools 的 Coverage 面板分析 JS 依赖</li>
+<li>检查是否有 JS 错误阻止页面正常渲染</li>
+</ol>
+<h2>渲染方案对比</h2>
+<div class="table-wrap"><table>
+<tr><th>方案</th><th>SEO 友好度</th><th>首屏速度</th><th>适用场景</th></tr>
+<tr><td>SSG（静态生成）</td><td>最佳</td><td>最快</td><td>内容不频繁变化的页面</td></tr>
+<tr><td>SSR（服务端渲染）</td><td>优秀</td><td>快</td><td>动态内容、个性化页面</td></tr>
+<tr><td>ISR（增量静态再生）</td><td>优秀</td><td>快</td><td>内容定期更新的页面</td></tr>
+<tr><td>CSR（客户端渲染）</td><td>差</td><td>慢</td><td>仅限登录后的应用界面</td></tr>
+</table></div>
+<h2>修复方法</h2>
+<ul>
+<li>将关键页面从 CSR 迁移到 SSR 或 SSG</li>
+<li>使用 Next.js、Nuxt.js、Astro 等支持 SSR/SSG 的框架</li>
+<li>确保 title、meta description、H1 和正文在初始 HTML 中</li>
+<li>对无法迁移的 CSR 页面使用预渲染服务</li>
+<li>避免将 SEO 关键内容放在需要用户交互才能加载的区域</li>
+</ul>
+<h2>验证方法</h2>
+<p>使用 <a href="/tools/html-checker.html">HTML 可读性检查工具</a> 粘贴 curl 获取的初始 HTML 进行检查。在 GSC URL 检查中确认渲染后的页面包含完整内容。</p>`,
+
+'new-site-first-month': `
+<h2>新站首月 SEO 概述</h2>
+<p>新网站上线后的第一个月是建立搜索引擎信任的关键期。正确的操作顺序和时间节点安排可以显著加速首批页面的收录。</p>
+<h2>常见原因（新站收录慢）</h2>
+<ul>
+<li>上线前没有做好技术 SEO 基础配置</li>
+<li>一次性提交过多 URL 到 sitemap</li>
+<li>没有建立任何外部链接信号</li>
+<li>内容质量不足以让搜索引擎信任</li>
+<li>缺少站长工具验证和 sitemap 提交</li>
+</ul>
+<h2>排查步骤（按时间线）</h2>
+<ol class="step-list">
+<li>第 1 天：验证 GSC 和 BWT，提交 sitemap（仅含 5-10 个核心页面）</li>
+<li>第 1-3 天：确认 robots.txt 正确、canonical 自指、无 noindex 误用</li>
+<li>第 3-7 天：检查 GSC 是否开始显示抓取数据</li>
+<li>第 7 天：使用 URL 检查工具逐个请求索引核心页面</li>
+<li>第 7-14 天：发布 3-5 篇高质量内容，建立内链结构</li>
+<li>第 14-21 天：获取 2-3 个高质量外链（目录提交、社交媒体）</li>
+<li>第 21-30 天：检查首批页面收录情况，扩展 sitemap</li>
+</ol>
+<h2>第一周检查清单</h2>
+<ul class="checklist">
+<li>GSC 和 BWT 已验证</li>
+<li>Sitemap 已提交（不超过 10 个 URL）</li>
+<li>robots.txt 允许抓取所有公开页面</li>
+<li>所有页面有 canonical 自指</li>
+<li>所有页面有唯一的 title 和 meta description</li>
+<li>SSL 证书正确配置（HTTPS）</li>
+<li>页面加载速度 < 3 秒</li>
+<li>移动端适配正常</li>
+</ul>
+<h2>修复方法</h2>
+<ul>
+<li>按优先级分批提交 URL，不要一次性提交所有页面</li>
+<li>先确保技术基础无误，再追求内容数量</li>
+<li>每周发布 2-3 篇高质量内容，保持更新频率</li>
+<li>通过社交媒体和行业目录获取初始外链</li>
+<li>配置 IndexNow 加速 Bing 收录</li>
+</ul>
+<h2>验证方法</h2>
+<p>每周检查 GSC 索引覆盖率报告。使用 site:yourdomain.com 搜索确认收录页面数量。30 天后核心页面应该开始出现在索引中。使用 <a href="/tools/sitemap-audit.html">Sitemap 审计工具</a> 确保提交的 URL 都是有效的。</p>`
 };
 
 // === Build Homepage ===
@@ -781,6 +1079,16 @@ const guideFaqData = {
     { question: 'Canonical 自指是什么意思？', answer: 'Canonical 自指是指页面的 link rel="canonical" 标签指向自己的 URL，明确告诉搜索引擎这个 URL 是此内容的正式版本。' },
     { question: '为什么需要 Canonical 自指？', answer: '防止带参数的 URL 被当作独立页面，明确声明内容归属避免被判定为重复，统一链接权重到正式 URL，处理 HTTP/HTTPS 和 www/non-www 变体。' }
   ],
+  'nextjs-canonical': [
+    { question: 'Next.js App Router 如何设置 canonical？', answer: '在 page.tsx 中通过 export const metadata 或 generateMetadata 函数设置 alternates.canonical 属性。设置 metadataBase 后可以使用相对路径。' },
+    { question: 'Next.js canonical 最常见的错误是什么？', answer: '最常见的错误包括：忘记在 generateMetadata 中设置 canonical、环境变量未设置导致 URL 为空、canonical 中包含查询参数、动态路由没有包含实际 slug。' },
+    { question: 'metadataBase 有什么作用？', answer: 'metadataBase 设置后，所有 metadata 中的相对 URL 都会基于它解析为绝对 URL，避免在每个页面重复写完整域名。' }
+  ],
+  'server-error-5xx': [
+    { question: 'GSC 报告 5xx 错误是什么意思？', answer: '表示 Googlebot 在抓取页面时收到了服务器错误响应（500/502/503/504），说明服务器在处理请求时出现了问题。' },
+    { question: '如何定位 5xx 错误的具体原因？', answer: '检查服务器错误日志、确认服务器资源是否充足、检查是否有针对爬虫的限流规则、优化慢查询、确保 CDN 回源配置正确。' },
+    { question: '5xx 错误会影响收录吗？', answer: '会。如果 Googlebot 多次遇到 5xx 错误，会降低对该站点的抓取频率，已收录的页面也可能被移除索引。' }
+  ],
   'robots-noindex': [
     { question: 'robots.txt 和 meta noindex 有什么区别？', answer: 'robots.txt 控制爬虫是否可以抓取页面（只是建议），meta noindex 告诉搜索引擎不要收录该页面（更强制）。两者作用不同，robots.txt 屏蔽抓取，noindex 屏蔽收录。' },
     { question: '常见的误屏蔽场景有哪些？', answer: '常见误屏蔽包括：robots.txt 中 Disallow: / 屏蔽整站、测试环境 noindex 带到生产环境、CMS 的阻止索引选项被勾选、CDN 添加全局 X-Robots-Tag。' }
@@ -796,6 +1104,36 @@ const guideFaqData = {
   'structured-data': [
     { question: '什么是结构化数据？', answer: '结构化数据是用标准格式（通常是 JSON-LD）向搜索引擎描述页面内容的方式，帮助搜索引擎理解页面的类型、内容和关系。' },
     { question: 'JSON-LD 常见错误有哪些？', answer: '常见错误包括：JSON 格式错误、使用不存在的 schema 类型或属性、结构化数据与页面可见内容不一致、缺少必需属性、日期格式不正确。' }
+  ],
+  'bing-vs-gsc': [
+    { question: 'Bing Webmaster Tools 和 GSC 有什么区别？', answer: 'BWT 提供更高的 URL 提交配额（每天 10000 条）、原生 IndexNow 支持、内置 SEO 建议和关键词研究工具，而 GSC 在搜索分析数据方面更详细。' },
+    { question: '为什么要同时使用 BWT 和 GSC？', answer: 'Bing 占全球搜索市场约 10%，且 BWT 提供了 GSC 没有的功能如站点扫描、SEO 建议和更高的 URL 提交配额，两者互补可以获得更全面的 SEO 数据。' },
+    { question: 'BWT 的 URL 提交配额是多少？', answer: 'Bing Webmaster Tools 每天最多可提交 10,000 条 URL，远高于 GSC 的 URL 检查工具（每天约 10 条）。' }
+  ],
+  'indexnow-protocol': [
+    { question: '什么是 IndexNow 协议？', answer: 'IndexNow 是一个开放协议，允许网站在内容更新时主动通知搜索引擎，支持 Bing、Yandex、Seznam 和 Naver，可以显著加速收录速度。' },
+    { question: 'Google 支持 IndexNow 吗？', answer: '截至目前 Google 不支持 IndexNow，但正在评估中。IndexNow 主要加速 Bing 和 Yandex 的收录。' },
+    { question: '如何配置 IndexNow？', answer: '生成一个 API key，将 key 文件放在网站根目录，然后在内容更新时通过 HTTP GET 或 POST 请求通知 IndexNow API。' }
+  ],
+  'core-web-vitals': [
+    { question: 'Core Web Vitals 包含哪些指标？', answer: '包含三个指标：LCP（最大内容绘制，衡量加载速度）、INP（交互到下一次绘制，衡量交互响应）、CLS（累积布局偏移，衡量视觉稳定性）。' },
+    { question: 'Core Web Vitals 的达标阈值是什么？', answer: 'LCP 应小于 2.5 秒，INP 应小于 200 毫秒，CLS 应小于 0.1。超过这些阈值会被标记为需要改进或差。' },
+    { question: 'Core Web Vitals 会影响收录吗？', answer: '不会直接影响收录，但会影响排名。Google 将 Core Web Vitals 作为排名信号之一，性能差的页面在竞争中处于劣势。' }
+  ],
+  'hreflang-check': [
+    { question: '什么是 hreflang 标签？', answer: 'hreflang 是 HTML 属性，告诉搜索引擎页面有哪些语言/地区版本，帮助搜索引擎向用户展示正确语言的页面。' },
+    { question: 'hreflang 最常见的错误是什么？', answer: '最常见的错误是缺少自引用（每个页面必须包含指向自己的 hreflang）和非双向关系（A 指向 B 但 B 没有指向 A）。' },
+    { question: 'x-default 是什么意思？', answer: 'x-default 指定当用户的语言/地区不匹配任何 hreflang 版本时应该展示的默认页面，通常指向英文版或语言选择页。' }
+  ],
+  'js-rendering-seo': [
+    { question: 'Google 能执行 JavaScript 吗？', answer: '能，但有延迟。Google 使用两阶段索引：先读取初始 HTML，再将页面放入渲染队列执行 JS。渲染队列可能有数天延迟，且不保证完整执行。' },
+    { question: 'SPA 对 SEO 有什么影响？', answer: '纯客户端渲染的 SPA 初始 HTML 通常只有空 div，搜索引擎在第一阶段无法获取内容，需要等待 JS 渲染，这会导致收录延迟或失败。' },
+    { question: 'SSR 和 SSG 哪个对 SEO 更好？', answer: '两者对 SEO 都很好。SSG 生成静态 HTML 速度最快，适合内容不频繁变化的页面；SSR 适合动态内容，每次请求都生成完整 HTML。' }
+  ],
+  'new-site-first-month': [
+    { question: '新站多久能被 Google 收录？', answer: '通常首页在 1-2 周内被收录，内页可能需要 2-4 周。通过正确配置 GSC、提交 sitemap 和请求索引可以加速这个过程。' },
+    { question: '新站首次提交 sitemap 应该包含多少 URL？', answer: '建议首次提交不超过 10 个核心页面，确保每个页面都有高质量内容。随着收录增加再逐步扩展 sitemap。' },
+    { question: '新站第一个月最重要的 SEO 操作是什么？', answer: '验证 GSC/BWT、提交 sitemap、确保技术基础无误（robots.txt、canonical、HTTPS）、发布高质量内容、获取初始外链。' }
   ]
 };
 

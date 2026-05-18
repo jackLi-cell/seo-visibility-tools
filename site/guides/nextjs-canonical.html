@@ -14,6 +14,7 @@
 <meta property="og:site_name" content="搜索可见性与 GSC 收录诊断工具">
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"Next.js Canonical 配置常见错误","description":"Next.js App Router 中 metadata 和 canonical 的正确配置方法","datePublished":"2024-01-15","dateModified":"2026-05-18","author":{"@type":"Organization","name":"搜索可见性与 GSC 收录诊断工具"},"publisher":{"@type":"Organization","name":"搜索可见性与 GSC 收录诊断工具"},"mainEntityOfPage":{"@type":"WebPage","@id":"https://seo.jtlcook.com/guides/nextjs-canonical.html"}}</script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"首页","item":"https://seo.jtlcook.com/"},{"@type":"ListItem","position":2,"name":"指南","item":"https://seo.jtlcook.com/#guides"},{"@type":"ListItem","position":3,"name":"Next.js Canonical 配置常见错误","item":"https://seo.jtlcook.com/guides/nextjs-canonical.html"}]}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Next.js App Router 如何设置 canonical？","acceptedAnswer":{"@type":"Answer","text":"在 page.tsx 中通过 export const metadata 或 generateMetadata 函数设置 alternates.canonical 属性。设置 metadataBase 后可以使用相对路径。"}},{"@type":"Question","name":"Next.js canonical 最常见的错误是什么？","acceptedAnswer":{"@type":"Answer","text":"最常见的错误包括：忘记在 generateMetadata 中设置 canonical、环境变量未设置导致 URL 为空、canonical 中包含查询参数、动态路由没有包含实际 slug。"}},{"@type":"Question","name":"metadataBase 有什么作用？","acceptedAnswer":{"@type":"Answer","text":"metadataBase 设置后，所有 metadata 中的相对 URL 都会基于它解析为绝对 URL，避免在每个页面重复写完整域名。"}}]}</script>
 <link rel="stylesheet" href="../assets/styles.css">
 </head>
 <body>
@@ -37,6 +38,24 @@
   
 <h2>Next.js App Router 中的 Canonical</h2>
 <p>Next.js 13+ App Router 使用 metadata API 来设置页面的 canonical URL。配置不当是导致收录问题的常见原因。</p>
+<h2>常见原因</h2>
+<ul>
+<li>忘记在 generateMetadata 中设置 canonical</li>
+<li>使用 process.env.NEXT_PUBLIC_URL 但环境变量未设置</li>
+<li>canonical 中包含查询参数或 hash</li>
+<li>开发环境用 localhost，生产环境忘记改</li>
+<li>动态路由中 canonical 没有包含实际的 slug</li>
+</ul>
+<h2>排查步骤</h2>
+<ol class="step-list">
+<li>查看部署后页面源码，搜索 rel="canonical" 确认输出</li>
+<li>检查 canonical URL 是否为完整的绝对路径（含 https://）</li>
+<li>确认动态路由页面的 canonical 包含正确的 slug 参数</li>
+<li>检查 metadataBase 是否在 layout.tsx 中正确设置</li>
+<li>验证环境变量 NEXT_PUBLIC_URL 在生产环境中有值</li>
+<li>对比开发环境和生产环境的 canonical 输出</li>
+<li>检查是否有中间件或插件覆盖了 canonical 设置</li>
+</ol>
 <h2>静态 Metadata 配置</h2>
 <pre><code>// app/blog/[slug]/page.tsx
 export const metadata = {
@@ -55,20 +74,20 @@ export async function generateMetadata({ params }) {
     },
   };
 }</code></pre>
-<h2>常见错误</h2>
-<ul>
-<li>忘记在 generateMetadata 中设置 canonical</li>
-<li>使用 process.env.NEXT_PUBLIC_URL 但环境变量未设置</li>
-<li>canonical 中包含查询参数或 hash</li>
-<li>开发环境用 localhost，生产环境忘记改</li>
-<li>动态路由中 canonical 没有包含实际的 slug</li>
-</ul>
 <h2>Layout 级别的默认配置</h2>
 <pre><code>// app/layout.tsx
 export const metadata = {
   metadataBase: new URL('https://example.com'),
 };
 // 设置 metadataBase 后，canonical 可以使用相对路径</code></pre>
+<h2>修复方法</h2>
+<ul>
+<li>在 app/layout.tsx 中设置 metadataBase 为生产域名</li>
+<li>为每个动态路由页面实现 generateMetadata</li>
+<li>确保环境变量在所有部署环境中正确配置</li>
+<li>使用 Next.js 的 metadata 验证工具检查输出</li>
+<li>在 CI/CD 中添加 canonical 检查步骤</li>
+</ul>
 <h2>验证方法</h2>
 <p>部署后查看页面源码，确认 canonical 输出了正确的完整 URL。使用 <a href="../tools/canonical-checker.html">Canonical 检查器</a> 验证。</p>
 </article>

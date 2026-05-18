@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>JavaScript 渲染与 SEO 的关系 - 搜索可见性与 GSC 收录诊断工具</title>
+<meta name="description" content="理解搜索引擎如何处理 JavaScript 渲染内容，以及 CSR/SSR/SSG 的 SEO 影响">
+<link rel="canonical" href="https://seo.jtlcook.com/guides/js-rendering-seo.html">
+<link rel="icon" type="image/svg+xml" href="../favicon.svg">
+<meta property="og:title" content="JavaScript 渲染与 SEO 的关系 - 搜索可见性与 GSC 收录诊断工具">
+<meta property="og:description" content="理解搜索引擎如何处理 JavaScript 渲染内容，以及 CSR/SSR/SSG 的 SEO 影响">
+<meta property="og:url" content="https://seo.jtlcook.com/guides/js-rendering-seo.html">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="搜索可见性与 GSC 收录诊断工具">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"JavaScript 渲染与 SEO 的关系","description":"理解搜索引擎如何处理 JavaScript 渲染内容，以及 CSR/SSR/SSG 的 SEO 影响","datePublished":"2024-01-15","dateModified":"2026-05-18","author":{"@type":"Organization","name":"搜索可见性与 GSC 收录诊断工具"},"publisher":{"@type":"Organization","name":"搜索可见性与 GSC 收录诊断工具"},"mainEntityOfPage":{"@type":"WebPage","@id":"https://seo.jtlcook.com/guides/js-rendering-seo.html"}}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"首页","item":"https://seo.jtlcook.com/"},{"@type":"ListItem","position":2,"name":"指南","item":"https://seo.jtlcook.com/#guides"},{"@type":"ListItem","position":3,"name":"JavaScript 渲染与 SEO 的关系","item":"https://seo.jtlcook.com/guides/js-rendering-seo.html"}]}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Google 能执行 JavaScript 吗？","acceptedAnswer":{"@type":"Answer","text":"能，但有延迟。Google 使用两阶段索引：先读取初始 HTML，再将页面放入渲染队列执行 JS。渲染队列可能有数天延迟，且不保证完整执行。"}},{"@type":"Question","name":"SPA 对 SEO 有什么影响？","acceptedAnswer":{"@type":"Answer","text":"纯客户端渲染的 SPA 初始 HTML 通常只有空 div，搜索引擎在第一阶段无法获取内容，需要等待 JS 渲染，这会导致收录延迟或失败。"}},{"@type":"Question","name":"SSR 和 SSG 哪个对 SEO 更好？","acceptedAnswer":{"@type":"Answer","text":"两者对 SEO 都很好。SSG 生成静态 HTML 速度最快，适合内容不频繁变化的页面；SSR 适合动态内容，每次请求都生成完整 HTML。"}}]}</script>
+<link rel="stylesheet" href="../assets/styles.css">
+</head>
+<body>
+<header class="site-header">
+<div class="container">
+<a href="../index.html" class="logo">搜索可见性与 GSC 收录诊断工具</a>
+<nav>
+<a href="../index.html">首页</a>
+<a href="../diagnose/wizard.html">诊断向导</a>
+<a href="../index.html#tools">工具</a>
+<a href="../index.html#guides">指南</a>
+<a href="../pages/about.html">关于</a>
+</nav>
+</div>
+</header>
+<main class="container">
+
+<article class="guide-content">
+  <h1>JavaScript 渲染与 SEO 的关系</h1>
+  <p style="color:var(--color-text-secondary);margin-bottom:24px;">理解搜索引擎如何处理 JavaScript 渲染内容，以及 CSR/SSR/SSG 的 SEO 影响</p>
+  
+<h2>搜索引擎如何处理 JavaScript</h2>
+<p>Google 使用两阶段索引：先抓取初始 HTML，再将页面放入渲染队列执行 JavaScript。渲染队列可能有数天延迟，且不保证完整执行所有 JS。Bing 对 JS 渲染的支持更有限。</p>
+<h2>常见原因（JS 渲染导致收录问题）</h2>
+<ul>
+<li>SPA（单页应用）初始 HTML 只有空 div，内容完全依赖 JS</li>
+<li>关键内容通过 AJAX/fetch 异步加载</li>
+<li>使用 client-side routing，服务器对所有路由返回相同 HTML shell</li>
+<li>JS 执行依赖用户交互（如滚动加载）</li>
+<li>第三方 JS 错误导致页面渲染失败</li>
+</ul>
+<h2>排查步骤</h2>
+<ol class="step-list">
+<li>使用 curl 获取页面初始 HTML，检查是否包含核心内容</li>
+<li>在 GSC URL 检查工具中对比"已抓取的页面"和"实时测试"</li>
+<li>禁用浏览器 JavaScript 后访问页面，观察可见内容</li>
+<li>检查 Google 缓存版本是否包含完整内容</li>
+<li>查看 GSC 抓取统计中的渲染错误</li>
+<li>使用 Chrome DevTools 的 Coverage 面板分析 JS 依赖</li>
+<li>检查是否有 JS 错误阻止页面正常渲染</li>
+</ol>
+<h2>渲染方案对比</h2>
+<div class="table-wrap"><table>
+<tr><th>方案</th><th>SEO 友好度</th><th>首屏速度</th><th>适用场景</th></tr>
+<tr><td>SSG（静态生成）</td><td>最佳</td><td>最快</td><td>内容不频繁变化的页面</td></tr>
+<tr><td>SSR（服务端渲染）</td><td>优秀</td><td>快</td><td>动态内容、个性化页面</td></tr>
+<tr><td>ISR（增量静态再生）</td><td>优秀</td><td>快</td><td>内容定期更新的页面</td></tr>
+<tr><td>CSR（客户端渲染）</td><td>差</td><td>慢</td><td>仅限登录后的应用界面</td></tr>
+</table></div>
+<h2>修复方法</h2>
+<ul>
+<li>将关键页面从 CSR 迁移到 SSR 或 SSG</li>
+<li>使用 Next.js、Nuxt.js、Astro 等支持 SSR/SSG 的框架</li>
+<li>确保 title、meta description、H1 和正文在初始 HTML 中</li>
+<li>对无法迁移的 CSR 页面使用预渲染服务</li>
+<li>避免将 SEO 关键内容放在需要用户交互才能加载的区域</li>
+</ul>
+<h2>验证方法</h2>
+<p>使用 <a href="../tools/html-checker.html">HTML 可读性检查工具</a> 粘贴 curl 获取的初始 HTML 进行检查。在 GSC URL 检查中确认渲染后的页面包含完整内容。</p>
+</article>
+<div style="margin-top:24px;">
+  <a href="../index.html#guides" class="btn btn-secondary">&larr; 返回指南列表</a>
+</div>
+</main>
+<footer class="site-footer">
+<div class="container">
+<div>&copy; 2024 搜索可见性与 GSC 收录诊断工具</div>
+<div>
+<a href="../pages/about.html">关于</a> &middot;
+<a href="../pages/contact.html">联系</a> &middot;
+<a href="../pages/privacy.html">隐私</a> &middot;
+<a href="../pages/disclaimer.html">免责声明</a>
+</div>
+</div>
+</footer>
+<script src="../assets/app.js"></script>
+</body>
+</html>

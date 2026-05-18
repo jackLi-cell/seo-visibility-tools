@@ -78,5 +78,53 @@
     "category": "结构化数据",
     "gscStatus": null,
     "description": "JSON-LD 结构化数据的基本检查方法和常见错误"
+  },
+  {
+    "id": "bing-vs-gsc",
+    "title": "Bing Webmaster Tools 与 GSC 的差异",
+    "slug": "bing-vs-gsc",
+    "category": "搜索引擎",
+    "gscStatus": null,
+    "description": "对比 Bing Webmaster Tools 和 Google Search Console 的功能差异与使用策略"
+  },
+  {
+    "id": "indexnow-protocol",
+    "title": "IndexNow 协议使用指南",
+    "slug": "indexnow-protocol",
+    "category": "收录加速",
+    "gscStatus": null,
+    "description": "通过 IndexNow 协议主动通知搜索引擎内容更新，加速 Bing 和 Yandex 收录"
+  },
+  {
+    "id": "core-web-vitals",
+    "title": "Core Web Vitals 对收录的影响",
+    "slug": "core-web-vitals",
+    "category": "性能",
+    "gscStatus": null,
+    "description": "LCP、INP、CLS 三大核心指标如何影响搜索排名和收录优先级"
+  },
+  {
+    "id": "hreflang-check",
+    "title": "多语言网站 hreflang 配置检查",
+    "slug": "hreflang-check",
+    "category": "国际化",
+    "gscStatus": null,
+    "description": "检查 hreflang 标签配置是否正确，避免多语言页面互相竞争排名"
+  },
+  {
+    "id": "js-rendering-seo",
+    "title": "JavaScript 渲染与 SEO 的关系",
+    "slug": "js-rendering-seo",
+    "category": "技术 SEO",
+    "gscStatus": null,
+    "description": "理解搜索引擎如何处理 JavaScript 渲染内容，以及 CSR/SSR/SSG 的 SEO 影响"
+  },
+  {
+    "id": "new-site-first-month",
+    "title": "新站首月 SEO 检查时间表",
+    "slug": "new-site-first-month",
+    "category": "新站",
+    "gscStatus": null,
+    "description": "新网站上线第一个月的 SEO 检查清单和时间节点安排"
   }
 ]
