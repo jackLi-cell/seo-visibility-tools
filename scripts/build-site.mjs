@@ -155,6 +155,7 @@ function layout(title, description, canonicalPath, bodyContent, options = {}) {
 <title>${title} - ${SITE_NAME}</title>
 <meta name="description" content="${description}">
 <link rel="canonical" href="${canonical}">
+<link rel="icon" type="image/svg+xml" href="${prefix}favicon.svg">
 ${ogTags}
 ${jsonLdHtml}
 <link rel="stylesheet" href="${prefix}assets/styles.css">
