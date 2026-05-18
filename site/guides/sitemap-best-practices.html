@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sitemap 应该提交哪些页面 - 搜索可见性与 GSC 收录诊断工具</title>
+<meta name="description" content="sitemap 只收录高质量公开页面，不要把所有文件都塞进去">
+<link rel="canonical" href="https://seo.jtlcook.com/guides/sitemap-best-practices.html">
+<meta property="og:title" content="Sitemap 应该提交哪些页面 - 搜索可见性与 GSC 收录诊断工具">
+<meta property="og:description" content="sitemap 只收录高质量公开页面，不要把所有文件都塞进去">
+<meta property="og:url" content="https://seo.jtlcook.com/guides/sitemap-best-practices.html">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="搜索可见性与 GSC 收录诊断工具">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"Sitemap 应该提交哪些页面","description":"sitemap 只收录高质量公开页面，不要把所有文件都塞进去","datePublished":"2024-01-15","dateModified":"2026-05-18","author":{"@type":"Organization","name":"搜索可见性与 GSC 收录诊断工具"},"publisher":{"@type":"Organization","name":"搜索可见性与 GSC 收录诊断工具"},"mainEntityOfPage":{"@type":"WebPage","@id":"https://seo.jtlcook.com/guides/sitemap-best-practices.html"}}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"首页","item":"https://seo.jtlcook.com/"},{"@type":"ListItem","position":2,"name":"指南","item":"https://seo.jtlcook.com/#guides"},{"@type":"ListItem","position":3,"name":"Sitemap 应该提交哪些页面","item":"https://seo.jtlcook.com/guides/sitemap-best-practices.html"}]}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Sitemap 应该包含哪些页面？","acceptedAnswer":{"@type":"Answer","text":"应包含所有希望被收录的公开页面，返回 200 状态码、有 canonical 自指、没有 noindex、有实质内容的页面。"}},{"@type":"Question","name":"Sitemap 不应该包含什么？","acceptedAnswer":{"@type":"Answer","text":"不应包含非 HTML 文件、带参数的重复 URL、已设置 noindex 的页面、重定向的源 URL、返回 4xx/5xx 的 URL、低质量标签页和内部搜索结果页。"}},{"@type":"Question","name":"新站首次提交 Sitemap 有什么建议？","acceptedAnswer":{"@type":"Answer","text":"新站首次提交不超过 1000 个 URL，优先提交最重要的页面，确保每个 URL 返回 200，使用 lastmod 标注真实修改时间，提交后监控索引覆盖率。"}}]}</script>
+<link rel="stylesheet" href="../assets/styles.css">
+</head>
+<body>
+<header class="site-header">
+<div class="container">
+<a href="../index.html" class="logo">搜索可见性与 GSC 收录诊断工具</a>
+<nav>
+<a href="../index.html">首页</a>
+<a href="../diagnose/wizard.html">诊断向导</a>
+<a href="../index.html#tools">工具</a>
+<a href="../index.html#guides">指南</a>
+<a href="../pages/about.html">关于</a>
+</nav>
+</div>
+</header>
+<main class="container">
+
+<article class="guide-content">
+  <h1>Sitemap 应该提交哪些页面</h1>
+  <p style="color:var(--color-text-secondary);margin-bottom:24px;">sitemap 只收录高质量公开页面，不要把所有文件都塞进去</p>
+  
+<h2>Sitemap 的作用</h2>
+<p>Sitemap 告诉搜索引擎你的站点有哪些页面值得抓取和收录。它不是保证收录的手段，而是一个发现机制。</p>
+<h2>应该放入 Sitemap 的页面</h2>
+<ul>
+<li>所有希望被收录的公开页面</li>
+<li>返回 200 状态码的页面</li>
+<li>有 canonical 自指的页面</li>
+<li>没有 noindex 的页面</li>
+<li>有实质内容的页面</li>
+</ul>
+<h2>不应该放入 Sitemap 的内容</h2>
+<ul>
+<li>非 HTML 文件（PDF、图片用媒体 sitemap）</li>
+<li>带参数的重复 URL</li>
+<li>已设置 noindex 的页面</li>
+<li>301/302 重定向的源 URL</li>
+<li>返回 4xx/5xx 的 URL</li>
+<li>低质量标签页、空分类页</li>
+<li>内部搜索结果页</li>
+<li>需要登录的页面</li>
+</ul>
+<h2>首批提交规则</h2>
+<ol class="step-list">
+<li>新站首次提交不超过 1000 个 URL</li>
+<li>优先提交最重要、内容最充实的页面</li>
+<li>确保每个 URL 都能正常访问（200 状态码）</li>
+<li>使用 lastmod 标注真实的最后修改时间</li>
+<li>提交后在 GSC 中监控索引覆盖率变化</li>
+<li>根据收录情况逐步增加 URL</li>
+</ol>
+<h2>Sitemap 格式示例</h2>
+<pre><code>&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"&gt;
+  &lt;url&gt;
+    &lt;loc&gt;https://example.com/page&lt;/loc&gt;
+    &lt;lastmod&gt;2024-01-15&lt;/lastmod&gt;
+  &lt;/url&gt;
+&lt;/urlset&gt;</code></pre>
+<h2>验证方法</h2>
+<p>使用 <a href="../tools/sitemap-audit.html">Sitemap 审计工具</a> 检查你的 URL 列表。</p>
+</article>
+<div style="margin-top:24px;">
+  <a href="../index.html#guides" class="btn btn-secondary">&larr; 返回指南列表</a>
+</div>
+</main>
+<footer class="site-footer">
+<div class="container">
+<div>&copy; 2024 搜索可见性与 GSC 收录诊断工具</div>
+<div>
+<a href="../pages/about.html">关于</a> &middot;
+<a href="../pages/contact.html">联系</a> &middot;
+<a href="../pages/privacy.html">隐私</a> &middot;
+<a href="../pages/disclaimer.html">免责声明</a>
+</div>
+</div>
+</footer>
+<script src="../assets/app.js"></script>
+</body>
+</html>

@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Canonical 自指是什么意思 - 搜索可见性与 GSC 收录诊断工具</title>
+<meta name="description" content="每个页面的 canonical 应该指向自己的正式 URL，不要全站指向首页">
+<link rel="canonical" href="https://seo.jtlcook.com/guides/self-referencing-canonical.html">
+<meta property="og:title" content="Canonical 自指是什么意思 - 搜索可见性与 GSC 收录诊断工具">
+<meta property="og:description" content="每个页面的 canonical 应该指向自己的正式 URL，不要全站指向首页">
+<meta property="og:url" content="https://seo.jtlcook.com/guides/self-referencing-canonical.html">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="搜索可见性与 GSC 收录诊断工具">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"Canonical 自指是什么意思","description":"每个页面的 canonical 应该指向自己的正式 URL，不要全站指向首页","datePublished":"2024-01-15","dateModified":"2026-05-18","author":{"@type":"Organization","name":"搜索可见性与 GSC 收录诊断工具"},"publisher":{"@type":"Organization","name":"搜索可见性与 GSC 收录诊断工具"},"mainEntityOfPage":{"@type":"WebPage","@id":"https://seo.jtlcook.com/guides/self-referencing-canonical.html"}}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"首页","item":"https://seo.jtlcook.com/"},{"@type":"ListItem","position":2,"name":"指南","item":"https://seo.jtlcook.com/#guides"},{"@type":"ListItem","position":3,"name":"Canonical 自指是什么意思","item":"https://seo.jtlcook.com/guides/self-referencing-canonical.html"}]}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Canonical 自指是什么意思？","acceptedAnswer":{"@type":"Answer","text":"Canonical 自指是指页面的 link rel=\"canonical\" 标签指向自己的 URL，明确告诉搜索引擎这个 URL 是此内容的正式版本。"}},{"@type":"Question","name":"为什么需要 Canonical 自指？","acceptedAnswer":{"@type":"Answer","text":"防止带参数的 URL 被当作独立页面，明确声明内容归属避免被判定为重复，统一链接权重到正式 URL，处理 HTTP/HTTPS 和 www/non-www 变体。"}}]}</script>
+<link rel="stylesheet" href="../assets/styles.css">
+</head>
+<body>
+<header class="site-header">
+<div class="container">
+<a href="../index.html" class="logo">搜索可见性与 GSC 收录诊断工具</a>
+<nav>
+<a href="../index.html">首页</a>
+<a href="../diagnose/wizard.html">诊断向导</a>
+<a href="../index.html#tools">工具</a>
+<a href="../index.html#guides">指南</a>
+<a href="../pages/about.html">关于</a>
+</nav>
+</div>
+</header>
+<main class="container">
+
+<article class="guide-content">
+  <h1>Canonical 自指是什么意思</h1>
+  <p style="color:var(--color-text-secondary);margin-bottom:24px;">每个页面的 canonical 应该指向自己的正式 URL，不要全站指向首页</p>
+  
+<h2>什么是 Canonical 自指</h2>
+<p>Canonical 自指是指页面的 <code>&lt;link rel="canonical"&gt;</code> 标签指向自己的 URL。这明确告诉搜索引擎："这个 URL 是此内容的正式版本"。</p>
+<h2>为什么需要自指</h2>
+<ul>
+<li>防止带参数的 URL 被当作独立页面</li>
+<li>明确声明内容归属，避免被判定为重复</li>
+<li>统一链接权重到正式 URL</li>
+<li>处理 HTTP/HTTPS、www/non-www 的变体</li>
+</ul>
+<h2>常见错误</h2>
+<ul>
+<li>所有页面 canonical 都指向首页（最常见的严重错误）</li>
+<li>canonical 使用相对路径而非绝对 URL</li>
+<li>canonical URL 与实际 URL 的协议不一致</li>
+<li>canonical 指向 404 页面</li>
+<li>canonical 指向重定向链中的 URL</li>
+<li>动态页面 canonical 包含会话参数</li>
+</ul>
+<h2>正确配置示例</h2>
+<pre><code>&lt;!-- 正确：自指 --&gt;
+&lt;link rel="canonical" href="https://example.com/blog/my-post"&gt;
+
+&lt;!-- 错误：指向首页 --&gt;
+&lt;link rel="canonical" href="https://example.com/"&gt;
+
+&lt;!-- 错误：相对路径 --&gt;
+&lt;link rel="canonical" href="../blog/my-post"&gt;</code></pre>
+<h2>验证方法</h2>
+<p>使用 <a href="../tools/canonical-checker.html">Canonical 检查器</a> 验证你的 canonical 配置。</p>
+</article>
+<div style="margin-top:24px;">
+  <a href="../index.html#guides" class="btn btn-secondary">&larr; 返回指南列表</a>
+</div>
+</main>
+<footer class="site-footer">
+<div class="container">
+<div>&copy; 2024 搜索可见性与 GSC 收录诊断工具</div>
+<div>
+<a href="../pages/about.html">关于</a> &middot;
+<a href="../pages/contact.html">联系</a> &middot;
+<a href="../pages/privacy.html">隐私</a> &middot;
+<a href="../pages/disclaimer.html">免责声明</a>
+</div>
+</div>
+</footer>
+<script src="../assets/app.js"></script>
+</body>
+</html>
