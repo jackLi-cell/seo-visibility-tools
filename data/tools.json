@@ -1,0 +1,42 @@
+[
+  {
+    "id": "sitemap-audit",
+    "name": "Sitemap 审计清单",
+    "slug": "sitemap-audit",
+    "description": "粘贴 sitemap URL 列表，检查低价值资源、非 HTML 文件和域名混用",
+    "inputType": "textarea",
+    "inputLabel": "粘贴 sitemap URL 列表（每行一个）"
+  },
+  {
+    "id": "canonical-checker",
+    "name": "Canonical 检查清单",
+    "slug": "canonical-checker",
+    "description": "输入页面 URL 和 canonical 值，检查是否自指、是否指向首页",
+    "inputType": "form",
+    "inputLabel": "输入页面 URL 和 canonical"
+  },
+  {
+    "id": "robots-checker",
+    "name": "Robots / Noindex 检查器",
+    "slug": "robots-checker",
+    "description": "粘贴 robots.txt 或 meta robots 内容，检查是否误屏蔽",
+    "inputType": "textarea",
+    "inputLabel": "粘贴 robots.txt 内容或 meta robots 标签"
+  },
+  {
+    "id": "html-checker",
+    "name": "初始 HTML 可读性检查",
+    "slug": "html-checker",
+    "description": "粘贴 HTML 源码，检查 H1、title、description、正文和 JSON-LD",
+    "inputType": "textarea",
+    "inputLabel": "粘贴页面 HTML 源码"
+  },
+  {
+    "id": "ai-readability-scorer",
+    "name": "AI 搜索可读性评分器",
+    "slug": "ai-readability-scorer",
+    "description": "粘贴 HTML 源码，评估页面对 AI 搜索引擎的可读性",
+    "inputType": "textarea",
+    "inputLabel": "粘贴页面 HTML 源码"
+  }
+]

@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GSC 服务器错误 5xx 怎么定位 - 搜索可见性与 GSC 收录诊断工具</title>
+<meta name="description" content="服务器返回 5xx 错误，需要定位具体 URL 和错误原因">
+<link rel="canonical" href="https://seo.jtlcook.com/guides/server-error-5xx.html">
+<link rel="stylesheet" href="../assets/styles.css">
+</head>
+<body>
+<header class="site-header">
+<div class="container">
+<a href="../index.html" class="logo">搜索可见性与 GSC 收录诊断工具</a>
+<nav>
+<a href="../index.html">首页</a>
+<a href="../diagnose/wizard.html">诊断向导</a>
+<a href="../index.html#tools">工具</a>
+<a href="../index.html#guides">指南</a>
+<a href="../pages/about.html">关于</a>
+</nav>
+</div>
+</header>
+<main class="container">
+
+<article class="guide-content">
+  <h1>GSC 服务器错误 5xx 怎么定位</h1>
+  <p style="color:var(--color-text-secondary);margin-bottom:24px;">服务器返回 5xx 错误，需要定位具体 URL 和错误原因</p>
+  
+<h2>什么是 5xx 服务器错误</h2>
+<p>GSC 报告 5xx 错误表示 Googlebot 在抓取时收到了服务器错误响应。常见的有 500（内部错误）、502（网关错误）、503（服务不可用）、504（网关超时）。</p>
+<h2>如何定位具体 URL</h2>
+<ul>
+<li>GSC - 索引 - 页面 - 筛选"服务器错误 (5xx)"</li>
+<li>导出完整 URL 列表进行批量检查</li>
+<li>检查服务器访问日志中 Googlebot 的请求记录</li>
+<li>使用 curl 命令模拟抓取：<code>curl -I -A "Googlebot" URL</code></li>
+</ul>
+<h2>常见原因</h2>
+<ul>
+<li>服务器资源不足（CPU/内存/连接数耗尽）</li>
+<li>应用代码错误（未处理的异常）</li>
+<li>数据库连接超时或查询过慢</li>
+<li>CDN 或反向代理配置错误</li>
+<li>服务器对爬虫限流过于激进</li>
+<li>SSL 证书问题导致 HTTPS 握手失败</li>
+</ul>
+<h2>修复方法</h2>
+<ol class="step-list">
+<li>检查服务器错误日志，定位具体错误信息</li>
+<li>确认服务器资源是否充足</li>
+<li>检查是否有针对爬虫的限流规则过于严格</li>
+<li>优化慢查询和耗时操作</li>
+<li>配置合理的超时时间和重试机制</li>
+<li>确保 CDN 回源配置正确</li>
+</ol>
+<h2>验证方法</h2>
+<p>修复后使用 GSC URL 检查工具测试实时抓取，确认返回 200。持续监控 GSC 抓取统计报告。</p>
+</article>
+<div style="margin-top:24px;">
+  <a href="../index.html#guides" class="btn btn-secondary">&larr; 返回指南列表</a>
+</div>
+</main>
+<footer class="site-footer">
+<div class="container">
+<div>&copy; 2024 搜索可见性与 GSC 收录诊断工具</div>
+<div>
+<a href="../pages/about.html">关于</a> &middot;
+<a href="../pages/contact.html">联系</a> &middot;
+<a href="../pages/privacy.html">隐私</a> &middot;
+<a href="../pages/disclaimer.html">免责声明</a>
+</div>
+</div>
+</footer>
+<script src="../assets/app.js"></script>
+</body>
+</html>

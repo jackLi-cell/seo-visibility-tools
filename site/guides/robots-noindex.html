@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Robots.txt 和 Noindex 怎么检查 - 搜索可见性与 GSC 收录诊断工具</title>
+<meta name="description" content="检查 robots.txt、meta robots 和 X-Robots-Tag 是否误屏蔽页面">
+<link rel="canonical" href="https://seo.jtlcook.com/guides/robots-noindex.html">
+<link rel="stylesheet" href="../assets/styles.css">
+</head>
+<body>
+<header class="site-header">
+<div class="container">
+<a href="../index.html" class="logo">搜索可见性与 GSC 收录诊断工具</a>
+<nav>
+<a href="../index.html">首页</a>
+<a href="../diagnose/wizard.html">诊断向导</a>
+<a href="../index.html#tools">工具</a>
+<a href="../index.html#guides">指南</a>
+<a href="../pages/about.html">关于</a>
+</nav>
+</div>
+</header>
+<main class="container">
+
+<article class="guide-content">
+  <h1>Robots.txt 和 Noindex 怎么检查</h1>
+  <p style="color:var(--color-text-secondary);margin-bottom:24px;">检查 robots.txt、meta robots 和 X-Robots-Tag 是否误屏蔽页面</p>
+  
+<h2>Robots.txt 基础</h2>
+<p>robots.txt 是放在网站根目录的文本文件，告诉爬虫哪些路径可以抓取、哪些不可以。注意：robots.txt 只是建议，不是强制屏蔽。</p>
+<h2>Robots.txt 语法</h2>
+<pre><code># 允许所有爬虫访问所有内容
+User-agent: *
+Allow: /
+
+# 屏蔽特定目录
+User-agent: *
+Disallow: /admin/
+Disallow: /private/
+
+# 指定 Sitemap 位置
+Sitemap: https://example.com/sitemap.xml</code></pre>
+<h2>Meta Robots 标签</h2>
+<pre><code>&lt;!-- 不收录此页面 --&gt;
+&lt;meta name="robots" content="noindex"&gt;
+
+&lt;!-- 不收录且不跟踪链接 --&gt;
+&lt;meta name="robots" content="noindex, nofollow"&gt;</code></pre>
+<h2>X-Robots-Tag HTTP 头</h2>
+<pre><code>X-Robots-Tag: noindex
+X-Robots-Tag: noindex, nofollow</code></pre>
+<h2>常见误屏蔽场景</h2>
+<ul>
+<li>robots.txt 中 Disallow: / 屏蔽了整站</li>
+<li>测试环境的 noindex 标签被带到了生产环境</li>
+<li>CMS 的"阻止搜索引擎索引"选项被勾选</li>
+<li>CDN 或服务器配置添加了全局 X-Robots-Tag</li>
+<li>框架默认给某些路由加了 noindex</li>
+</ul>
+<h2>排查步骤</h2>
+<ol class="step-list">
+<li>访问 /robots.txt 检查是否有过度屏蔽</li>
+<li>查看页面源码搜索 "noindex"</li>
+<li>用开发者工具检查响应头中的 X-Robots-Tag</li>
+<li>检查 CMS 后台的 SEO 设置</li>
+<li>确认 CDN 配置没有添加额外的 robots 头</li>
+</ol>
+<h2>验证方法</h2>
+<p>使用 <a href="../tools/robots-checker.html">Robots 检查器</a> 粘贴你的 robots.txt 或 meta 标签进行检查。</p>
+</article>
+<div style="margin-top:24px;">
+  <a href="../index.html#guides" class="btn btn-secondary">&larr; 返回指南列表</a>
+</div>
+</main>
+<footer class="site-footer">
+<div class="container">
+<div>&copy; 2024 搜索可见性与 GSC 收录诊断工具</div>
+<div>
+<a href="../pages/about.html">关于</a> &middot;
+<a href="../pages/contact.html">联系</a> &middot;
+<a href="../pages/privacy.html">隐私</a> &middot;
+<a href="../pages/disclaimer.html">免责声明</a>
+</div>
+</div>
+</footer>
+<script src="../assets/app.js"></script>
+</body>
+</html>

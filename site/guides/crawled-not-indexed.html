@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>已抓取但未编入索引怎么排查 - 搜索可见性与 GSC 收录诊断工具</title>
+<meta name="description" content="Google 已抓取但认为不值得收录，通常是内容质量、重复或薄内容问题">
+<link rel="canonical" href="https://seo.jtlcook.com/guides/crawled-not-indexed.html">
+<link rel="stylesheet" href="../assets/styles.css">
+</head>
+<body>
+<header class="site-header">
+<div class="container">
+<a href="../index.html" class="logo">搜索可见性与 GSC 收录诊断工具</a>
+<nav>
+<a href="../index.html">首页</a>
+<a href="../diagnose/wizard.html">诊断向导</a>
+<a href="../index.html#tools">工具</a>
+<a href="../index.html#guides">指南</a>
+<a href="../pages/about.html">关于</a>
+</nav>
+</div>
+</header>
+<main class="container">
+
+<article class="guide-content">
+  <h1>已抓取但未编入索引怎么排查</h1>
+  <p style="color:var(--color-text-secondary);margin-bottom:24px;">Google 已抓取但认为不值得收录，通常是内容质量、重复或薄内容问题</p>
+  
+<h2>什么是"已抓取但未编入索引"</h2>
+<p>"Crawled - currently not indexed" 表示 Google 已经抓取了页面内容，但决定不将其加入索引。这比"已发现未索引"更严重，因为 Google 看过内容后主动选择不收录。</p>
+<h2>常见原因</h2>
+<ul>
+<li>内容质量不足或内容过薄</li>
+<li>与站内其他页面内容重复或高度相似</li>
+<li>页面是自动生成的低价值内容</li>
+<li>缺少 E-E-A-T 信号（经验、专业性、权威性、可信度）</li>
+<li>页面用户体验差</li>
+<li>站点整体质量评分不高</li>
+</ul>
+<h2>排查步骤</h2>
+<ol class="step-list">
+<li>在 GSC URL 检查中确认状态和上次抓取时间</li>
+<li>对比该页面与已收录页面的内容差异</li>
+<li>检查是否存在站内重复内容</li>
+<li>评估页面字数和信息密度（建议大于 800 字有实质内容）</li>
+<li>检查页面是否有独特价值</li>
+<li>确认页面有正确的 canonical 自指</li>
+<li>检查页面加载后的实际渲染内容</li>
+</ol>
+<h2>修复方法</h2>
+<ul>
+<li>大幅提升内容质量：增加原创分析、数据、案例</li>
+<li>合并相似页面，用 301 重定向指向最佳版本</li>
+<li>添加结构化数据增强页面信号</li>
+<li>增加作者信息和发布/更新日期</li>
+<li>获取外部链接提升页面权威性</li>
+</ul>
+<h2>验证方法</h2>
+<p>内容优化后重新请求索引。如果 2-4 周后仍未收录，考虑该页面是否应该合并到其他页面中。</p>
+</article>
+<div style="margin-top:24px;">
+  <a href="../index.html#guides" class="btn btn-secondary">&larr; 返回指南列表</a>
+</div>
+</main>
+<footer class="site-footer">
+<div class="container">
+<div>&copy; 2024 搜索可见性与 GSC 收录诊断工具</div>
+<div>
+<a href="../pages/about.html">关于</a> &middot;
+<a href="../pages/contact.html">联系</a> &middot;
+<a href="../pages/privacy.html">隐私</a> &middot;
+<a href="../pages/disclaimer.html">免责声明</a>
+</div>
+</div>
+</footer>
+<script src="../assets/app.js"></script>
+</body>
+</html>

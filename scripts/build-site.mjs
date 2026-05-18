@@ -1,0 +1,734 @@
+#!/usr/bin/env node
+import { readFileSync, writeFileSync, mkdirSync, existsSync } from 'fs';
+import { join, dirname } from 'path';
+import { fileURLToPath } from 'url';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
+const ROOT = join(__dirname, '..');
+const SITE = join(ROOT, 'site');
+const DATA = join(ROOT, 'data');
+
+const DOMAIN = 'https://seo.jtlcook.com';
+const SITE_NAME = '搜索可见性与 GSC 收录诊断工具';
+const EMAIL = '1055567003@qq.com';
+
+const guides = JSON.parse(readFileSync(join(DATA, 'guides.json'), 'utf-8'));
+const tools = JSON.parse(readFileSync(join(DATA, 'tools.json'), 'utf-8'));
+
+let pageCount = 0;
+const allPages = [];
+
+function ensureDir(dir) {
+  if (!existsSync(dir)) mkdirSync(dir, { recursive: true });
+}
+
+function writePage(filePath, html) {
+  ensureDir(dirname(filePath));
+  writeFileSync(filePath, html, 'utf-8');
+  pageCount++;
+}
+
+function getPrefix(canonicalPath) {
+  const parts = canonicalPath.split('/').filter(Boolean);
+  const depth = canonicalPath.endsWith('/') ? parts.length : Math.max(0, parts.length - 1);
+  if (depth === 0) return './';
+  return '../'.repeat(depth);
+}
+
+function relativize(html, prefix) {
+  // Replace href="/" with href to index
+  html = html.replace(/href="\/"/g, `href="${prefix}index.html"`);
+  // Replace href="/#xxx" (root with hash) with href="${prefix}index.html#xxx"
+  html = html.replace(/href="\/(#[^"]+)"/g, (match, hash) => `href="${prefix}index.html${hash}"`);
+  // Replace href="/xxx/" (directory links) with href="${prefix}xxx/index.html"
+  html = html.replace(/href="\/([^"]*\/)"/g, (match, path) => `href="${prefix}${path}index.html"`);
+  // Replace href="/xxx" (file links) with href="${prefix}xxx"
+  html = html.replace(/href="\/([^"]+)"/g, (match, path) => `href="${prefix}${path}"`);
+  // Replace src="/xxx" with src="${prefix}xxx"
+  html = html.replace(/src="\/([^"]+)"/g, (match, path) => `src="${prefix}${path}"`);
+  return html;
+}
+
+function layout(title, description, canonicalPath, bodyContent) {
+  const canonical = DOMAIN + canonicalPath;
+  const prefix = getPrefix(canonicalPath);
+  const processedBody = relativize(bodyContent, prefix);
+  allPages.push(canonicalPath);
+  return `<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>${title} - ${SITE_NAME}</title>
+<meta name="description" content="${description}">
+<link rel="canonical" href="${canonical}">
+<link rel="stylesheet" href="${prefix}assets/styles.css">
+</head>
+<body>
+<header class="site-header">
+<div class="container">
+<a href="${prefix}index.html" class="logo">${SITE_NAME}</a>
+<nav>
+<a href="${prefix}index.html">首页</a>
+<a href="${prefix}diagnose/wizard.html">诊断向导</a>
+<a href="${prefix}index.html#tools">工具</a>
+<a href="${prefix}index.html#guides">指南</a>
+<a href="${prefix}pages/about.html">关于</a>
+</nav>
+</div>
+</header>
+<main class="container">
+${processedBody}
+</main>
+<footer class="site-footer">
+<div class="container">
+<div>&copy; 2024 ${SITE_NAME}</div>
+<div>
+<a href="${prefix}pages/about.html">关于</a> &middot;
+<a href="${prefix}pages/contact.html">联系</a> &middot;
+<a href="${prefix}pages/privacy.html">隐私</a> &middot;
+<a href="${prefix}pages/disclaimer.html">免责声明</a>
+</div>
+</div>
+</footer>
+<script src="${prefix}assets/app.js"></script>
+</body>
+</html>`;
+}
+
+// === Guide Content ===
+const guideContent = {
+'discovered-not-indexed': `
+<h2>什么是"已发现但未编入索引"</h2>
+<p>Google Search Console 中显示 "Discovered - currently not indexed" 表示 Google 知道这个 URL 存在，但还没有去抓取它。通常意味着 Google 认为这个页面的优先级不够高。</p>
+<h2>常见原因</h2>
+<ul>
+<li>站点抓取预算不足，Google 优先抓取更重要的页面</li>
+<li>页面缺少内链支撑，被认为不重要</li>
+<li>新站点或新页面，Google 还没来得及抓取</li>
+<li>服务器响应慢，Google 降低了抓取频率</li>
+<li>页面内容薄弱，Google 预判价值不高</li>
+<li>Sitemap 中 URL 过多，稀释了优先级</li>
+</ul>
+<h2>排查步骤</h2>
+<ol class="step-list">
+<li>在 GSC 中确认 URL 状态确实是 "Discovered - currently not indexed"</li>
+<li>检查页面是否有足够的内链指向（至少 2-3 个内链）</li>
+<li>确认页面在 sitemap 中，且 sitemap 已提交给 Google</li>
+<li>检查服务器响应时间，确保 TTFB 小于 500ms</li>
+<li>确认 robots.txt 没有屏蔽该 URL</li>
+<li>检查页面内容是否有实质价值</li>
+<li>使用 GSC 的 URL 检查工具请求编入索引</li>
+<li>等待 1-2 周后再次检查状态变化</li>
+</ol>
+<h2>修复方法</h2>
+<ul>
+<li>增加从高权重页面到该页面的内链</li>
+<li>精简 sitemap，只保留高质量页面</li>
+<li>提升页面内容质量和独特性</li>
+<li>优化服务器性能，减少响应时间</li>
+<li>在 GSC 中手动请求索引</li>
+</ul>
+<h2>验证方法</h2>
+<p>修复后在 GSC URL 检查工具中重新提交，观察 1-2 周内状态是否变化。也可以通过 site:yoururl 搜索确认是否已收录。</p>`,
+
+'crawled-not-indexed': `
+<h2>什么是"已抓取但未编入索引"</h2>
+<p>"Crawled - currently not indexed" 表示 Google 已经抓取了页面内容，但决定不将其加入索引。这比"已发现未索引"更严重，因为 Google 看过内容后主动选择不收录。</p>
+<h2>常见原因</h2>
+<ul>
+<li>内容质量不足或内容过薄</li>
+<li>与站内其他页面内容重复或高度相似</li>
+<li>页面是自动生成的低价值内容</li>
+<li>缺少 E-E-A-T 信号（经验、专业性、权威性、可信度）</li>
+<li>页面用户体验差</li>
+<li>站点整体质量评分不高</li>
+</ul>
+<h2>排查步骤</h2>
+<ol class="step-list">
+<li>在 GSC URL 检查中确认状态和上次抓取时间</li>
+<li>对比该页面与已收录页面的内容差异</li>
+<li>检查是否存在站内重复内容</li>
+<li>评估页面字数和信息密度（建议大于 800 字有实质内容）</li>
+<li>检查页面是否有独特价值</li>
+<li>确认页面有正确的 canonical 自指</li>
+<li>检查页面加载后的实际渲染内容</li>
+</ol>
+<h2>修复方法</h2>
+<ul>
+<li>大幅提升内容质量：增加原创分析、数据、案例</li>
+<li>合并相似页面，用 301 重定向指向最佳版本</li>
+<li>添加结构化数据增强页面信号</li>
+<li>增加作者信息和发布/更新日期</li>
+<li>获取外部链接提升页面权威性</li>
+</ul>
+<h2>验证方法</h2>
+<p>内容优化后重新请求索引。如果 2-4 周后仍未收录，考虑该页面是否应该合并到其他页面中。</p>`,
+
+'server-error-5xx': `
+<h2>什么是 5xx 服务器错误</h2>
+<p>GSC 报告 5xx 错误表示 Googlebot 在抓取时收到了服务器错误响应。常见的有 500（内部错误）、502（网关错误）、503（服务不可用）、504（网关超时）。</p>
+<h2>如何定位具体 URL</h2>
+<ul>
+<li>GSC - 索引 - 页面 - 筛选"服务器错误 (5xx)"</li>
+<li>导出完整 URL 列表进行批量检查</li>
+<li>检查服务器访问日志中 Googlebot 的请求记录</li>
+<li>使用 curl 命令模拟抓取：<code>curl -I -A "Googlebot" URL</code></li>
+</ul>
+<h2>常见原因</h2>
+<ul>
+<li>服务器资源不足（CPU/内存/连接数耗尽）</li>
+<li>应用代码错误（未处理的异常）</li>
+<li>数据库连接超时或查询过慢</li>
+<li>CDN 或反向代理配置错误</li>
+<li>服务器对爬虫限流过于激进</li>
+<li>SSL 证书问题导致 HTTPS 握手失败</li>
+</ul>
+<h2>修复方法</h2>
+<ol class="step-list">
+<li>检查服务器错误日志，定位具体错误信息</li>
+<li>确认服务器资源是否充足</li>
+<li>检查是否有针对爬虫的限流规则过于严格</li>
+<li>优化慢查询和耗时操作</li>
+<li>配置合理的超时时间和重试机制</li>
+<li>确保 CDN 回源配置正确</li>
+</ol>
+<h2>验证方法</h2>
+<p>修复后使用 GSC URL 检查工具测试实时抓取，确认返回 200。持续监控 GSC 抓取统计报告。</p>`,
+
+'sitemap-best-practices': `
+<h2>Sitemap 的作用</h2>
+<p>Sitemap 告诉搜索引擎你的站点有哪些页面值得抓取和收录。它不是保证收录的手段，而是一个发现机制。</p>
+<h2>应该放入 Sitemap 的页面</h2>
+<ul>
+<li>所有希望被收录的公开页面</li>
+<li>返回 200 状态码的页面</li>
+<li>有 canonical 自指的页面</li>
+<li>没有 noindex 的页面</li>
+<li>有实质内容的页面</li>
+</ul>
+<h2>不应该放入 Sitemap 的内容</h2>
+<ul>
+<li>非 HTML 文件（PDF、图片用媒体 sitemap）</li>
+<li>带参数的重复 URL</li>
+<li>已设置 noindex 的页面</li>
+<li>301/302 重定向的源 URL</li>
+<li>返回 4xx/5xx 的 URL</li>
+<li>低质量标签页、空分类页</li>
+<li>内部搜索结果页</li>
+<li>需要登录的页面</li>
+</ul>
+<h2>首批提交规则</h2>
+<ol class="step-list">
+<li>新站首次提交不超过 1000 个 URL</li>
+<li>优先提交最重要、内容最充实的页面</li>
+<li>确保每个 URL 都能正常访问（200 状态码）</li>
+<li>使用 lastmod 标注真实的最后修改时间</li>
+<li>提交后在 GSC 中监控索引覆盖率变化</li>
+<li>根据收录情况逐步增加 URL</li>
+</ol>
+<h2>Sitemap 格式示例</h2>
+<pre><code>&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"&gt;
+  &lt;url&gt;
+    &lt;loc&gt;https://example.com/page&lt;/loc&gt;
+    &lt;lastmod&gt;2024-01-15&lt;/lastmod&gt;
+  &lt;/url&gt;
+&lt;/urlset&gt;</code></pre>
+<h2>验证方法</h2>
+<p>使用 <a href="/tools/sitemap-audit.html">Sitemap 审计工具</a> 检查你的 URL 列表。</p>`,
+
+'self-referencing-canonical': `
+<h2>什么是 Canonical 自指</h2>
+<p>Canonical 自指是指页面的 <code>&lt;link rel="canonical"&gt;</code> 标签指向自己的 URL。这明确告诉搜索引擎："这个 URL 是此内容的正式版本"。</p>
+<h2>为什么需要自指</h2>
+<ul>
+<li>防止带参数的 URL 被当作独立页面</li>
+<li>明确声明内容归属，避免被判定为重复</li>
+<li>统一链接权重到正式 URL</li>
+<li>处理 HTTP/HTTPS、www/non-www 的变体</li>
+</ul>
+<h2>常见错误</h2>
+<ul>
+<li>所有页面 canonical 都指向首页（最常见的严重错误）</li>
+<li>canonical 使用相对路径而非绝对 URL</li>
+<li>canonical URL 与实际 URL 的协议不一致</li>
+<li>canonical 指向 404 页面</li>
+<li>canonical 指向重定向链中的 URL</li>
+<li>动态页面 canonical 包含会话参数</li>
+</ul>
+<h2>正确配置示例</h2>
+<pre><code>&lt;!-- 正确：自指 --&gt;
+&lt;link rel="canonical" href="https://example.com/blog/my-post"&gt;
+
+&lt;!-- 错误：指向首页 --&gt;
+&lt;link rel="canonical" href="https://example.com/"&gt;
+
+&lt;!-- 错误：相对路径 --&gt;
+&lt;link rel="canonical" href="/blog/my-post"&gt;</code></pre>
+<h2>验证方法</h2>
+<p>使用 <a href="/tools/canonical-checker.html">Canonical 检查器</a> 验证你的 canonical 配置。</p>`,
+
+'nextjs-canonical': `
+<h2>Next.js App Router 中的 Canonical</h2>
+<p>Next.js 13+ App Router 使用 metadata API 来设置页面的 canonical URL。配置不当是导致收录问题的常见原因。</p>
+<h2>静态 Metadata 配置</h2>
+<pre><code>// app/blog/[slug]/page.tsx
+export const metadata = {
+  alternates: {
+    canonical: 'https://example.com/blog/my-post',
+  },
+};</code></pre>
+<h2>动态 generateMetadata</h2>
+<pre><code>// app/blog/[slug]/page.tsx
+export async function generateMetadata({ params }) {
+  const slug = params.slug;
+  return {
+    title: '文章标题',
+    alternates: {
+      canonical: 'https://example.com/blog/' + slug,
+    },
+  };
+}</code></pre>
+<h2>常见错误</h2>
+<ul>
+<li>忘记在 generateMetadata 中设置 canonical</li>
+<li>使用 process.env.NEXT_PUBLIC_URL 但环境变量未设置</li>
+<li>canonical 中包含查询参数或 hash</li>
+<li>开发环境用 localhost，生产环境忘记改</li>
+<li>动态路由中 canonical 没有包含实际的 slug</li>
+</ul>
+<h2>Layout 级别的默认配置</h2>
+<pre><code>// app/layout.tsx
+export const metadata = {
+  metadataBase: new URL('https://example.com'),
+};
+// 设置 metadataBase 后，canonical 可以使用相对路径</code></pre>
+<h2>验证方法</h2>
+<p>部署后查看页面源码，确认 canonical 输出了正确的完整 URL。使用 <a href="/tools/canonical-checker.html">Canonical 检查器</a> 验证。</p>`,
+
+'robots-noindex': `
+<h2>Robots.txt 基础</h2>
+<p>robots.txt 是放在网站根目录的文本文件，告诉爬虫哪些路径可以抓取、哪些不可以。注意：robots.txt 只是建议，不是强制屏蔽。</p>
+<h2>Robots.txt 语法</h2>
+<pre><code># 允许所有爬虫访问所有内容
+User-agent: *
+Allow: /
+
+# 屏蔽特定目录
+User-agent: *
+Disallow: /admin/
+Disallow: /private/
+
+# 指定 Sitemap 位置
+Sitemap: https://example.com/sitemap.xml</code></pre>
+<h2>Meta Robots 标签</h2>
+<pre><code>&lt;!-- 不收录此页面 --&gt;
+&lt;meta name="robots" content="noindex"&gt;
+
+&lt;!-- 不收录且不跟踪链接 --&gt;
+&lt;meta name="robots" content="noindex, nofollow"&gt;</code></pre>
+<h2>X-Robots-Tag HTTP 头</h2>
+<pre><code>X-Robots-Tag: noindex
+X-Robots-Tag: noindex, nofollow</code></pre>
+<h2>常见误屏蔽场景</h2>
+<ul>
+<li>robots.txt 中 Disallow: / 屏蔽了整站</li>
+<li>测试环境的 noindex 标签被带到了生产环境</li>
+<li>CMS 的"阻止搜索引擎索引"选项被勾选</li>
+<li>CDN 或服务器配置添加了全局 X-Robots-Tag</li>
+<li>框架默认给某些路由加了 noindex</li>
+</ul>
+<h2>排查步骤</h2>
+<ol class="step-list">
+<li>访问 /robots.txt 检查是否有过度屏蔽</li>
+<li>查看页面源码搜索 "noindex"</li>
+<li>用开发者工具检查响应头中的 X-Robots-Tag</li>
+<li>检查 CMS 后台的 SEO 设置</li>
+<li>确认 CDN 配置没有添加额外的 robots 头</li>
+</ol>
+<h2>验证方法</h2>
+<p>使用 <a href="/tools/robots-checker.html">Robots 检查器</a> 粘贴你的 robots.txt 或 meta 标签进行检查。</p>`,
+
+'html-readability': `
+<h2>为什么初始 HTML 很重要</h2>
+<p>搜索引擎首次抓取页面时，主要读取服务器返回的初始 HTML。虽然 Google 可以执行 JavaScript，但这需要额外的抓取资源和时间，且不保证完整渲染。</p>
+<h2>初始 HTML 必须包含什么</h2>
+<ul class="checklist">
+<li>完整的 title 标签（不是 JS 动态设置的）</li>
+<li>meta description 标签</li>
+<li>至少一个 H1 标签包含页面主题</li>
+<li>页面核心正文内容（不依赖 JS 加载）</li>
+<li>canonical 标签</li>
+<li>结构化数据（JSON-LD）</li>
+<li>内部导航链接</li>
+</ul>
+<h2>JS 渲染问题</h2>
+<ul>
+<li>SPA 没有 SSR/SSG，初始 HTML 只有空 div</li>
+<li>内容通过 AJAX 异步加载</li>
+<li>关键内容在 JS 执行后才插入 DOM</li>
+<li>使用 client-side routing，服务器对所有路由返回相同 HTML</li>
+</ul>
+<h2>解决方案</h2>
+<ul>
+<li>使用 SSR（服务端渲染）或 SSG（静态生成）</li>
+<li>确保关键内容在初始 HTML 中可见</li>
+<li>使用 Next.js、Nuxt.js 等支持 SSR 的框架</li>
+<li>对纯客户端应用考虑预渲染方案</li>
+</ul>
+<h2>检查方法</h2>
+<pre><code># 查看初始 HTML（不执行 JS）
+curl -s https://example.com/page | grep -i "h1\|title\|description"</code></pre>
+<h2>验证方法</h2>
+<p>使用 <a href="/tools/html-checker.html">HTML 可读性检查工具</a> 粘贴你的页面源码进行检查。</p>`,
+
+'ai-search-readability': `
+<h2>AI 搜索引擎如何理解页面</h2>
+<p>AI 搜索引擎（如 ChatGPT 搜索、Perplexity、Google AI Overview）与传统搜索引擎不同。它们需要从页面中提取可直接引用的答案，而不只是匹配关键词。</p>
+<h2>AI 搜索引擎看重什么</h2>
+<ul>
+<li>清晰的内容结构（标题层级、段落分明）</li>
+<li>可直接提取的答案（定义、步骤、列表）</li>
+<li>权威性信号（作者、来源、更新日期）</li>
+<li>结构化数据（JSON-LD，特别是 FAQ）</li>
+<li>内容的时效性（dateModified）</li>
+<li>足够的内容深度</li>
+</ul>
+<h2>优化方法</h2>
+<ol class="step-list">
+<li>每个页面有且只有一个 H1，清晰表达主题</li>
+<li>使用 H2/H3 组织内容层级</li>
+<li>在正文开头提供简洁的摘要或定义</li>
+<li>使用有序列表呈现步骤，无序列表呈现要点</li>
+<li>添加 FAQ 结构化数据</li>
+<li>标注作者信息和最后更新日期</li>
+<li>确保正文超过 300 字</li>
+<li>添加内链到相关内容</li>
+</ol>
+<h2>评分标准</h2>
+<div class="table-wrap"><table>
+<tr><th>检查项</th><th>分值</th><th>说明</th></tr>
+<tr><td>有 H1</td><td>15</td><td>页面主题明确</td></tr>
+<tr><td>有 meta description</td><td>10</td><td>摘要可被引用</td></tr>
+<tr><td>有 FAQ 结构化数据</td><td>15</td><td>问答可直接提取</td></tr>
+<tr><td>有 author</td><td>5</td><td>内容有归属</td></tr>
+<tr><td>有 dateModified</td><td>10</td><td>内容有时效性</td></tr>
+<tr><td>正文 &gt; 300 字</td><td>15</td><td>内容有深度</td></tr>
+<tr><td>有 JSON-LD</td><td>10</td><td>机器可读</td></tr>
+<tr><td>有内链</td><td>10</td><td>主题关联</td></tr>
+<tr><td>无 noindex</td><td>10</td><td>允许索引</td></tr>
+</table></div>
+<h2>验证方法</h2>
+<p>使用 <a href="/tools/ai-readability-scorer.html">AI 搜索可读性评分器</a> 检查你的页面得分。</p>`,
+
+'structured-data': `
+<h2>什么是结构化数据</h2>
+<p>结构化数据是用标准格式（通常是 JSON-LD）向搜索引擎描述页面内容的方式。它帮助搜索引擎理解页面的类型、内容和关系。</p>
+<h2>JSON-LD 基础</h2>
+<pre><code>&lt;script type="application/ld+json"&gt;
+{
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  "name": "页面标题",
+  "description": "页面描述",
+  "dateModified": "2024-01-15",
+  "author": {
+    "@type": "Person",
+    "name": "作者名"
+  }
+}
+&lt;/script&gt;</code></pre>
+<h2>FAQPage 结构化数据</h2>
+<pre><code>&lt;script type="application/ld+json"&gt;
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "问题1？",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "答案1"
+      }
+    }
+  ]
+}
+&lt;/script&gt;</code></pre>
+<h2>WebApplication 结构化数据</h2>
+<pre><code>&lt;script type="application/ld+json"&gt;
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "工具名称",
+  "description": "工具描述",
+  "applicationCategory": "SEO Tool",
+  "operatingSystem": "Web Browser",
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD"
+  }
+}
+&lt;/script&gt;</code></pre>
+<h2>常见错误</h2>
+<ul>
+<li>JSON 格式错误（缺少逗号、引号不匹配）</li>
+<li>使用了不存在的 schema 类型或属性</li>
+<li>结构化数据内容与页面可见内容不一致</li>
+<li>缺少必需属性</li>
+<li>日期格式不正确（应使用 ISO 8601）</li>
+</ul>
+<h2>验证方法</h2>
+<p>使用 <a href="/tools/html-checker.html">HTML 可读性检查工具</a> 检查 JSON-LD 格式是否有效。也可以使用 Google 的富媒体搜索结果测试工具在线验证。</p>`
+};
+
+// === Build Homepage ===
+function buildHomepage() {
+  const toolCards = tools.map(t => `
+    <div class="card">
+      <h3>${t.name}</h3>
+      <p>${t.description}</p>
+      <a href="/tools/${t.slug}.html" class="card-link">使用工具 &rarr;</a>
+    </div>`).join('');
+
+  const guideCards = guides.map(g => `
+    <div class="card">
+      <h3>${g.title}</h3>
+      <p>${g.description}</p>
+      <a href="/guides/${g.slug}.html" class="card-link">查看指南 &rarr;</a>
+    </div>`).join('');
+
+  const body = `
+<section style="text-align:center;padding:40px 0;">
+  <h1>${SITE_NAME}</h1>
+  <p style="font-size:16px;color:var(--color-text-secondary);max-width:600px;margin:0 auto 24px;">
+    通过诊断向导快速定位问题，使用本地工具检查配置，按指南逐步修复。
+  </p>
+  <a href="/diagnose/wizard.html" class="btn btn-primary">开始诊断</a>
+</section>
+
+<section>
+  <h2>选择你遇到的问题</h2>
+  <div class="card-grid">
+    <div class="card"><h3>已发现未编入索引</h3><p>Google 发现了 URL 但没有抓取</p><a href="/guides/discovered-not-indexed.html" class="card-link">排查方法 &rarr;</a></div>
+    <div class="card"><h3>已抓取未编入索引</h3><p>Google 抓取了但不收录</p><a href="/guides/crawled-not-indexed.html" class="card-link">排查方法 &rarr;</a></div>
+    <div class="card"><h3>服务器错误 5xx</h3><p>服务器返回错误</p><a href="/guides/server-error-5xx.html" class="card-link">排查方法 &rarr;</a></div>
+    <div class="card"><h3>Sitemap 问题</h3><p>Sitemap 配置不当</p><a href="/guides/sitemap-best-practices.html" class="card-link">最佳实践 &rarr;</a></div>
+    <div class="card"><h3>Canonical 错误</h3><p>Canonical 没有自指</p><a href="/guides/self-referencing-canonical.html" class="card-link">了解详情 &rarr;</a></div>
+    <div class="card"><h3>Robots 屏蔽</h3><p>误用 noindex 或 disallow</p><a href="/guides/robots-noindex.html" class="card-link">检查方法 &rarr;</a></div>
+  </div>
+</section>
+
+<section id="tools" style="margin-top:40px;">
+  <h2>诊断工具</h2>
+  <p>所有工具在浏览器本地运行，不上传任何数据。</p>
+  <div class="card-grid">${toolCards}</div>
+</section>
+
+<section id="guides" style="margin-top:40px;">
+  <h2>排查指南</h2>
+  <div class="card-grid">${guideCards}</div>
+</section>
+
+<section style="margin-top:40px;">
+  <h2>常见问题</h2>
+  <div class="faq-list">
+    <details class="faq-item">
+      <summary>这些工具会上传我的数据吗？</summary>
+      <div class="faq-answer">不会。所有工具完全在浏览器本地运行，你的 HTML、URL 列表等数据不会发送到任何服务器。</div>
+    </details>
+    <details class="faq-item">
+      <summary>页面显示"已发现未编入索引"多久会被收录？</summary>
+      <div class="faq-answer">没有固定时间。Google 会根据页面质量、站点权重和抓取预算决定是否收录。修复技术问题可以提高收录概率。</div>
+    </details>
+    <details class="faq-item">
+      <summary>AI 搜索引擎和传统搜索引擎有什么区别？</summary>
+      <div class="faq-answer">AI 搜索引擎更依赖结构化内容、清晰的语义标记和可直接提取的答案。传统 SEO 的关键词密度策略对 AI 搜索效果有限。</div>
+    </details>
+    <details class="faq-item">
+      <summary>Canonical 自指是什么意思？</summary>
+      <div class="faq-answer">Canonical 自指是指页面的 canonical 标签指向自己的 URL。这告诉搜索引擎"这是此内容的正式版本"，是推荐的做法。</div>
+    </details>
+  </div>
+</section>`;
+
+  writePage(join(SITE, 'index.html'), layout('首页', '页面没被收录？通过诊断向导定位问题，使用本地工具检查配置，按指南逐步修复。', '/', body));
+}
+
+// === Build Wizard ===
+function buildWizard() {
+  const body = `
+<h1>GSC 收录问题诊断向导</h1>
+<p style="margin-bottom:24px;color:var(--color-text-secondary);">回答几个问题，快速定位页面未被收录的原因。所有判断在浏览器本地完成。</p>
+<div class="wizard-container" id="wizard-app">
+  <noscript><p>诊断向导需要 JavaScript 支持。</p></noscript>
+</div>`;
+  writePage(join(SITE, 'diagnose', 'wizard.html'), layout('收录诊断向导', '交互式诊断向导，根据页面状态快速定位收录问题并获取修复建议', '/diagnose/wizard.html', body));
+}
+
+// === Build Tool Pages ===
+function buildToolPages() {
+  const toolInputHtml = {
+    'sitemap-audit': `
+      <div class="tool-input-area">
+        <label for="sitemap-urls">粘贴 sitemap URL 列表（每行一个）</label>
+        <textarea class="tool-textarea" id="sitemap-urls" placeholder="https://example.com/page1&#10;https://example.com/page2&#10;https://example.com/image.png"></textarea>
+        <button class="btn btn-primary tool-run-btn" style="margin-top:12px;">开始审计</button>
+      </div>
+      <div class="tool-result-area"></div>`,
+    'canonical-checker': `
+      <div class="tool-input-area">
+        <div class="form-group">
+          <label for="canonical-page-url">页面 URL</label>
+          <input type="url" id="canonical-page-url" placeholder="https://example.com/my-page">
+        </div>
+        <div class="form-group">
+          <label for="canonical-value">Canonical 值</label>
+          <input type="url" id="canonical-value" placeholder="https://example.com/my-page">
+        </div>
+        <button class="btn btn-primary tool-run-btn" style="margin-top:12px;">检查</button>
+      </div>
+      <div class="tool-result-area"></div>`,
+    'robots-checker': `
+      <div class="tool-input-area">
+        <label for="robots-input">粘贴 robots.txt 内容或 meta robots 标签</label>
+        <textarea class="tool-textarea" id="robots-input" placeholder="User-agent: *&#10;Disallow: /admin/"></textarea>
+        <button class="btn btn-primary tool-run-btn" style="margin-top:12px;">检查</button>
+      </div>
+      <div class="tool-result-area"></div>`,
+    'html-checker': `
+      <div class="tool-input-area">
+        <label for="html-input">粘贴页面 HTML 源码</label>
+        <textarea class="tool-textarea" id="html-input" placeholder="<!DOCTYPE html>&#10;<html>...</html>"></textarea>
+        <button class="btn btn-primary tool-run-btn" style="margin-top:12px;">检查</button>
+      </div>
+      <div class="tool-result-area"></div>`,
+    'ai-readability-scorer': `
+      <div class="tool-input-area">
+        <label for="ai-html-input">粘贴页面 HTML 源码</label>
+        <textarea class="tool-textarea" id="ai-html-input" placeholder="<!DOCTYPE html>&#10;<html>...</html>"></textarea>
+        <button class="btn btn-primary tool-run-btn" style="margin-top:12px;">评分</button>
+      </div>
+      <div class="tool-result-area"></div>`
+  };
+
+  tools.forEach(t => {
+    const body = `
+<h1>${t.name}</h1>
+<p>${t.description}</p>
+<p style="font-size:12px;color:var(--color-text-secondary);margin-bottom:24px;">所有数据仅在浏览器本地处理，不会上传到服务器。</p>
+<div class="tool-section" id="tool-${t.slug}">
+  ${toolInputHtml[t.slug] || ''}
+</div>`;
+    writePage(join(SITE, 'tools', `${t.slug}.html`), layout(t.name, t.description, `/tools/${t.slug}.html`, body));
+  });
+}
+
+// === Build Guide Pages ===
+function buildGuidePages() {
+  guides.forEach(g => {
+    const content = guideContent[g.slug] || '<p>内容正在编写中。</p>';
+    const body = `
+<article class="guide-content">
+  <h1>${g.title}</h1>
+  <p style="color:var(--color-text-secondary);margin-bottom:24px;">${g.description}</p>
+  ${content}
+</article>
+<div style="margin-top:24px;">
+  <a href="/#guides" class="btn btn-secondary">&larr; 返回指南列表</a>
+</div>`;
+    writePage(join(SITE, 'guides', `${g.slug}.html`), layout(g.title, g.description, `/guides/${g.slug}.html`, body));
+  });
+}
+
+// === Build Trust Pages ===
+function buildTrustPages() {
+  const aboutBody = `
+<h1>关于本站</h1>
+<p>本站提供搜索引擎收录问题的诊断工具和排查指南，帮助网站管理员定位和修复页面未被收录的技术问题。</p>
+<h2>我们提供什么</h2>
+<ul>
+<li>交互式诊断向导，快速定位问题方向</li>
+<li>浏览器本地运行的检查工具，不上传任何数据</li>
+<li>详细的排查指南，包含具体步骤和验证方法</li>
+<li>AI 搜索可见性优化建议</li>
+</ul>
+<h2>隐私承诺</h2>
+<p>所有工具完全在浏览器本地运行。你粘贴的 HTML、URL 列表等数据不会发送到任何服务器，不会被存储或分析。</p>
+<h2>联系方式</h2>
+<p>如有问题或建议，请发送邮件至 <a href="mailto:${EMAIL}">${EMAIL}</a>。</p>`;
+  writePage(join(SITE, 'pages', 'about.html'), layout('关于', '关于搜索可见性与 GSC 收录诊断工具', '/pages/about.html', aboutBody));
+
+  const contactBody = `
+<h1>联系我们</h1>
+<p>如果你在使用工具或指南时遇到问题，或有改进建议，欢迎联系我们。</p>
+<h2>邮箱</h2>
+<p><a href="mailto:${EMAIL}">${EMAIL}</a></p>
+<h2>反馈内容</h2>
+<ul>
+<li>工具使用中的问题或 Bug</li>
+<li>指南内容的错误或过时信息</li>
+<li>新工具或新指南的建议</li>
+<li>其他合作事宜</li>
+</ul>`;
+  writePage(join(SITE, 'pages', 'contact.html'), layout('联系我们', '联系搜索可见性与 GSC 收录诊断工具团队', '/pages/contact.html', contactBody));
+
+  const privacyBody = `
+<h1>隐私政策</h1>
+<p>最后更新：2024 年 1 月</p>
+<h2>数据收集</h2>
+<p>本站的所有诊断工具完全在浏览器本地运行。你输入的 HTML 源码、URL 列表、robots.txt 内容等数据不会被发送到任何服务器，不会被存储、分析或与第三方共享。</p>
+<h2>Cookies</h2>
+<p>本站不使用 cookies 追踪用户行为。</p>
+<h2>第三方服务</h2>
+<p>本站不集成任何第三方分析或广告服务。</p>
+<h2>联系方式</h2>
+<p>如对隐私政策有疑问，请联系 <a href="mailto:${EMAIL}">${EMAIL}</a>。</p>`;
+  writePage(join(SITE, 'pages', 'privacy.html'), layout('隐私政策', '搜索可见性与 GSC 收录诊断工具的隐私政策', '/pages/privacy.html', privacyBody));
+
+  const disclaimerBody = `
+<h1>免责声明</h1>
+<h2>工具准确性</h2>
+<p>本站提供的诊断工具基于常见规则进行检查，结果仅供参考。工具无法覆盖所有边缘情况，不能替代专业的 SEO 审计。</p>
+<h2>指南内容</h2>
+<p>排查指南基于公开的搜索引擎文档和行业最佳实践编写。搜索引擎的算法和规则可能随时变化，我们会尽力保持内容更新，但不保证所有信息在任何时间点都完全准确。</p>
+<h2>结果不保证</h2>
+<p>使用本站工具和指南不保证页面一定会被搜索引擎收录。收录决定权在搜索引擎，受多种因素影响。</p>
+<h2>联系方式</h2>
+<p>如有疑问请联系 <a href="mailto:${EMAIL}">${EMAIL}</a>。</p>`;
+  writePage(join(SITE, 'pages', 'disclaimer.html'), layout('免责声明', '搜索可见性与 GSC 收录诊断工具的免责声明', '/pages/disclaimer.html', disclaimerBody));
+}
+
+// === Build Sitemap & Robots ===
+function buildSitemap() {
+  const today = new Date().toISOString().split('T')[0];
+  const urls = allPages.map(p => `  <url>
+    <loc>${DOMAIN}${p}</loc>
+    <lastmod>${today}</lastmod>
+  </url>`).join('\n');
+
+  const sitemap = `<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+${urls}
+</urlset>`;
+  writeFileSync(join(SITE, 'sitemap.xml'), sitemap, 'utf-8');
+
+  const robots = `User-agent: *
+Allow: /
+
+Sitemap: ${DOMAIN}/sitemap.xml`;
+  writeFileSync(join(SITE, 'robots.txt'), robots, 'utf-8');
+}
+
+// === Main Execution ===
+console.log('Building site...');
+buildHomepage();
+buildWizard();
+buildToolPages();
+buildGuidePages();
+buildTrustPages();
+buildSitemap();
+console.log(`Done! Generated ${pageCount} pages + sitemap.xml + robots.txt`);

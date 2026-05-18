@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI 搜索可读性怎么提升 - 搜索可见性与 GSC 收录诊断工具</title>
+<meta name="description" content="让页面能被 AI 搜索引擎和摘要工具有效理解的优化方法">
+<link rel="canonical" href="https://seo.jtlcook.com/guides/ai-search-readability.html">
+<link rel="stylesheet" href="../assets/styles.css">
+</head>
+<body>
+<header class="site-header">
+<div class="container">
+<a href="../index.html" class="logo">搜索可见性与 GSC 收录诊断工具</a>
+<nav>
+<a href="../index.html">首页</a>
+<a href="../diagnose/wizard.html">诊断向导</a>
+<a href="../index.html#tools">工具</a>
+<a href="../index.html#guides">指南</a>
+<a href="../pages/about.html">关于</a>
+</nav>
+</div>
+</header>
+<main class="container">
+
+<article class="guide-content">
+  <h1>AI 搜索可读性怎么提升</h1>
+  <p style="color:var(--color-text-secondary);margin-bottom:24px;">让页面能被 AI 搜索引擎和摘要工具有效理解的优化方法</p>
+  
+<h2>AI 搜索引擎如何理解页面</h2>
+<p>AI 搜索引擎（如 ChatGPT 搜索、Perplexity、Google AI Overview）与传统搜索引擎不同。它们需要从页面中提取可直接引用的答案，而不只是匹配关键词。</p>
+<h2>AI 搜索引擎看重什么</h2>
+<ul>
+<li>清晰的内容结构（标题层级、段落分明）</li>
+<li>可直接提取的答案（定义、步骤、列表）</li>
+<li>权威性信号（作者、来源、更新日期）</li>
+<li>结构化数据（JSON-LD，特别是 FAQ）</li>
+<li>内容的时效性（dateModified）</li>
+<li>足够的内容深度</li>
+</ul>
+<h2>优化方法</h2>
+<ol class="step-list">
+<li>每个页面有且只有一个 H1，清晰表达主题</li>
+<li>使用 H2/H3 组织内容层级</li>
+<li>在正文开头提供简洁的摘要或定义</li>
+<li>使用有序列表呈现步骤，无序列表呈现要点</li>
+<li>添加 FAQ 结构化数据</li>
+<li>标注作者信息和最后更新日期</li>
+<li>确保正文超过 300 字</li>
+<li>添加内链到相关内容</li>
+</ol>
+<h2>评分标准</h2>
+<div class="table-wrap"><table>
+<tr><th>检查项</th><th>分值</th><th>说明</th></tr>
+<tr><td>有 H1</td><td>15</td><td>页面主题明确</td></tr>
+<tr><td>有 meta description</td><td>10</td><td>摘要可被引用</td></tr>
+<tr><td>有 FAQ 结构化数据</td><td>15</td><td>问答可直接提取</td></tr>
+<tr><td>有 author</td><td>5</td><td>内容有归属</td></tr>
+<tr><td>有 dateModified</td><td>10</td><td>内容有时效性</td></tr>
+<tr><td>正文 &gt; 300 字</td><td>15</td><td>内容有深度</td></tr>
+<tr><td>有 JSON-LD</td><td>10</td><td>机器可读</td></tr>
+<tr><td>有内链</td><td>10</td><td>主题关联</td></tr>
+<tr><td>无 noindex</td><td>10</td><td>允许索引</td></tr>
+</table></div>
+<h2>验证方法</h2>
+<p>使用 <a href="../tools/ai-readability-scorer.html">AI 搜索可读性评分器</a> 检查你的页面得分。</p>
+</article>
+<div style="margin-top:24px;">
+  <a href="../index.html#guides" class="btn btn-secondary">&larr; 返回指南列表</a>
+</div>
+</main>
+<footer class="site-footer">
+<div class="container">
+<div>&copy; 2024 搜索可见性与 GSC 收录诊断工具</div>
+<div>
+<a href="../pages/about.html">关于</a> &middot;
+<a href="../pages/contact.html">联系</a> &middot;
+<a href="../pages/privacy.html">隐私</a> &middot;
+<a href="../pages/disclaimer.html">免责声明</a>
+</div>
+</div>
+</footer>
+<script src="../assets/app.js"></script>
+</body>
+</html>

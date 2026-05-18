@@ -1,0 +1,82 @@
+[
+  {
+    "id": "discovered-not-indexed",
+    "title": "已发现但未编入索引怎么排查",
+    "slug": "discovered-not-indexed",
+    "category": "GSC 状态",
+    "gscStatus": "Discovered - currently not indexed",
+    "description": "Google 发现了 URL 但还没有抓取，通常是抓取优先级不够或页面质量信号不足"
+  },
+  {
+    "id": "crawled-not-indexed",
+    "title": "已抓取但未编入索引怎么排查",
+    "slug": "crawled-not-indexed",
+    "category": "GSC 状态",
+    "gscStatus": "Crawled - currently not indexed",
+    "description": "Google 已抓取但认为不值得收录，通常是内容质量、重复或薄内容问题"
+  },
+  {
+    "id": "server-error-5xx",
+    "title": "GSC 服务器错误 5xx 怎么定位",
+    "slug": "server-error-5xx",
+    "category": "GSC 状态",
+    "gscStatus": "Server error (5xx)",
+    "description": "服务器返回 5xx 错误，需要定位具体 URL 和错误原因"
+  },
+  {
+    "id": "sitemap-best-practices",
+    "title": "Sitemap 应该提交哪些页面",
+    "slug": "sitemap-best-practices",
+    "category": "Sitemap",
+    "gscStatus": null,
+    "description": "sitemap 只收录高质量公开页面，不要把所有文件都塞进去"
+  },
+  {
+    "id": "self-referencing-canonical",
+    "title": "Canonical 自指是什么意思",
+    "slug": "self-referencing-canonical",
+    "category": "Canonical",
+    "gscStatus": null,
+    "description": "每个页面的 canonical 应该指向自己的正式 URL，不要全站指向首页"
+  },
+  {
+    "id": "nextjs-canonical",
+    "title": "Next.js Canonical 配置常见错误",
+    "slug": "nextjs-canonical",
+    "category": "框架",
+    "gscStatus": null,
+    "description": "Next.js App Router 中 metadata 和 canonical 的正确配置方法"
+  },
+  {
+    "id": "robots-noindex",
+    "title": "Robots.txt 和 Noindex 怎么检查",
+    "slug": "robots-noindex",
+    "category": "Robots",
+    "gscStatus": null,
+    "description": "检查 robots.txt、meta robots 和 X-Robots-Tag 是否误屏蔽页面"
+  },
+  {
+    "id": "html-readability",
+    "title": "初始 HTML 可读内容检查清单",
+    "slug": "html-readability",
+    "category": "HTML 可读性",
+    "gscStatus": null,
+    "description": "确认搜索引擎首次抓取时能在初始 HTML 中读到核心内容"
+  },
+  {
+    "id": "ai-search-readability",
+    "title": "AI 搜索可读性怎么提升",
+    "slug": "ai-search-readability",
+    "category": "AI 搜索",
+    "gscStatus": null,
+    "description": "让页面能被 AI 搜索引擎和摘要工具有效理解的优化方法"
+  },
+  {
+    "id": "structured-data",
+    "title": "结构化数据和 FAQ 基础检查",
+    "slug": "structured-data",
+    "category": "结构化数据",
+    "gscStatus": null,
+    "description": "JSON-LD 结构化数据的基本检查方法和常见错误"
+  }
+]
