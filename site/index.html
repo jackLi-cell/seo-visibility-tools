@@ -40,6 +40,22 @@
   <a href="./diagnose/wizard.html" class="btn btn-primary">开始诊断</a>
 </section>
 
+<section class="quick-check-section" id="quick-check-section">
+  <h2>快速检查</h2>
+  <p style="color:var(--color-text-secondary);margin-bottom:16px;">粘贴一个 URL，选择检查工具，快速开始诊断。</p>
+  <div class="quick-check-form">
+    <input type="url" id="quick-check-url" class="quick-check-input" placeholder="https://example.com/your-page">
+    <select id="quick-check-tool" class="quick-check-select">
+      <option value="canonical-checker">Canonical 检查</option>
+      <option value="sitemap-audit">Sitemap 审计</option>
+      <option value="html-checker">HTML 可读性</option>
+      <option value="ai-readability-scorer">AI 可读性评分</option>
+      <option value="robots-checker">Robots 检查</option>
+    </select>
+    <button id="quick-check-btn" class="btn btn-primary">快速检查</button>
+  </div>
+</section>
+
 <section>
   <h2>选择你遇到的问题</h2>
   <div class="card-grid">

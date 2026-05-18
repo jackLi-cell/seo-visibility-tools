@@ -91,11 +91,28 @@
     }
 
     function showResult() {
-      const suggestions = generateSuggestions(answers);
+      const diagnosis = generateDiagnosis(answers);
       container.innerHTML = `
-        <div class="wizard-result">
-          <h3>诊断建议</h3>
-          <ul>${suggestions.map(s => `<li>${s}</li>`).join('')}</ul>
+        <div class="wizard-diagnosis-result">
+          <h3>诊断结果</h3>
+          <div class="diagnosis-causes">
+            <h4>最可能的原因</h4>
+            <ul>${diagnosis.causes.map(c => `<li>${c}</li>`).join('')}</ul>
+          </div>
+          <div class="diagnosis-steps">
+            <h4>推荐排查顺序</h4>
+            <ol>${diagnosis.steps.map(s => `<li>${s}</li>`).join('')}</ol>
+          </div>
+          ${diagnosis.tools.length > 0 ? `
+          <div class="diagnosis-links">
+            <h4>相关工具</h4>
+            <ul>${diagnosis.tools.map(t => `<li><a href="${t.url}">${t.name}</a></li>`).join('')}</ul>
+          </div>` : ''}
+          ${diagnosis.guides.length > 0 ? `
+          <div class="diagnosis-links">
+            <h4>相关指南</h4>
+            <ul>${diagnosis.guides.map(g => `<li><a href="${g.url}">${g.name}</a></li>`).join('')}</ul>
+          </div>` : ''}
         </div>
         <button class="btn btn-secondary" style="margin-top:16px;" id="wizard-restart">重新诊断</button>`;
       document.getElementById('wizard-restart').addEventListener('click', () => {
@@ -105,46 +122,91 @@
       });
     }
 
-    function generateSuggestions(a) {
-      const tips = [];
+    function generateDiagnosis(a) {
+      const result = { causes: [], steps: [], tools: [], guides: [] };
+
       if (a.q1 === '5xx') {
-        tips.push('服务器返回 5xx 错误，需要先修复服务器问题。<a href="/guides/server-error-5xx.html">查看 5xx 排查指南</a>');
+        result.causes.push('服务器返回 5xx 错误，Googlebot 无法正常抓取页面');
+        result.steps.push('检查服务器错误日志，定位具体错误信息');
+        result.steps.push('确认服务器资源（CPU/内存）是否充足');
+        result.steps.push('检查是否有针对爬虫的限流规则');
+        result.steps.push('修复后使用 GSC URL 检查工具验证');
+        result.guides.push({ name: '5xx 服务器错误排查指南', url: '/guides/server-error-5xx.html' });
       }
       if (a.q1 === '4xx') {
-        tips.push('页面返回 404/410，Google 不会收录不存在的页面。检查 URL 是否正确，或设置 301 重定向。');
+        result.causes.push('页面返回 4xx 错误（404/410），URL 不存在或已删除');
+        result.steps.push('确认 URL 拼写是否正确');
+        result.steps.push('检查是否需要设置 301 重定向到新 URL');
+        result.steps.push('从 sitemap 中移除无效 URL');
+        result.tools.push({ name: 'Sitemap 审计工具', url: '/tools/sitemap-audit.html' });
       }
       if (a.q1 === '3xx') {
-        tips.push('页面存在重定向，确认最终目标 URL 是否正确，避免重定向链过长。');
+        result.causes.push('页面存在重定向，搜索引擎会跟踪到最终 URL');
+        result.steps.push('确认重定向目标 URL 是否正确');
+        result.steps.push('检查是否存在重定向链（多次跳转）');
+        result.steps.push('确保 sitemap 和内链使用最终 URL');
       }
       if (a.q2 === 'yes') {
-        tips.push('页面有 noindex 标记，搜索引擎不会收录。<a href="/guides/robots-noindex.html">检查 noindex 配置</a>');
-        tips.push('使用 <a href="/tools/robots-checker.html">Robots 检查器</a> 确认具体屏蔽来源。');
+        result.causes.push('页面设置了 noindex 标记，搜索引擎被明确告知不收录');
+        result.steps.push('检查 HTML 中的 meta robots 标签');
+        result.steps.push('检查 HTTP 响应头中的 X-Robots-Tag');
+        result.steps.push('确认 CMS 后台是否勾选了"阻止索引"');
+        result.steps.push('移除 noindex 后请求重新索引');
+        result.tools.push({ name: 'Robots / Noindex 检查器', url: '/tools/robots-checker.html' });
+        result.guides.push({ name: 'Robots 与 Noindex 排查指南', url: '/guides/robots-noindex.html' });
       }
       if (a.q3 === 'other' || a.q3 === 'home') {
-        tips.push('Canonical 没有自指，搜索引擎会认为当前页面是重复内容。<a href="/guides/self-referencing-canonical.html">了解 canonical 自指</a>');
-        tips.push('使用 <a href="/tools/canonical-checker.html">Canonical 检查器</a> 验证配置。');
+        result.causes.push('Canonical 标签未自指，搜索引擎将当前页面视为重复内容');
+        result.steps.push('修改 canonical 标签指向当前页面自身 URL');
+        result.steps.push('检查是否是框架默认配置导致 canonical 指向首页');
+        result.steps.push('确认 canonical URL 使用绝对路径且协议正确');
+        result.tools.push({ name: 'Canonical 检查器', url: '/tools/canonical-checker.html' });
+        result.guides.push({ name: 'Canonical 自指配置指南', url: '/guides/self-referencing-canonical.html' });
       }
       if (a.q3 === 'none') {
-        tips.push('缺少 canonical 标签，建议添加自指 canonical。<a href="/guides/self-referencing-canonical.html">查看指南</a>');
+        result.causes.push('缺少 canonical 标签，可能导致重复内容问题');
+        result.steps.push('为页面添加自指 canonical 标签');
+        result.steps.push('确保使用完整的绝对 URL（含 https://）');
+        result.tools.push({ name: 'Canonical 检查器', url: '/tools/canonical-checker.html' });
+        result.guides.push({ name: 'Canonical 自指配置指南', url: '/guides/self-referencing-canonical.html' });
       }
       if (a.q4 === 'no') {
-        tips.push('URL 不在 sitemap 中，建议将需要收录的页面加入 sitemap。<a href="/guides/sitemap-best-practices.html">Sitemap 最佳实践</a>');
+        result.steps.push('将页面 URL 添加到 sitemap.xml 中');
+        result.steps.push('重新提交 sitemap 到 GSC');
+        result.tools.push({ name: 'Sitemap 审计工具', url: '/tools/sitemap-audit.html' });
+        result.guides.push({ name: 'Sitemap 最佳实践', url: '/guides/sitemap-best-practices.html' });
       }
       if (a.q5 === 'js-only') {
-        tips.push('初始 HTML 没有正文，搜索引擎可能无法读取 JS 渲染的内容。<a href="/guides/html-readability.html">HTML 可读性检查</a>');
-        tips.push('使用 <a href="/tools/html-checker.html">HTML 可读性检查工具</a> 分析页面。');
+        result.causes.push('初始 HTML 无正文内容，搜索引擎可能无法读取 JS 渲染的内容');
+        result.steps.push('使用 curl 确认初始 HTML 是否包含正文');
+        result.steps.push('考虑使用 SSR/SSG 方案输出完整 HTML');
+        result.steps.push('确保 title、H1、meta description 在初始 HTML 中');
+        result.tools.push({ name: 'HTML 可读性检查工具', url: '/tools/html-checker.html' });
+        result.guides.push({ name: 'HTML 可读性与 JS 渲染', url: '/guides/html-readability.html' });
+        result.guides.push({ name: 'JS 渲染 SEO 指南', url: '/guides/js-rendering-seo.html' });
       }
       if (a.q1 === '200' && a.q2 === 'no' && a.q3 === 'self' && a.q5 === 'yes') {
-        tips.push('基本配置看起来正确。可能是内容质量或内链不足导致未收录。<a href="/guides/crawled-not-indexed.html">查看已抓取未收录排查</a>');
-        tips.push('尝试用 <a href="/tools/ai-readability-scorer.html">AI 可读性评分器</a> 检查内容质量。');
+        result.causes.push('技术配置正常，可能是内容质量或权重不足导致未收录');
+        result.steps.push('提升页面内容质量和独特性');
+        result.steps.push('增加从高权重页面到该页面的内链');
+        result.steps.push('添加结构化数据增强页面信号');
+        result.steps.push('在 GSC 中手动请求索引');
+        result.tools.push({ name: 'AI 可读性评分器', url: '/tools/ai-readability-scorer.html' });
+        result.guides.push({ name: '已抓取未收录排查', url: '/guides/crawled-not-indexed.html' });
       }
       if (a.q2 === 'unknown' || a.q5 === 'unknown') {
-        tips.push('对于不确定的项目，建议使用 curl 或浏览器开发者工具查看页面源码。');
+        result.steps.push('使用 curl 或浏览器开发者工具查看页面源码确认不确定项');
       }
-      if (tips.length === 0) {
-        tips.push('根据你的回答，页面基本配置正常。建议逐一使用工具进行深入检查。');
+      if (result.causes.length === 0) {
+        result.causes.push('根据回答未发现明显技术问题，建议逐一使用工具深入检查');
       }
-      return tips;
+      if (result.steps.length === 0) {
+        result.steps.push('使用下方工具逐项检查页面配置');
+      }
+      // Deduplicate tools and guides
+      result.tools = result.tools.filter((t, i, arr) => arr.findIndex(x => x.url === t.url) === i);
+      result.guides = result.guides.filter((g, i, arr) => arr.findIndex(x => x.url === g.url) === i);
+      return result;
     }
 
     render();
@@ -165,37 +227,82 @@
 
       const urls = input.split('\n').map(u => u.trim()).filter(Boolean);
       const results = [];
-      const lowValuePatterns = [/\.(pdf|zip|doc|xls|ppt|png|jpg|gif|svg|mp4|mp3)$/i, /\?/, /\/tag\//, /\/page\/\d+/, /\/feed\/?$/, /\/wp-json\//];
       const seen = new Set();
 
       urls.forEach(url => {
         const issues = [];
-        if (seen.has(url)) { issues.push('重复 URL'); }
-        seen.add(url);
-        lowValuePatterns.forEach(p => {
-          if (p.test(url)) {
-            if (/\.(pdf|zip|doc|xls|ppt)$/i.test(url)) issues.push('非 HTML 文件');
-            else if (/\.(png|jpg|gif|svg|mp4|mp3)$/i.test(url)) issues.push('媒体文件');
-            else if (/\?/.test(url)) issues.push('带参数 URL');
-            else if (/\/tag\//.test(url)) issues.push('标签页');
-            else if (/\/page\/\d+/.test(url)) issues.push('分页');
-            else if (/\/feed\/?$/.test(url)) issues.push('Feed');
-            else if (/\/wp-json\//.test(url)) issues.push('API 端点');
-          }
-        });
-        if (issues.length > 0) {
-          results.push({ url, status: 'warn', msg: '建议移除: ' + issues.join(', ') });
-        } else {
-          results.push({ url, status: 'ok', msg: '可保留' });
+        let status = 'keep'; // keep, check, remove
+
+        if (seen.has(url)) {
+          issues.push('重复 URL');
+          status = 'remove';
         }
+        seen.add(url);
+
+        if (/\.(pdf|zip|doc|docx|xls|xlsx|ppt|pptx)$/i.test(url)) {
+          issues.push('非 HTML 资源');
+          status = 'remove';
+        } else if (/\.(png|jpg|jpeg|gif|svg|webp|mp4|mp3|avi)$/i.test(url)) {
+          issues.push('媒体文件');
+          status = 'remove';
+        } else if (/\/wp-json\//i.test(url)) {
+          issues.push('API 端点');
+          status = 'remove';
+        } else if (/\/feed\/?$/i.test(url)) {
+          issues.push('Feed 地址');
+          status = 'remove';
+        } else if (/[?&](utm_|fbclid|gclid|sessionid|sid=)/i.test(url)) {
+          issues.push('包含追踪/会话参数');
+          status = 'remove';
+        } else if (/\?/.test(url)) {
+          issues.push('包含查询参数');
+          status = 'check';
+        } else if (/\/tag\//i.test(url)) {
+          issues.push('标签聚合页');
+          status = 'check';
+        } else if (/\/page\/\d+/i.test(url)) {
+          issues.push('分页页面');
+          status = 'check';
+        } else if (/\/(admin|login|register|cart|checkout|account|wp-admin|_next|\.well-known)\//i.test(url)) {
+          issues.push('路径含内部文件标识');
+          status = 'remove';
+        }
+
+        results.push({ url, status, reasons: issues });
       });
 
-      const warnCount = results.filter(r => r.status === 'warn').length;
-      let html = `<p style="margin-bottom:12px;font-weight:500;">共 ${urls.length} 个 URL，${warnCount} 个建议移除</p>`;
-      results.forEach(r => {
-        const cls = r.status === 'warn' ? 'result-warn' : 'result-ok';
-        html += `<div class="result-item ${cls}"><code>${r.url}</code> — ${r.msg}</div>`;
+      const keepCount = results.filter(r => r.status === 'keep').length;
+      const checkCount = results.filter(r => r.status === 'check').length;
+      const removeCount = results.filter(r => r.status === 'remove').length;
+
+      let html = `<div class="audit-summary">
+        <div class="audit-stat audit-stat-ok"><span class="audit-stat-num">${keepCount}</span><span class="audit-stat-label">建议保留</span></div>
+        <div class="audit-stat audit-stat-warn"><span class="audit-stat-num">${checkCount}</span><span class="audit-stat-label">需要检查</span></div>
+        <div class="audit-stat audit-stat-error"><span class="audit-stat-num">${removeCount}</span><span class="audit-stat-label">建议移除</span></div>
+      </div>`;
+
+      // Group by status
+      const groups = [
+        { key: 'remove', icon: '❌', label: '建议移除', cls: 'result-error' },
+        { key: 'check', icon: '⚠️', label: '需要检查', cls: 'result-warn' },
+        { key: 'keep', icon: '✅', label: '建议保留', cls: 'result-ok' }
+      ];
+
+      groups.forEach(g => {
+        const items = results.filter(r => r.status === g.key);
+        if (items.length === 0) return;
+        html += `<div style="margin-top:16px;"><h4 style="margin-bottom:8px;">${g.icon} ${g.label}（${items.length} 个）</h4>`;
+        items.forEach(r => {
+          const reason = r.reasons.length > 0 ? ` <span style="opacity:0.8;">— ${r.reasons.join(', ')}</span>` : '';
+          html += `<div class="result-item ${g.cls}"><code>${r.url}</code>${reason}</div>`;
+        });
+        html += '</div>';
       });
+
+      html += `<div style="margin-top:16px;padding:12px 16px;background:var(--color-bg);border-radius:var(--radius-sm);font-size:13px;">
+        <strong>统计：</strong>总计 ${urls.length} 个 URL，建议保留 ${keepCount} 个，需要检查 ${checkCount} 个，建议移除 ${removeCount} 个
+      </div>`;
+
       resultArea.innerHTML = html;
     });
   }
@@ -217,24 +324,55 @@
       }
 
       const results = [];
-      const normalizeUrl = u => u.replace(/\/+$/, '').replace(/^https?:\/\//, '').toLowerCase();
 
-      if (normalizeUrl(pageUrl) === normalizeUrl(canonicalUrl)) {
-        results.push({ status: 'ok', msg: 'Canonical 自指正确，指向当前页面' });
-      } else if (normalizeUrl(canonicalUrl) === normalizeUrl(canonicalUrl.replace(/\/[^/]*$/, '')) || canonicalUrl.replace(/\/$/, '').split('/').length <= 3) {
-        results.push({ status: 'error', msg: 'Canonical 可能指向首页，这会导致当前页面不被收录' });
+      // Parse URLs for comparison
+      let pageUrlObj, canonicalUrlObj;
+      try { pageUrlObj = new URL(pageUrl); } catch (e) { pageUrlObj = null; }
+      try { canonicalUrlObj = new URL(canonicalUrl); } catch (e) { canonicalUrlObj = null; }
+
+      if (!pageUrlObj || !canonicalUrlObj) {
+        resultArea.innerHTML = '<p class="result-item result-error">URL 格式无效，请输入完整的 URL（含 https://）</p>';
+        return;
+      }
+
+      // Check protocol mismatch
+      if (pageUrlObj.protocol !== canonicalUrlObj.protocol) {
+        results.push({ status: 'error', icon: '❌', msg: '协议不一致', detail: `页面使用 ${pageUrlObj.protocol.replace(':', '')} 但 canonical 使用 ${canonicalUrlObj.protocol.replace(':', '')}，可能导致收录异常` });
+      }
+
+      // Check domain mismatch
+      if (pageUrlObj.hostname !== canonicalUrlObj.hostname) {
+        results.push({ status: 'error', icon: '❌', msg: '域名不一致', detail: `页面域名 ${pageUrlObj.hostname} 与 canonical 域名 ${canonicalUrlObj.hostname} 不同，当前页面不会被收录` });
+      }
+
+      // Normalize for comparison (remove trailing slash, lowercase)
+      const normPage = pageUrlObj.origin + pageUrlObj.pathname.replace(/\/+$/, '');
+      const normCanonical = canonicalUrlObj.origin + canonicalUrlObj.pathname.replace(/\/+$/, '');
+
+      if (normPage.toLowerCase() === normCanonical.toLowerCase()) {
+        results.push({ status: 'ok', icon: '✅', msg: '自指 canonical（正确）', detail: 'Canonical 指向当前页面自身，配置正确' });
+      } else if (canonicalUrlObj.pathname === '/' || canonicalUrlObj.pathname === '') {
+        results.push({ status: 'error', icon: '❌', msg: 'Canonical 指向首页', detail: '这通常是框架默认配置错误，会导致当前页面被视为首页的重复内容而不被收录' });
       } else {
-        results.push({ status: 'warn', msg: 'Canonical 指向其他页面，当前页面会被视为重复内容' });
+        results.push({ status: 'warn', icon: '⚠️', msg: 'Canonical 指向其他页面', detail: `指向 ${canonicalUrl}，请确认这是否是有意为之（如合并重复内容）。如果不是，当前页面将不会被独立收录` });
       }
 
-      if (pageUrl.startsWith('http://') && canonicalUrl.startsWith('https://')) {
-        results.push({ status: 'info', msg: '注意：页面是 HTTP 但 canonical 是 HTTPS，确认是否有正确的重定向' });
-      }
+      // Additional checks
       if (canonicalUrl.includes('?')) {
-        results.push({ status: 'warn', msg: 'Canonical 包含查询参数，通常应使用不带参数的干净 URL' });
+        results.push({ status: 'warn', icon: '⚠️', msg: 'Canonical 包含查询参数', detail: '通常 canonical 应使用不带参数的干净 URL' });
+      }
+      if (canonicalUrl.includes('#')) {
+        results.push({ status: 'warn', icon: '⚠️', msg: 'Canonical 包含锚点（#）', detail: '搜索引擎会忽略 # 后的内容，建议移除' });
+      }
+      if (!canonicalUrl.startsWith('http://') && !canonicalUrl.startsWith('https://')) {
+        results.push({ status: 'error', icon: '❌', msg: 'Canonical 不是绝对 URL', detail: '必须使用完整的绝对 URL（含协议和域名）' });
       }
 
-      resultArea.innerHTML = results.map(r => `<div class="result-item result-${r.status}">${r.msg}</div>`).join('');
+      resultArea.innerHTML = results.map(r => `
+        <div class="result-item result-${r.status}">
+          <div style="font-weight:600;margin-bottom:4px;">${r.icon} ${r.msg}</div>
+          <div style="font-size:12px;opacity:0.85;">${r.detail}</div>
+        </div>`).join('');
     });
   }
 
@@ -399,9 +537,9 @@
       const h1Match = html.match(/<h1[^>]*>(.*?)<\/h1>/is);
       if (h1Match && h1Match[1].trim()) {
         score += 15;
-        details.push({ status: 'ok', msg: '有 H1 标签 (+15)', points: 15 });
+        details.push({ status: 'ok', msg: '有 H1 标签', points: 15, max: 15 });
       } else {
-        details.push({ status: 'error', msg: '缺少 H1 标签 (+0)', points: 0 });
+        details.push({ status: 'error', msg: '缺少 H1 标签', points: 0, max: 15 });
       }
 
       // Meta description: +10
@@ -409,33 +547,33 @@
                          html.match(/<meta[^>]*content=["'](.*?)["'][^>]*name=["']description["']/is);
       if (descMatch && descMatch[1].trim()) {
         score += 10;
-        details.push({ status: 'ok', msg: '有 meta description (+10)', points: 10 });
+        details.push({ status: 'ok', msg: '有 meta description', points: 10, max: 10 });
       } else {
-        details.push({ status: 'error', msg: '缺少 meta description (+0)', points: 0 });
+        details.push({ status: 'error', msg: '缺少 meta description', points: 0, max: 10 });
       }
 
       // FAQ structured data: +15
       if (html.includes('FAQPage') || html.includes('faqpage')) {
         score += 15;
-        details.push({ status: 'ok', msg: '有 FAQ 结构化数据 (+15)', points: 15 });
+        details.push({ status: 'ok', msg: '有 FAQ 结构化数据', points: 15, max: 15 });
       } else {
-        details.push({ status: 'warn', msg: '没有 FAQ 结构化数据 (+0)', points: 0 });
+        details.push({ status: 'warn', msg: '没有 FAQ 结构化数据', points: 0, max: 15 });
       }
 
       // Author: +5
       if (html.match(/["']author["']/i) || html.match(/<meta[^>]*name=["']author["']/i)) {
         score += 5;
-        details.push({ status: 'ok', msg: '有 author 信息 (+5)', points: 5 });
+        details.push({ status: 'ok', msg: '有 author 信息', points: 5, max: 5 });
       } else {
-        details.push({ status: 'warn', msg: '没有 author 信息 (+0)', points: 0 });
+        details.push({ status: 'warn', msg: '没有 author 信息', points: 0, max: 5 });
       }
 
       // dateModified: +10
       if (html.includes('dateModified') || html.includes('datemodified')) {
         score += 10;
-        details.push({ status: 'ok', msg: '有 dateModified (+10)', points: 10 });
+        details.push({ status: 'ok', msg: '有 dateModified', points: 10, max: 10 });
       } else {
-        details.push({ status: 'warn', msg: '没有 dateModified (+0)', points: 0 });
+        details.push({ status: 'warn', msg: '没有 dateModified', points: 0, max: 10 });
       }
 
       // Body text > 300 chars: +15
@@ -450,50 +588,108 @@
       }
       if (textLen > 300) {
         score += 15;
-        details.push({ status: 'ok', msg: `正文 > 300 字符 (${textLen} 字符) (+15)`, points: 15 });
+        details.push({ status: 'ok', msg: `正文 > 300 字符 (${textLen} 字符)`, points: 15, max: 15 });
       } else {
-        details.push({ status: 'error', msg: `正文不足 300 字符 (${textLen} 字符) (+0)`, points: 0 });
+        details.push({ status: 'error', msg: `正文不足 300 字符 (${textLen} 字符)`, points: 0, max: 15 });
       }
 
       // JSON-LD: +10
       if (html.includes('application/ld+json')) {
         score += 10;
-        details.push({ status: 'ok', msg: '有 JSON-LD (+10)', points: 10 });
+        details.push({ status: 'ok', msg: '有 JSON-LD', points: 10, max: 10 });
       } else {
-        details.push({ status: 'warn', msg: '没有 JSON-LD (+0)', points: 0 });
+        details.push({ status: 'warn', msg: '没有 JSON-LD', points: 0, max: 10 });
       }
 
       // Internal links: +10
       const linkMatches = html.match(/<a[^>]*href=["'][^"']*["']/gi);
       if (linkMatches && linkMatches.length > 1) {
         score += 10;
-        details.push({ status: 'ok', msg: `有内链 (${linkMatches.length} 个链接) (+10)`, points: 10 });
+        details.push({ status: 'ok', msg: `有内链 (${linkMatches.length} 个链接)`, points: 10, max: 10 });
       } else {
-        details.push({ status: 'warn', msg: '缺少内链 (+0)', points: 0 });
+        details.push({ status: 'warn', msg: '缺少内链', points: 0, max: 10 });
       }
 
       // No noindex: +10
       if (!html.toLowerCase().includes('noindex')) {
         score += 10;
-        details.push({ status: 'ok', msg: '无 noindex (+10)', points: 10 });
+        details.push({ status: 'ok', msg: '无 noindex', points: 10, max: 10 });
       } else {
-        details.push({ status: 'error', msg: '存在 noindex (+0)', points: 0 });
+        details.push({ status: 'error', msg: '存在 noindex', points: 0, max: 10 });
       }
 
-      // Render result
+      // Determine level
       let level = 'error';
       let label = '需要改进';
-      if (score >= 80) { level = 'ok'; label = '优秀'; }
-      else if (score >= 60) { level = 'info'; label = '良好'; }
-      else if (score >= 40) { level = 'warn'; label = '一般'; }
+      let barColor = 'var(--color-error)';
+      if (score >= 80) { level = 'ok'; label = '优秀'; barColor = 'var(--color-success)'; }
+      else if (score >= 60) { level = 'info'; label = '良好'; barColor = 'var(--color-info)'; }
+      else if (score >= 40) { level = 'warn'; label = '一般'; barColor = 'var(--color-warning)'; }
 
+      // Generate improvement suggestions
+      const improvements = [];
+      const failedItems = details.filter(d => d.points === 0).sort((a, b) => b.max - a.max);
+      failedItems.slice(0, 3).forEach(item => {
+        if (item.msg.includes('H1')) improvements.push('添加一个清晰的 H1 标签，明确表达页面主题（+15 分）');
+        else if (item.msg.includes('FAQ')) improvements.push('添加 FAQPage 结构化数据，让 AI 搜索引擎可以直接提取问答（+15 分）');
+        else if (item.msg.includes('正文')) improvements.push('增加正文内容到 300 字符以上，确保有足够的信息深度（+15 分）');
+        else if (item.msg.includes('description')) improvements.push('添加 meta description，提供可被引用的页面摘要（+10 分）');
+        else if (item.msg.includes('dateModified')) improvements.push('在 JSON-LD 中添加 dateModified 字段，表明内容时效性（+10 分）');
+        else if (item.msg.includes('JSON-LD')) improvements.push('添加 JSON-LD 结构化数据，帮助搜索引擎理解页面内容（+10 分）');
+        else if (item.msg.includes('内链')) improvements.push('添加内部链接到相关页面，建立主题关联（+10 分）');
+        else if (item.msg.includes('noindex')) improvements.push('移除 noindex 标记，允许搜索引擎收录此页面（+10 分）');
+        else if (item.msg.includes('author')) improvements.push('添加 author 信息，增强内容可信度（+5 分）');
+      });
+
+      // Render result
       resultArea.innerHTML = `
         <div class="score-display">
           <div class="score-number">${score}</div>
           <div class="score-label">/ 100 — ${label}</div>
+          <div class="score-progress-bar" style="margin-top:16px;">
+            <div class="score-progress-track">
+              <div class="score-progress-fill" style="width:${score}%;background:${barColor};"></div>
+            </div>
+          </div>
         </div>
-        ${details.map(d => `<div class="result-item result-${d.status}">${d.msg}</div>`).join('')}
+        <div style="margin-top:16px;">
+        ${details.map(d => `
+          <div class="result-item result-${d.status}" style="display:flex;align-items:center;gap:10px;">
+            <span style="font-size:16px;">${d.points > 0 ? '✅' : '❌'}</span>
+            <span style="flex:1;">${d.msg}</span>
+            <span style="font-weight:600;white-space:nowrap;">${d.points} / ${d.max}</span>
+          </div>`).join('')}
+        </div>
+        ${improvements.length > 0 ? `
+        <div style="margin-top:20px;padding:16px;background:var(--color-primary-light);border:1px solid var(--color-primary-lighter);border-radius:var(--radius);">
+          <h4 style="margin-bottom:10px;color:var(--color-primary-dark);">最重要的改进建议</h4>
+          <ol style="padding-left:20px;margin:0;">
+            ${improvements.map(imp => `<li style="margin-bottom:6px;font-size:13px;">${imp}</li>`).join('')}
+          </ol>
+        </div>` : ''}
       `;
+    });
+  }
+
+  // === 首页快速检查 ===
+  function initQuickCheck() {
+    const container = document.getElementById('quick-check-section');
+    if (!container) return;
+
+    const btn = container.querySelector('#quick-check-btn');
+    const input = container.querySelector('#quick-check-url');
+    const select = container.querySelector('#quick-check-tool');
+
+    btn.addEventListener('click', () => {
+      const url = input.value.trim();
+      if (!url) { input.focus(); return; }
+      const tool = select.value;
+      // Navigate to the tool page with the URL as a hash parameter
+      window.location.href = `/tools/${tool}.html#url=${encodeURIComponent(url)}`;
+    });
+
+    input.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') btn.click();
     });
   }
 
@@ -505,6 +701,7 @@
     initRobotsChecker();
     initHtmlChecker();
     initAiReadabilityScorer();
+    initQuickCheck();
   });
 
 })();
