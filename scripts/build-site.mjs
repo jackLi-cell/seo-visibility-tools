@@ -21,6 +21,14 @@ const allPages = []; // { path, priority, type }
 
 const TODAY = new Date().toISOString().split('T')[0];
 
+function cleanUrl(url) {
+  // /xxx/index.html -> /xxx/
+  url = url.replace(/\/index\.html$/, '/');
+  // /xxx.html -> /xxx
+  url = url.replace(/\.html$/, '');
+  return url;
+}
+
 function ensureDir(dir) {
   if (!existsSync(dir)) mkdirSync(dir, { recursive: true });
 }
@@ -78,7 +86,7 @@ function jsonLdArticle(title, description, slug) {
     dateModified: TODAY,
     author: { '@type': 'Organization', name: SITE_NAME },
     publisher: { '@type': 'Organization', name: SITE_NAME },
-    mainEntityOfPage: { '@type': 'WebPage', '@id': `${DOMAIN}/guides/${slug}.html` }
+    mainEntityOfPage: { '@type': 'WebPage', '@id': `${DOMAIN}/guides/${slug}` }
   };
 }
 
@@ -100,7 +108,7 @@ function jsonLdWebApplication(name, description, url) {
     '@type': 'WebApplication',
     name: name,
     description: description,
-    url: url,
+    url: cleanUrl(url),
     applicationCategory: 'SEO Tool',
     operatingSystem: 'Web Browser',
     offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' }
@@ -115,7 +123,7 @@ function jsonLdBreadcrumb(items) {
       '@type': 'ListItem',
       position: i + 1,
       name: item.name,
-      item: item.url
+      item: cleanUrl(item.url)
     }))
   };
 }
@@ -129,7 +137,7 @@ function renderJsonLd(schemas) {
 
 // --- Layout with SEO enhancements ---
 function layout(title, description, canonicalPath, bodyContent, options = {}) {
-  const canonical = DOMAIN + canonicalPath;
+  const canonical = DOMAIN + cleanUrl(canonicalPath);
   const prefix = getPrefix(canonicalPath);
   const processedBody = relativize(bodyContent, prefix);
   const priority = options.priority || 0.5;
@@ -1279,7 +1287,7 @@ function buildTrustPages() {
 function buildSitemap() {
   const today = new Date().toISOString().split('T')[0];
   const urls = allPages.map(p => `  <url>
-    <loc>${DOMAIN}${p.path}</loc>
+    <loc>${DOMAIN}${cleanUrl(p.path)}</loc>
     <lastmod>${today}</lastmod>
     <priority>${p.priority.toFixed(1)}</priority>
   </url>`).join('\n');
