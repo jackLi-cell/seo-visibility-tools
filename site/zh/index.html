@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>首页 - 搜索可见性与 GSC 收录诊断工具</title>
+<meta name="description" content="页面没被收录？通过诊断向导定位问题，使用本地工具检查配置，按指南逐步修复。">
+<link rel="canonical" href="https://seo.jtlcook.com/zh/">
+<link rel="alternate" hreflang="zh-CN" href="https://seo.jtlcook.com/zh/">
+<link rel="alternate" hreflang="en" href="https://seo.jtlcook.com/en/">
+<link rel="alternate" hreflang="x-default" href="https://seo.jtlcook.com/zh/">
+<link rel="icon" type="image/svg+xml" href="../favicon.svg">
+<meta property="og:title" content="首页 - 搜索可见性与 GSC 收录诊断工具">
+<meta property="og:description" content="页面没被收录？通过诊断向导定位问题，使用本地工具检查配置，按指南逐步修复。">
+<meta property="og:url" content="https://seo.jtlcook.com/zh/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="搜索可见性与 GSC 收录诊断工具">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebSite","name":"搜索可见性与 GSC 收录诊断工具","url":"https://seo.jtlcook.com/zh/","description":"页面没被收录？通过诊断向导定位问题，使用本地工具检查配置，按指南逐步修复。","potentialAction":{"@type":"SearchAction","target":"https://seo.jtlcook.com/zh/?q={search_term_string}","query-input":"required name=search_term_string"}}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"这些工具会上传我的数据吗？","acceptedAnswer":{"@type":"Answer","text":"不会。所有工具完全在浏览器本地运行，你的 HTML、URL 列表等数据不会发送到任何服务器。"}},{"@type":"Question","name":"页面显示\"已发现未编入索引\"多久会被收录？","acceptedAnswer":{"@type":"Answer","text":"没有固定时间。Google 会根据页面质量、站点权重和抓取预算决定是否收录。修复技术问题可以提高收录概率。"}},{"@type":"Question","name":"AI 搜索引擎和传统搜索引擎有什么区别？","acceptedAnswer":{"@type":"Answer","text":"AI 搜索引擎更依赖结构化内容、清晰的语义标记和可直接提取的答案。传统 SEO 的关键词密度策略对 AI 搜索效果有限。"}},{"@type":"Question","name":"Canonical 自指是什么意思？","acceptedAnswer":{"@type":"Answer","text":"Canonical 自指是指页面的 canonical 标签指向自己的 URL。这告诉搜索引擎\"这是此内容的正式版本\"，是推荐的做法。"}}]}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"首页","item":"https://seo.jtlcook.com/zh/"}]}</script>
+<link rel="stylesheet" href="../assets/styles.css">
+</head>
+<body>
+<header class="site-header">
+<div class="container">
+<a href="../zh/index.html" class="logo">搜索可见性与 GSC 收录诊断工具</a>
+<nav>
+<a href="../zh/index.html">首页</a>
+<a href="../zh/diagnose/wizard.html">诊断向导</a>
+<a href="../zh/index.html#tools">工具</a>
+<a href="../zh/index.html#guides">指南</a>
+<a href="../zh/pages/about.html">关于</a>
+<div class="lang-switch"><a href="../en/index.html" hreflang="en">English</a></div>
+</nav>
+</div>
+</header>
+<main class="container">
+
+<section style="text-align:center;padding:40px 0;">
+  <h1>搜索可见性与 GSC 收录诊断工具</h1>
+  <p style="font-size:16px;color:var(--color-text-secondary);max-width:600px;margin:0 auto 24px;">
+    通过诊断向导快速定位问题，使用本地工具检查配置，按指南逐步修复。
+  </p>
+  <a href="../zh/diagnose/wizard.html" class="btn btn-primary">开始诊断</a>
+</section>
+<section class="quick-check-section" id="quick-check-section">
+  <h2>快速检查</h2>
+  <p style="color:var(--color-text-secondary);margin-bottom:16px;">粘贴一个 URL，选择检查工具，快速开始诊断。</p>
+  <div class="quick-check-form">
+    <input type="url" id="quick-check-url" class="quick-check-input" placeholder="https://example.com/your-page">
+    <select id="quick-check-tool" class="quick-check-select">
+      <option value="canonical-checker">Canonical 检查</option>
+      <option value="sitemap-audit">Sitemap 审计</option>
+      <option value="html-checker">HTML 可读性</option>
+      <option value="ai-readability-scorer">AI 可读性评分</option>
+      <option value="robots-checker">Robots 检查</option>
+    </select>
+    <button id="quick-check-btn" class="btn btn-primary">快速检查</button>
+  </div>
+</section>
+
+<section>
+  <h2>选择你遇到的问题</h2>
+  <div class="card-grid">
+    <div class="card"><h3>已发现未编入索引</h3><p>Google 发现了 URL 但没有抓取</p><a href="../zh/guides/discovered-not-indexed.html" class="card-link">排查方法 &rarr;</a></div>
+    <div class="card"><h3>已抓取未编入索引</h3><p>Google 抓取了但不收录</p><a href="../zh/guides/crawled-not-indexed.html" class="card-link">排查方法 &rarr;</a></div>
+    <div class="card"><h3>服务器错误 5xx</h3><p>服务器返回错误</p><a href="../zh/guides/server-error-5xx.html" class="card-link">排查方法 &rarr;</a></div>
+    <div class="card"><h3>Sitemap 问题</h3><p>Sitemap 配置不当</p><a href="../zh/guides/sitemap-best-practices.html" class="card-link">最佳实践 &rarr;</a></div>
+    <div class="card"><h3>Canonical 错误</h3><p>Canonical 没有自指</p><a href="../zh/guides/self-referencing-canonical.html" class="card-link">了解详情 &rarr;</a></div>
+    <div class="card"><h3>Robots 屏蔽</h3><p>误用 noindex 或 disallow</p><a href="../zh/guides/robots-noindex.html" class="card-link">排查方法 &rarr;</a></div>
+  </div>
+</section>
+
+<section id="tools" style="margin-top:40px;">
+  <h2>诊断工具</h2>
+  <p>所有工具在浏览器本地运行，不上传任何数据。</p>
+  <div class="card-grid">
+    <div class="card">
+      <h3>Sitemap 审计清单</h3>
+      <p>粘贴 sitemap URL 列表，检查低价值资源、非 HTML 文件和域名混用</p>
+      <a href="../zh/tools/sitemap-audit.html" class="card-link">使用工具 &rarr;</a>
+    </div>
+    <div class="card">
+      <h3>Canonical 检查清单</h3>
+      <p>输入页面 URL 和 canonical 值，检查是否自指、是否指向首页</p>
+      <a href="../zh/tools/canonical-checker.html" class="card-link">使用工具 &rarr;</a>
+    </div>
+    <div class="card">
+      <h3>Robots / Noindex 检查器</h3>
+      <p>粘贴 robots.txt 或 meta robots 内容，检查是否误屏蔽</p>
+      <a href="../zh/tools/robots-checker.html" class="card-link">使用工具 &rarr;</a>
+    </div>
+    <div class="card">
+      <h3>初始 HTML 可读性检查</h3>
+      <p>粘贴 HTML 源码，检查 H1、title、description、正文和 JSON-LD</p>
+      <a href="../zh/tools/html-checker.html" class="card-link">使用工具 &rarr;</a>
+    </div>
+    <div class="card">
+      <h3>AI 搜索可读性评分器</h3>
+      <p>粘贴 HTML 源码，评估页面对 AI 搜索引擎的可读性</p>
+      <a href="../zh/tools/ai-readability-scorer.html" class="card-link">使用工具 &rarr;</a>
+    </div></div>
+</section>
+<section id="guides" style="margin-top:40px;">
+  <h2>排查指南</h2>
+  <div class="card-grid">
+    <div class="card"><h3>已发现但未编入索引怎么排查</h3><p>Google 发现了 URL 但还没有抓取，通常是抓取优先级不够或页面质量信号不足</p><a href="../zh/guides/discovered-not-indexed.html" class="card-link">查看指南 &rarr;</a></div>
+    <div class="card"><h3>已抓取但未编入索引怎么排查</h3><p>Google 已抓取但认为不值得收录，通常是内容质量、重复或薄内容问题</p><a href="../zh/guides/crawled-not-indexed.html" class="card-link">查看指南 &rarr;</a></div>
+    <div class="card"><h3>GSC 服务器错误 5xx 怎么定位</h3><p>服务器返回 5xx 错误，需要定位具体 URL 和错误原因</p><a href="../zh/guides/server-error-5xx.html" class="card-link">查看指南 &rarr;</a></div>
+    <div class="card"><h3>Sitemap 应该提交哪些页面</h3><p>sitemap 只收录高质量公开页面，不要把所有文件都塞进去</p><a href="../zh/guides/sitemap-best-practices.html" class="card-link">查看指南 &rarr;</a></div>
+    <div class="card"><h3>Canonical 自指是什么意思</h3><p>每个页面的 canonical 应该指向自己的正式 URL，不要全站指向首页</p><a href="../zh/guides/self-referencing-canonical.html" class="card-link">查看指南 &rarr;</a></div>
+    <div class="card"><h3>Next.js Canonical 配置常见错误</h3><p>Next.js App Router 中 metadata 和 canonical 的正确配置方法</p><a href="../zh/guides/nextjs-canonical.html" class="card-link">查看指南 &rarr;</a></div>
+    <div class="card"><h3>Robots.txt 和 Noindex 怎么检查</h3><p>检查 robots.txt、meta robots 和 X-Robots-Tag 是否误屏蔽页面</p><a href="../zh/guides/robots-noindex.html" class="card-link">查看指南 &rarr;</a></div>
+    <div class="card"><h3>初始 HTML 可读内容检查清单</h3><p>确认搜索引擎首次抓取时能在初始 HTML 中读到核心内容</p><a href="../zh/guides/html-readability.html" class="card-link">查看指南 &rarr;</a></div>
+    <div class="card"><h3>AI 搜索可读性怎么提升</h3><p>让页面能被 AI 搜索引擎和摘要工具有效理解的优化方法</p><a href="../zh/guides/ai-search-readability.html" class="card-link">查看指南 &rarr;</a></div>
+    <div class="card"><h3>结构化数据和 FAQ 基础检查</h3><p>JSON-LD 结构化数据的基本检查方法和常见错误</p><a href="../zh/guides/structured-data.html" class="card-link">查看指南 &rarr;</a></div>
+    <div class="card"><h3>Bing Webmaster Tools 与 GSC 的差异</h3><p>对比 Bing Webmaster Tools 和 Google Search Console 的功能差异与使用策略</p><a href="../zh/guides/bing-vs-gsc.html" class="card-link">查看指南 &rarr;</a></div>
+    <div class="card"><h3>IndexNow 协议使用指南</h3><p>通过 IndexNow 协议主动通知搜索引擎内容更新，加速 Bing 和 Yandex 收录</p><a href="../zh/guides/indexnow-protocol.html" class="card-link">查看指南 &rarr;</a></div>
+    <div class="card"><h3>Core Web Vitals 对收录的影响</h3><p>LCP、INP、CLS 三大核心指标如何影响搜索排名和收录优先级</p><a href="../zh/guides/core-web-vitals.html" class="card-link">查看指南 &rarr;</a></div>
+    <div class="card"><h3>多语言网站 hreflang 配置检查</h3><p>检查 hreflang 标签配置是否正确，避免多语言页面互相竞争排名</p><a href="../zh/guides/hreflang-check.html" class="card-link">查看指南 &rarr;</a></div>
+    <div class="card"><h3>JavaScript 渲染与 SEO 的关系</h3><p>理解搜索引擎如何处理 JavaScript 渲染内容，以及 CSR/SSR/SSG 的 SEO 影响</p><a href="../zh/guides/js-rendering-seo.html" class="card-link">查看指南 &rarr;</a></div>
+    <div class="card"><h3>新站首月 SEO 检查时间表</h3><p>新网站上线第一个月的 SEO 检查清单和时间节点安排</p><a href="../zh/guides/new-site-first-month.html" class="card-link">查看指南 &rarr;</a></div>
+  </div>
+</section>
+
+<section style="margin-top:40px;">
+  <h2>常见问题</h2>
+  <div class="faq-list">
+    <details class="faq-item">
+      <summary>这些工具会上传我的数据吗？</summary>
+      <div class="faq-answer">不会。所有工具完全在浏览器本地运行，你的 HTML、URL 列表等数据不会发送到任何服务器。</div>
+    </details>
+    <details class="faq-item">
+      <summary>页面显示"已发现未编入索引"多久会被收录？</summary>
+      <div class="faq-answer">没有固定时间。Google 会根据页面质量、站点权重和抓取预算决定是否收录。修复技术问题可以提高收录概率。</div>
+    </details>
+    <details class="faq-item">
+      <summary>AI 搜索引擎和传统搜索引擎有什么区别？</summary>
+      <div class="faq-answer">AI 搜索引擎更依赖结构化内容、清晰的语义标记和可直接提取的答案。传统 SEO 的关键词密度策略对 AI 搜索效果有限。</div>
+    </details>
+    <details class="faq-item">
+      <summary>Canonical 自指是什么意思？</summary>
+      <div class="faq-answer">Canonical 自指是指页面的 canonical 标签指向自己的 URL。这告诉搜索引擎"这是此内容的正式版本"，是推荐的做法。</div>
+    </details>
+  </div>
+</section>
+</main>
+<footer class="site-footer">
+<div class="container">
+<div>&copy; 2024 搜索可见性与 GSC 收录诊断工具</div>
+<div>
+<a href="../zh/pages/about.html">关于</a> &middot;
+<a href="../zh/pages/contact.html">联系</a> &middot;
+<a href="../zh/pages/privacy.html">隐私</a> &middot;
+<a href="../zh/pages/disclaimer.html">免责声明</a>
+</div>
+</div>
+</footer>
+<script src="../assets/app.js"></script>
+</body>
+</html>

@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Structured Data and FAQ Basic Check - AI Search Visibility & GSC Indexing Diagnostics</title>
+<meta name="description" content="Basic check methods and common errors for JSON-LD structured data">
+<link rel="canonical" href="https://seo.jtlcook.com/en/guides/structured-data">
+<link rel="alternate" hreflang="zh-CN" href="../../zh/guides/structured-data">
+<link rel="alternate" hreflang="en" href="https://seo.jtlcook.com/en/guides/structured-data">
+<link rel="alternate" hreflang="x-default" href="../../zh/guides/structured-data">
+<link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+<meta property="og:title" content="Structured Data and FAQ Basic Check - AI Search Visibility & GSC Indexing Diagnostics">
+<meta property="og:description" content="Basic check methods and common errors for JSON-LD structured data">
+<meta property="og:url" content="https://seo.jtlcook.com/en/guides/structured-data">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="AI Search Visibility & GSC Indexing Diagnostics">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"Structured Data and FAQ Basic Check","description":"Basic check methods and common errors for JSON-LD structured data","datePublished":"2024-01-15","dateModified":"2026-05-20","author":{"@type":"Organization","name":"AI Search Visibility & GSC Indexing Diagnostics"},"publisher":{"@type":"Organization","name":"AI Search Visibility & GSC Indexing Diagnostics"},"mainEntityOfPage":{"@type":"WebPage","@id":"https://seo.jtlcook.com/en/guides/structured-data"}}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://seo.jtlcook.com/en/"},{"@type":"ListItem","position":2,"name":"Guides","item":"https://seo.jtlcook.com/en/#guides"},{"@type":"ListItem","position":3,"name":"Structured Data and FAQ Basic Check","item":"https://seo.jtlcook.com/en/guides/structured-data"}]}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"什么是结构化数据？","acceptedAnswer":{"@type":"Answer","text":"结构化数据是用标准格式（通常是 JSON-LD）向搜索引擎描述页面内容的方式，帮助搜索引擎理解页面的类型、内容和关系。"}},{"@type":"Question","name":"JSON-LD Common Errors有哪些？","acceptedAnswer":{"@type":"Answer","text":"Common Errors包括：JSON 格式错误、Use不存在的 schema 类型或属性、结构化数据与页面可见内容不一致、缺少必需属性、日期格式不正确。"}}]}</script>
+<link rel="stylesheet" href="../../assets/styles.css">
+</head>
+<body>
+<header class="site-header">
+<div class="container">
+<a href="../../en/index.html" class="logo">AI Search Visibility & GSC Indexing Diagnostics</a>
+<nav>
+<a href="../../en/index.html">Home</a>
+<a href="../../en/diagnose/wizard.html">Diagnostic Wizard</a>
+<a href="../../en/index.html#tools">Tools</a>
+<a href="../../en/index.html#guides">Guides</a>
+<a href="../../en/pages/about.html">About</a>
+<div class="lang-switch"><a href="../../zh/guides/structured-data.html" hreflang="zh-CN">中文</a></div>
+</nav>
+</div>
+</header>
+<main class="container">
+
+<article class="guide-content">
+  <h1>Structured Data and FAQ Basic Check</h1>
+  <p style="color:var(--color-text-secondary);margin-bottom:24px;">Basic check methods and common errors for JSON-LD structured data</p>
+  
+<h2>什么是结构化数据</h2>
+<p>结构化数据是用标准格式（通常是 JSON-LD）向搜索引擎描述页面内容的方式。它帮助搜索引擎理解页面的类型、内容和关系。</p>
+<h2>Common Causes（结构化数据问题）</h2>
+<ul>
+<li>JSON 格式错误（缺少逗号、引号不匹配）</li>
+<li>Use了不存在的 schema 类型或属性</li>
+<li>结构化数据内容与页面可见内容不一致</li>
+<li>缺少必需属性</li>
+<li>日期格式不正确（应Use ISO 8601）</li>
+</ul>
+<h2>Troubleshooting Steps</h2>
+<ol class="step-list">
+<li>查看页面源码，找到所有 script type="application/ld+json" 标签</li>
+<li>将 JSON-LD 内容粘贴到 JSON 验证器中Check格式</li>
+<li>Use Google 富媒体搜索结果测试Tools验证 schema 有效性</li>
+<li>对比结构化数据中的内容与页面可见内容是否一致</li>
+<li>Check是否缺少必需属性（如 Article 需要 headline、author）</li>
+<li>确认日期格式为 ISO 8601（如 2024-01-15）</li>
+<li>验证 URL 字段Use绝对路径而非相对路径</li>
+</ol>
+<h2>JSON-LD 基础</h2>
+<pre><code>&lt;script type="application/ld+json"&gt;
+{
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  "name": "页面标题",
+  "description": "页面描述",
+  "dateModified": "2024-01-15",
+  "author": {
+    "@type": "Person",
+    "name": "作者名"
+  }
+}
+&lt;/script&gt;</code></pre>
+<h2>FAQPage 结构化数据</h2>
+<pre><code>&lt;script type="application/ld+json"&gt;
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "问题1？",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "答案1"
+      }
+    }
+  ]
+}
+&lt;/script&gt;</code></pre>
+<h2>WebApplication 结构化数据</h2>
+<pre><code>&lt;script type="application/ld+json"&gt;
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "Tools名称",
+  "description": "Tools描述",
+  "applicationCategory": "SEO Tool",
+  "operatingSystem": "Web Browser",
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD"
+  }
+}
+&lt;/script&gt;</code></pre>
+<h2>Fix Methods</h2>
+<ul>
+<li>Use在线 JSON 验证器修复格式错误</li>
+<li>参考 schema.org 官方文档确认属性名称</li>
+<li>确保结构化数据与页面可见内容完全一致</li>
+<li>添加所有必需属性，补充推荐属性</li>
+<li>统一Use ISO 8601 日期格式</li>
+</ul>
+<h2>Verification</h2>
+<p>Use <a href="../../en/tools/html-checker.html">HTML Readability Check Tool</a> Check JSON-LD 格式是否有效。也可以Use Google 的富媒体搜索结果测试Tools在线验证。</p>
+</article>
+<div style="margin-top:24px;">
+  <a href="../../en/index.html#guides" class="btn btn-secondary">&larr; Back to Guides</a>
+</div>
+</main>
+<footer class="site-footer">
+<div class="container">
+<div>&copy; 2024 AI Search Visibility & GSC Indexing Diagnostics</div>
+<div>
+<a href="../../en/pages/about.html">About</a> &middot;
+<a href="../../en/pages/contact.html">Contact</a> &middot;
+<a href="../../en/pages/privacy.html">Privacy</a> &middot;
+<a href="../../en/pages/disclaimer.html">Disclaimer</a>
+</div>
+</div>
+</footer>
+<script src="../../assets/app.js"></script>
+</body>
+</html>

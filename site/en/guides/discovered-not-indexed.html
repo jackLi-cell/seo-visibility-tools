@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>How to Troubleshoot Discovered but Not Indexed - AI Search Visibility & GSC Indexing Diagnostics</title>
+<meta name="description" content="Google discovered the URL but has not crawled it yet, usually due to insufficient crawl priority or page quality signals">
+<link rel="canonical" href="https://seo.jtlcook.com/en/guides/discovered-not-indexed">
+<link rel="alternate" hreflang="zh-CN" href="../../zh/guides/discovered-not-indexed">
+<link rel="alternate" hreflang="en" href="https://seo.jtlcook.com/en/guides/discovered-not-indexed">
+<link rel="alternate" hreflang="x-default" href="../../zh/guides/discovered-not-indexed">
+<link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+<meta property="og:title" content="How to Troubleshoot Discovered but Not Indexed - AI Search Visibility & GSC Indexing Diagnostics">
+<meta property="og:description" content="Google discovered the URL but has not crawled it yet, usually due to insufficient crawl priority or page quality signals">
+<meta property="og:url" content="https://seo.jtlcook.com/en/guides/discovered-not-indexed">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="AI Search Visibility & GSC Indexing Diagnostics">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"How to Troubleshoot Discovered but Not Indexed","description":"Google discovered the URL but has not crawled it yet, usually due to insufficient crawl priority or page quality signals","datePublished":"2024-01-15","dateModified":"2026-05-20","author":{"@type":"Organization","name":"AI Search Visibility & GSC Indexing Diagnostics"},"publisher":{"@type":"Organization","name":"AI Search Visibility & GSC Indexing Diagnostics"},"mainEntityOfPage":{"@type":"WebPage","@id":"https://seo.jtlcook.com/en/guides/discovered-not-indexed"}}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://seo.jtlcook.com/en/"},{"@type":"ListItem","position":2,"name":"Guides","item":"https://seo.jtlcook.com/en/#guides"},{"@type":"ListItem","position":3,"name":"How to Troubleshoot Discovered but Not Indexed","item":"https://seo.jtlcook.com/en/guides/discovered-not-indexed"}]}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"什么是\"已发现但未编入索引\"？","acceptedAnswer":{"@type":"Answer","text":"Google Search Console 中显示 \"Discovered - currently not indexed\" 表示 Google 知道这个 URL 存在，但还没有去抓取它。通常意味着 Google 认为这个页面的优先级不够高。"}},{"@type":"Question","name":"\"Discovered but Not Indexed\"的Common Causes有哪些？","acceptedAnswer":{"@type":"Answer","text":"Common Causes包括：站点抓取预算不足、页面缺少内链支撑、新站点或新页面、服务器响应慢、页面内容薄弱、Sitemap 中 URL 过多稀释了优先级。"}},{"@type":"Question","name":"如何修复\"Discovered but Not Indexed\"问题？","acceptedAnswer":{"@type":"Answer","text":"Add internal links from high-authority pages to this page，精简 sitemap 只保留高质量页面，Improve page content quality and uniqueness，优化服务器性能，Manually request indexing in GSC。"}}]}</script>
+<link rel="stylesheet" href="../../assets/styles.css">
+</head>
+<body>
+<header class="site-header">
+<div class="container">
+<a href="../../en/index.html" class="logo">AI Search Visibility & GSC Indexing Diagnostics</a>
+<nav>
+<a href="../../en/index.html">Home</a>
+<a href="../../en/diagnose/wizard.html">Diagnostic Wizard</a>
+<a href="../../en/index.html#tools">Tools</a>
+<a href="../../en/index.html#guides">Guides</a>
+<a href="../../en/pages/about.html">About</a>
+<div class="lang-switch"><a href="../../zh/guides/discovered-not-indexed.html" hreflang="zh-CN">中文</a></div>
+</nav>
+</div>
+</header>
+<main class="container">
+
+<article class="guide-content">
+  <h1>How to Troubleshoot Discovered but Not Indexed</h1>
+  <p style="color:var(--color-text-secondary);margin-bottom:24px;">Google discovered the URL but has not crawled it yet, usually due to insufficient crawl priority or page quality signals</p>
+  
+<h2>What is "Discovered - currently not indexed"</h2>
+<p>Google Search Console showing "Discovered - currently not indexed" means Google knows this URL exists but has not crawled it yet. This usually means Google considers this page not high enough priority.</p>
+<h2>Common Causes</h2>
+<ul>
+<li>Insufficient site crawl budget, Google prioritizes crawling more important pages</li>
+<li>Page lacks internal link support, considered unimportant</li>
+<li>New site or new page, Google has not had time to crawl yet</li>
+<li>Slow server response, Google reduced crawl frequency</li>
+<li>Weak page content, Google predicts low value</li>
+<li>Too many URLs in sitemap, diluting priority</li>
+</ul>
+<h2>Troubleshooting Steps</h2>
+<ol class="step-list">
+<li>Confirm URL status is indeed "Discovered - currently not indexed" in GSC</li>
+<li>Check if the page has sufficient internal links (at least 2-3 internal links)</li>
+<li>Confirm the page is in the sitemap and the sitemap has been submitted to Google</li>
+<li>Check server response time, ensure TTFB is under 500ms</li>
+<li>Confirm robots.txt is not blocking this URL</li>
+<li>Check if the page content has substantial value</li>
+<li>Use GSC URL Inspection tool to request indexing</li>
+<li>Wait 1-2 weeks and check status changes again</li>
+</ol>
+<h2>Fix Methods</h2>
+<ul>
+<li>Add internal links from high-authority pages to this page</li>
+<li>Streamline sitemap, keep only high-quality pages</li>
+<li>Improve page content quality and uniqueness</li>
+<li>Optimize server performance, reduce response time</li>
+<li>Manually request indexing in GSC</li>
+</ul>
+<h2>Verification</h2>
+<p>After fixing, resubmit in GSC URL Inspection tool and observe status changes within 1-2 weeks. You can also confirm indexing by searching site:yoururl.</p>
+</article>
+<div style="margin-top:24px;">
+  <a href="../../en/index.html#guides" class="btn btn-secondary">&larr; Back to Guides</a>
+</div>
+</main>
+<footer class="site-footer">
+<div class="container">
+<div>&copy; 2024 AI Search Visibility & GSC Indexing Diagnostics</div>
+<div>
+<a href="../../en/pages/about.html">About</a> &middot;
+<a href="../../en/pages/contact.html">Contact</a> &middot;
+<a href="../../en/pages/privacy.html">Privacy</a> &middot;
+<a href="../../en/pages/disclaimer.html">Disclaimer</a>
+</div>
+</div>
+</footer>
+<script src="../../assets/app.js"></script>
+</body>
+</html>

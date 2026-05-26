@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Which Pages Should Be in Your Sitemap - AI Search Visibility & GSC Indexing Diagnostics</title>
+<meta name="description" content="Sitemap should only include high-quality public pages, do not stuff all files into it">
+<link rel="canonical" href="https://seo.jtlcook.com/en/guides/sitemap-best-practices">
+<link rel="alternate" hreflang="zh-CN" href="../../zh/guides/sitemap-best-practices">
+<link rel="alternate" hreflang="en" href="https://seo.jtlcook.com/en/guides/sitemap-best-practices">
+<link rel="alternate" hreflang="x-default" href="../../zh/guides/sitemap-best-practices">
+<link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+<meta property="og:title" content="Which Pages Should Be in Your Sitemap - AI Search Visibility & GSC Indexing Diagnostics">
+<meta property="og:description" content="Sitemap should only include high-quality public pages, do not stuff all files into it">
+<meta property="og:url" content="https://seo.jtlcook.com/en/guides/sitemap-best-practices">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="AI Search Visibility & GSC Indexing Diagnostics">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"Which Pages Should Be in Your Sitemap","description":"Sitemap should only include high-quality public pages, do not stuff all files into it","datePublished":"2024-01-15","dateModified":"2026-05-20","author":{"@type":"Organization","name":"AI Search Visibility & GSC Indexing Diagnostics"},"publisher":{"@type":"Organization","name":"AI Search Visibility & GSC Indexing Diagnostics"},"mainEntityOfPage":{"@type":"WebPage","@id":"https://seo.jtlcook.com/en/guides/sitemap-best-practices"}}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://seo.jtlcook.com/en/"},{"@type":"ListItem","position":2,"name":"Guides","item":"https://seo.jtlcook.com/en/#guides"},{"@type":"ListItem","position":3,"name":"Which Pages Should Be in Your Sitemap","item":"https://seo.jtlcook.com/en/guides/sitemap-best-practices"}]}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Sitemap 应该包含哪些页面？","acceptedAnswer":{"@type":"Answer","text":"应包含All public pages you want indexed，返回 200 状态码、有 canonical 自指、没有 noindex、Pages with substantial content。"}},{"@type":"Question","name":"Sitemap 不应该包含什么？","acceptedAnswer":{"@type":"Answer","text":"不应包含非 HTML 文件、Duplicate URLs with parameters、Pages with noindex set、重定向的源 URL、URLs returning 4xx/5xx、低质量标签页和Internal search result pages。"}},{"@type":"Question","name":"新站首次提交 Sitemap 有什么建议？","acceptedAnswer":{"@type":"Answer","text":"New sites should submit no more than 1000 URLs initially，优先提交最重要的页面，确保每个 URL 返回 200，Use lastmod 标注真实修改时间，提交后监控索引覆盖率。"}}]}</script>
+<link rel="stylesheet" href="../../assets/styles.css">
+</head>
+<body>
+<header class="site-header">
+<div class="container">
+<a href="../../en/index.html" class="logo">AI Search Visibility & GSC Indexing Diagnostics</a>
+<nav>
+<a href="../../en/index.html">Home</a>
+<a href="../../en/diagnose/wizard.html">Diagnostic Wizard</a>
+<a href="../../en/index.html#tools">Tools</a>
+<a href="../../en/index.html#guides">Guides</a>
+<a href="../../en/pages/about.html">About</a>
+<div class="lang-switch"><a href="../../zh/guides/sitemap-best-practices.html" hreflang="zh-CN">中文</a></div>
+</nav>
+</div>
+</header>
+<main class="container">
+
+<article class="guide-content">
+  <h1>Which Pages Should Be in Your Sitemap</h1>
+  <p style="color:var(--color-text-secondary);margin-bottom:24px;">Sitemap should only include high-quality public pages, do not stuff all files into it</p>
+  
+<h2>Purpose of Sitemap</h2>
+<p>Sitemap tells search engines which pages on your site are worth crawling and indexing. It is not a guarantee of indexing, but a discovery mechanism.</p>
+<h2>Pages That Should Be in Sitemap</h2>
+<ul>
+<li>All public pages you want indexed</li>
+<li>Pages returning 200 status code</li>
+<li>Pages with self-referencing canonical</li>
+<li>Pages without noindex</li>
+<li>Pages with substantial content</li>
+</ul>
+<h2>Content That Should Not Be in Sitemap</h2>
+<ul>
+<li>Non-HTML files (use media sitemap for PDFs, images)</li>
+<li>Duplicate URLs with parameters</li>
+<li>Pages with noindex set</li>
+<li>Source URLs of 301/302 redirects</li>
+<li>URLs returning 4xx/5xx</li>
+<li>Low-quality tag pages, empty category pages</li>
+<li>Internal search result pages</li>
+<li>Pages requiring login</li>
+</ul>
+<h2>Initial Submission Rules</h2>
+<ol class="step-list">
+<li>New sites should submit no more than 1000 URLs initially</li>
+<li>Prioritize submitting the most important pages with richest content</li>
+<li>Ensure every URL is accessible (200 status code)</li>
+<li>Use lastmod to mark the actual last modification time</li>
+<li>Monitor index coverage changes in GSC after submission</li>
+<li>Gradually add URLs based on indexing results</li>
+</ol>
+<h2>Sitemap Format Example</h2>
+<pre><code>&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"&gt;
+  &lt;url&gt;
+    &lt;loc&gt;https://example.com/page&lt;/loc&gt;
+    &lt;lastmod&gt;2024-01-15&lt;/lastmod&gt;
+  &lt;/url&gt;
+&lt;/urlset&gt;</code></pre>
+<h2>Verification</h2>
+<p>Use <a href="../../en/tools/sitemap-audit.html">Sitemap Audit Tool</a> check your URL 列表。</p>
+</article>
+<div style="margin-top:24px;">
+  <a href="../../en/index.html#guides" class="btn btn-secondary">&larr; Back to Guides</a>
+</div>
+</main>
+<footer class="site-footer">
+<div class="container">
+<div>&copy; 2024 AI Search Visibility & GSC Indexing Diagnostics</div>
+<div>
+<a href="../../en/pages/about.html">About</a> &middot;
+<a href="../../en/pages/contact.html">Contact</a> &middot;
+<a href="../../en/pages/privacy.html">Privacy</a> &middot;
+<a href="../../en/pages/disclaimer.html">Disclaimer</a>
+</div>
+</div>
+</footer>
+<script src="../../assets/app.js"></script>
+</body>
+</html>

@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>What Does Self-Referencing Canonical Mean - AI Search Visibility & GSC Indexing Diagnostics</title>
+<meta name="description" content="Each page's canonical should point to its own official URL, not all pointing to the homepage">
+<link rel="canonical" href="https://seo.jtlcook.com/en/guides/self-referencing-canonical">
+<link rel="alternate" hreflang="zh-CN" href="../../zh/guides/self-referencing-canonical">
+<link rel="alternate" hreflang="en" href="https://seo.jtlcook.com/en/guides/self-referencing-canonical">
+<link rel="alternate" hreflang="x-default" href="../../zh/guides/self-referencing-canonical">
+<link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+<meta property="og:title" content="What Does Self-Referencing Canonical Mean - AI Search Visibility & GSC Indexing Diagnostics">
+<meta property="og:description" content="Each page's canonical should point to its own official URL, not all pointing to the homepage">
+<meta property="og:url" content="https://seo.jtlcook.com/en/guides/self-referencing-canonical">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="AI Search Visibility & GSC Indexing Diagnostics">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"What Does Self-Referencing Canonical Mean","description":"Each page's canonical should point to its own official URL, not all pointing to the homepage","datePublished":"2024-01-15","dateModified":"2026-05-20","author":{"@type":"Organization","name":"AI Search Visibility & GSC Indexing Diagnostics"},"publisher":{"@type":"Organization","name":"AI Search Visibility & GSC Indexing Diagnostics"},"mainEntityOfPage":{"@type":"WebPage","@id":"https://seo.jtlcook.com/en/guides/self-referencing-canonical"}}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://seo.jtlcook.com/en/"},{"@type":"ListItem","position":2,"name":"Guides","item":"https://seo.jtlcook.com/en/#guides"},{"@type":"ListItem","position":3,"name":"What Does Self-Referencing Canonical Mean","item":"https://seo.jtlcook.com/en/guides/self-referencing-canonical"}]}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"What does self-referencing canonical mean?","acceptedAnswer":{"@type":"Answer","text":"Canonical 自指是指页面的 link rel=\"canonical\" 标签指向自己的 URL，明确告诉搜索引擎这个 URL 是此内容的正式版本。"}},{"@type":"Question","name":"为什么需要 Canonical 自指？","acceptedAnswer":{"@type":"Answer","text":"Prevent URLs with parameters from being treated as separate pages，明确声明内容归属避免被判定为重复，Consolidate link equity to the official URL，处理 HTTP/HTTPS 和 www/non-www 变体。"}}]}</script>
+<link rel="stylesheet" href="../../assets/styles.css">
+</head>
+<body>
+<header class="site-header">
+<div class="container">
+<a href="../../en/index.html" class="logo">AI Search Visibility & GSC Indexing Diagnostics</a>
+<nav>
+<a href="../../en/index.html">Home</a>
+<a href="../../en/diagnose/wizard.html">Diagnostic Wizard</a>
+<a href="../../en/index.html#tools">Tools</a>
+<a href="../../en/index.html#guides">Guides</a>
+<a href="../../en/pages/about.html">About</a>
+<div class="lang-switch"><a href="../../zh/guides/self-referencing-canonical.html" hreflang="zh-CN">中文</a></div>
+</nav>
+</div>
+</header>
+<main class="container">
+
+<article class="guide-content">
+  <h1>What Does Self-Referencing Canonical Mean</h1>
+  <p style="color:var(--color-text-secondary);margin-bottom:24px;">Each page's canonical should point to its own official URL, not all pointing to the homepage</p>
+  
+<h2>What is Self-Referencing Canonical</h2>
+<p>Canonical 自指是指页面的 <code>&lt;link rel="canonical"&gt;</code> 标签指向自己的 URL。这明确告诉搜索引擎："这个 URL 是此内容的正式版本"。</p>
+<h2>Why Self-Referencing is Needed</h2>
+<ul>
+<li>Prevent URLs with parameters from being treated as separate pages</li>
+<li>Clearly declare content ownership to avoid being flagged as duplicate</li>
+<li>Consolidate link equity to the official URL</li>
+<li>Handle HTTP/HTTPS, www/non-www variants</li>
+</ul>
+<h2>Common Errors</h2>
+<ul>
+<li>All pages canonical pointing to homepage (most common serious error)</li>
+<li>Canonical using relative path instead of absolute URL</li>
+<li>Canonical URL protocol inconsistent with actual URL</li>
+<li>Canonical pointing to 404 page</li>
+<li>Canonical pointing to URL in redirect chain</li>
+<li>Dynamic page canonical contains session parameters</li>
+</ul>
+<h2>Correct Configuration Example</h2>
+<pre><code>&lt;!-- 正确：自指 --&gt;
+&lt;link rel="canonical" href="https://example.com/blog/my-post"&gt;
+
+&lt;!-- 错误：指向Home --&gt;
+&lt;link rel="canonical" href="https://example.com/"&gt;
+
+&lt;!-- 错误：相对路径 --&gt;
+&lt;link rel="canonical" href="../blog/my-post"&gt;</code></pre>
+<h2>Verification</h2>
+<p>Use <a href="../../en/tools/canonical-checker.html">Canonical Checker</a> 验证你的 canonical 配置。</p>
+</article>
+<div style="margin-top:24px;">
+  <a href="../../en/index.html#guides" class="btn btn-secondary">&larr; Back to Guides</a>
+</div>
+</main>
+<footer class="site-footer">
+<div class="container">
+<div>&copy; 2024 AI Search Visibility & GSC Indexing Diagnostics</div>
+<div>
+<a href="../../en/pages/about.html">About</a> &middot;
+<a href="../../en/pages/contact.html">Contact</a> &middot;
+<a href="../../en/pages/privacy.html">Privacy</a> &middot;
+<a href="../../en/pages/disclaimer.html">Disclaimer</a>
+</div>
+</div>
+</footer>
+<script src="../../assets/app.js"></script>
+</body>
+</html>

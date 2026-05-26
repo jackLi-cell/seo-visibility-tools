@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>How to Check Robots.txt and Noindex - AI Search Visibility & GSC Indexing Diagnostics</title>
+<meta name="description" content="Check if robots.txt, meta robots, and X-Robots-Tag accidentally block pages">
+<link rel="canonical" href="https://seo.jtlcook.com/en/guides/robots-no">
+<link rel="alternate" hreflang="zh-CN" href="../../zh/guides/robots-no">
+<link rel="alternate" hreflang="en" href="https://seo.jtlcook.com/en/guides/robots-no">
+<link rel="alternate" hreflang="x-default" href="../../zh/guides/robots-no">
+<link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+<meta property="og:title" content="How to Check Robots.txt and Noindex - AI Search Visibility & GSC Indexing Diagnostics">
+<meta property="og:description" content="Check if robots.txt, meta robots, and X-Robots-Tag accidentally block pages">
+<meta property="og:url" content="https://seo.jtlcook.com/en/guides/robots-no">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="AI Search Visibility & GSC Indexing Diagnostics">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"How to Check Robots.txt and Noindex","description":"Check if robots.txt, meta robots, and X-Robots-Tag accidentally block pages","datePublished":"2024-01-15","dateModified":"2026-05-20","author":{"@type":"Organization","name":"AI Search Visibility & GSC Indexing Diagnostics"},"publisher":{"@type":"Organization","name":"AI Search Visibility & GSC Indexing Diagnostics"},"mainEntityOfPage":{"@type":"WebPage","@id":"https://seo.jtlcook.com/en/guides/robots-noindex"}}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://seo.jtlcook.com/en/"},{"@type":"ListItem","position":2,"name":"Guides","item":"https://seo.jtlcook.com/en/#guides"},{"@type":"ListItem","position":3,"name":"How to Check Robots.txt and Noindex","item":"https://seo.jtlcook.com/en/guides/robots-noindex"}]}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"robots.txt 和 meta noindex 有什么区别？","acceptedAnswer":{"@type":"Answer","text":"robots.txt 控制爬虫是否可以抓取页面（只是建议），meta noindex 告诉搜索引擎不要收录该页面（更强制）。两者作用不同，robots.txt 屏蔽抓取，noindex 屏蔽收录。"}},{"@type":"Question","name":"常见的误屏蔽场景有哪些？","acceptedAnswer":{"@type":"Answer","text":"常见误屏蔽包括：robots.txt 中 Disallow: / 屏蔽整站、测试环境 noindex 带到生产环境、CMS 的阻止索引选项被勾选、CDN 添加全局 X-Robots-Tag。"}}]}</script>
+<link rel="stylesheet" href="../../assets/styles.css">
+</head>
+<body>
+<header class="site-header">
+<div class="container">
+<a href="../../en/index.html" class="logo">AI Search Visibility & GSC Indexing Diagnostics</a>
+<nav>
+<a href="../../en/index.html">Home</a>
+<a href="../../en/diagnose/wizard.html">Diagnostic Wizard</a>
+<a href="../../en/index.html#tools">Tools</a>
+<a href="../../en/index.html#guides">Guides</a>
+<a href="../../en/pages/about.html">About</a>
+<div class="lang-switch"><a href="../../zh/guides/robots-noindex.html" hreflang="zh-CN">中文</a></div>
+</nav>
+</div>
+</header>
+<main class="container">
+
+<article class="guide-content">
+  <h1>How to Check Robots.txt and Noindex</h1>
+  <p style="color:var(--color-text-secondary);margin-bottom:24px;">Check if robots.txt, meta robots, and X-Robots-Tag accidentally block pages</p>
+  
+<h2>Robots.txt Basics</h2>
+<p>robots.txt is a text file placed in the website root directory that tells crawlers which paths can be crawled and which cannot. Note: robots.txt is only a suggestion, not a mandatory block.</p>
+<h2>Robots.txt Syntax</h2>
+<pre><code># 允许所有爬虫访问所有内容
+User-agent: *
+Allow: /
+
+# 屏蔽特定目录
+User-agent: *
+Disallow: /admin/
+Disallow: /private/
+
+# 指定 Sitemap 位置
+Sitemap: https://example.com/sitemap.xml</code></pre>
+<h2>Meta Robots Tag</h2>
+<pre><code>&lt;!-- 不收录此页面 --&gt;
+&lt;meta name="robots" content="noindex"&gt;
+
+&lt;!-- 不收录且不跟踪链接 --&gt;
+&lt;meta name="robots" content="noindex, nofollow"&gt;</code></pre>
+<h2>X-Robots-Tag HTTP Header</h2>
+<pre><code>X-Robots-Tag: noindex
+X-Robots-Tag: noindex, nofollow</code></pre>
+<h2>Common Accidental Blocking Scenarios</h2>
+<ul>
+<li>robots.txt Disallow: / blocking the entire site</li>
+<li>noindex tag from test environment carried to production</li>
+<li>CMS "Discourage search engines" option is checked</li>
+<li>CDN or server configuration added global X-Robots-Tag</li>
+<li>Framework adds noindex to certain routes by default</li>
+</ul>
+<h2>Troubleshooting Steps</h2>
+<ol class="step-list">
+<li>Visit /robots.txt to check for over-blocking</li>
+<li>View page source and search for "noindex"</li>
+<li>Use developer tools to check X-Robots-Tag in response headers</li>
+<li>Check CMS backend SEO settings</li>
+<li>Confirm CDN configuration has not added extra robots headers</li>
+</ol>
+<h2>Verification</h2>
+<p>Use <a href="../../en/tools/robots-checker.html">Robots Checker</a> paste your robots.txt or meta tags to check.</p>
+</article>
+<div style="margin-top:24px;">
+  <a href="../../en/index.html#guides" class="btn btn-secondary">&larr; Back to Guides</a>
+</div>
+</main>
+<footer class="site-footer">
+<div class="container">
+<div>&copy; 2024 AI Search Visibility & GSC Indexing Diagnostics</div>
+<div>
+<a href="../../en/pages/about.html">About</a> &middot;
+<a href="../../en/pages/contact.html">Contact</a> &middot;
+<a href="../../en/pages/privacy.html">Privacy</a> &middot;
+<a href="../../en/pages/disclaimer.html">Disclaimer</a>
+</div>
+</div>
+</footer>
+<script src="../../assets/app.js"></script>
+</body>
+</html>

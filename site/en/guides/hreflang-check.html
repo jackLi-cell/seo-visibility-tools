@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Multilingual Website hreflang Configuration Check - AI Search Visibility & GSC Indexing Diagnostics</title>
+<meta name="description" content="Check if hreflang tag configuration is correct to avoid multilingual pages competing for rankings">
+<link rel="canonical" href="https://seo.jtlcook.com/en/guides/hreflang-check">
+<link rel="alternate" hreflang="zh-CN" href="../../zh/guides/hreflang-check">
+<link rel="alternate" hreflang="en" href="https://seo.jtlcook.com/en/guides/hreflang-check">
+<link rel="alternate" hreflang="x-default" href="../../zh/guides/hreflang-check">
+<link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+<meta property="og:title" content="Multilingual Website hreflang Configuration Check - AI Search Visibility & GSC Indexing Diagnostics">
+<meta property="og:description" content="Check if hreflang tag configuration is correct to avoid multilingual pages competing for rankings">
+<meta property="og:url" content="https://seo.jtlcook.com/en/guides/hreflang-check">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="AI Search Visibility & GSC Indexing Diagnostics">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"Multilingual Website hreflang Configuration Check","description":"Check if hreflang tag configuration is correct to avoid multilingual pages competing for rankings","datePublished":"2024-01-15","dateModified":"2026-05-20","author":{"@type":"Organization","name":"AI Search Visibility & GSC Indexing Diagnostics"},"publisher":{"@type":"Organization","name":"AI Search Visibility & GSC Indexing Diagnostics"},"mainEntityOfPage":{"@type":"WebPage","@id":"https://seo.jtlcook.com/en/guides/hreflang-check"}}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://seo.jtlcook.com/en/"},{"@type":"ListItem","position":2,"name":"Guides","item":"https://seo.jtlcook.com/en/#guides"},{"@type":"ListItem","position":3,"name":"Multilingual Website hreflang Configuration Check","item":"https://seo.jtlcook.com/en/guides/hreflang-check"}]}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"What is hreflang 标签？","acceptedAnswer":{"@type":"Answer","text":"hreflang 是 HTML 属性，告诉搜索引擎页面有哪些语言/地区版本，帮助搜索引擎向用户展示正确语言的页面。"}},{"@type":"Question","name":"hreflang 最常见的错误是什么？","acceptedAnswer":{"@type":"Answer","text":"最常见的错误是缺少自引用（每个页面必须包含指向自己的 hreflang）和非双向关系（A 指向 B 但 B 没有指向 A）。"}},{"@type":"Question","name":"x-default 是什么意思？","acceptedAnswer":{"@type":"Answer","text":"x-default 指定当用户的语言/地区不匹配任何 hreflang 版本时应该展示的默认页面，通常指向英文版或语言选择页。"}}]}</script>
+<link rel="stylesheet" href="../../assets/styles.css">
+</head>
+<body>
+<header class="site-header">
+<div class="container">
+<a href="../../en/index.html" class="logo">AI Search Visibility & GSC Indexing Diagnostics</a>
+<nav>
+<a href="../../en/index.html">Home</a>
+<a href="../../en/diagnose/wizard.html">Diagnostic Wizard</a>
+<a href="../../en/index.html#tools">Tools</a>
+<a href="../../en/index.html#guides">Guides</a>
+<a href="../../en/pages/about.html">About</a>
+<div class="lang-switch"><a href="../../zh/guides/hreflang-check.html" hreflang="zh-CN">中文</a></div>
+</nav>
+</div>
+</header>
+<main class="container">
+
+<article class="guide-content">
+  <h1>Multilingual Website hreflang Configuration Check</h1>
+  <p style="color:var(--color-text-secondary);margin-bottom:24px;">Check if hreflang tag configuration is correct to avoid multilingual pages competing for rankings</p>
+  
+<h2>What is hreflang</h2>
+<p>hreflang 是一个 HTML 属性，告诉搜索引擎页面有哪些语言/地区版本。正确配置可以避免多语言页面互相竞争排名，确保用户看到正确语言的页面。</p>
+<h2>Common Causes（hreflang 配置错误）</h2>
+<ul>
+<li>hreflang 标签缺少自引用（每个页面必须包含指向自己的 hreflang）</li>
+<li>语言代码格式错误（应Use ISO 639-1，如 zh 而非 chinese）</li>
+<li>缺少 x-default 标签</li>
+<li>hreflang 不是双向的（A 指向 B，但 B 没有指向 A）</li>
+<li>URL Use相对路径而非绝对路径</li>
+</ul>
+<h2>Troubleshooting Steps</h2>
+<ol class="step-list">
+<li>查看页面源码中所有 link rel="alternate" hreflang 标签</li>
+<li>确认每个页面都有自引用的 hreflang 标签</li>
+<li>验证语言代码格式正确（zh-CN、en-US、ja 等）</li>
+<li>Check所有 hreflang 是否双向对应</li>
+<li>确认存在 x-default 标签指向默认版本</li>
+<li>验证 hreflang 中的 URL 都返回 200 且没有重定向</li>
+<li>Check sitemap 中是否也包含了 hreflang 信息</li>
+</ol>
+<h2>Correct Configuration Example</h2>
+<pre><code>&lt;!-- 中文页面 (zh-CN) --&gt;
+&lt;link rel="alternate" hreflang="zh-CN" href="https://example.com/zh/page" /&gt;
+&lt;link rel="alternate" hreflang="en" href="https://example.com/en/page" /&gt;
+&lt;link rel="alternate" hreflang="ja" href="https://example.com/ja/page" /&gt;
+&lt;link rel="alternate" hreflang="x-default" href="https://example.com/en/page" /&gt;
+
+&lt;!-- Sitemap 中的 hreflang --&gt;
+&lt;url&gt;
+  &lt;loc&gt;https://example.com/zh/page&lt;/loc&gt;
+  &lt;xhtml:link rel="alternate" hreflang="zh-CN" href="https://example.com/zh/page"/&gt;
+  &lt;xhtml:link rel="alternate" hreflang="en" href="https://example.com/en/page"/&gt;
+&lt;/url&gt;</code></pre>
+<h2>Fix Methods</h2>
+<ul>
+<li>为每个语言版本页面添加完整的 hreflang 标签集</li>
+<li>确保所有 hreflang 关系是双向的</li>
+<li>添加 x-default 指向默认语言版本</li>
+<li>Use绝对 URL，确保协议和域名一致</li>
+<li>在 sitemap 中也声明 hreflang 关系</li>
+</ul>
+<h2>Verification</h2>
+<p>Use <a href="../../en/tools/html-checker.html">HTML Readability Check Tool</a> Check hreflang 标签格式。在 GSC 中查看国际定位报告，确认没有 hreflang 错误。</p>
+</article>
+<div style="margin-top:24px;">
+  <a href="../../en/index.html#guides" class="btn btn-secondary">&larr; Back to Guides</a>
+</div>
+</main>
+<footer class="site-footer">
+<div class="container">
+<div>&copy; 2024 AI Search Visibility & GSC Indexing Diagnostics</div>
+<div>
+<a href="../../en/pages/about.html">About</a> &middot;
+<a href="../../en/pages/contact.html">Contact</a> &middot;
+<a href="../../en/pages/privacy.html">Privacy</a> &middot;
+<a href="../../en/pages/disclaimer.html">Disclaimer</a>
+</div>
+</div>
+</footer>
+<script src="../../assets/app.js"></script>
+</body>
+</html>

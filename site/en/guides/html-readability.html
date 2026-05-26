@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Initial HTML Readable Content Checklist - AI Search Visibility & GSC Indexing Diagnostics</title>
+<meta name="description" content="Confirm search engines can read core content in initial HTML on first crawl">
+<link rel="canonical" href="https://seo.jtlcook.com/en/guides/html-readability">
+<link rel="alternate" hreflang="zh-CN" href="../../zh/guides/html-readability">
+<link rel="alternate" hreflang="en" href="https://seo.jtlcook.com/en/guides/html-readability">
+<link rel="alternate" hreflang="x-default" href="../../zh/guides/html-readability">
+<link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+<meta property="og:title" content="Initial HTML Readable Content Checklist - AI Search Visibility & GSC Indexing Diagnostics">
+<meta property="og:description" content="Confirm search engines can read core content in initial HTML on first crawl">
+<meta property="og:url" content="https://seo.jtlcook.com/en/guides/html-readability">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="AI Search Visibility & GSC Indexing Diagnostics">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"Initial HTML Readable Content Checklist","description":"Confirm search engines can read core content in initial HTML on first crawl","datePublished":"2024-01-15","dateModified":"2026-05-20","author":{"@type":"Organization","name":"AI Search Visibility & GSC Indexing Diagnostics"},"publisher":{"@type":"Organization","name":"AI Search Visibility & GSC Indexing Diagnostics"},"mainEntityOfPage":{"@type":"WebPage","@id":"https://seo.jtlcook.com/en/guides/html-readability"}}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://seo.jtlcook.com/en/"},{"@type":"ListItem","position":2,"name":"Guides","item":"https://seo.jtlcook.com/en/#guides"},{"@type":"ListItem","position":3,"name":"Initial HTML Readable Content Checklist","item":"https://seo.jtlcook.com/en/guides/html-readability"}]}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"为什么初始 HTML 对 SEO 很重要？","acceptedAnswer":{"@type":"Answer","text":"搜索引擎首次抓取页面时主要读取服务器返回的初始 HTML。虽然 Google 可以执行 JavaScript，但需要额外资源和时间，且不保证完整渲染。"}},{"@type":"Question","name":"What Initial HTML Must Contain？","acceptedAnswer":{"@type":"Answer","text":"必须包含完整的 title 标签、meta description、至少一个 H1、页面核心正文内容、canonical tag、Structured data (JSON-LD)和Internal navigation links。"}}]}</script>
+<link rel="stylesheet" href="../../assets/styles.css">
+</head>
+<body>
+<header class="site-header">
+<div class="container">
+<a href="../../en/index.html" class="logo">AI Search Visibility & GSC Indexing Diagnostics</a>
+<nav>
+<a href="../../en/index.html">Home</a>
+<a href="../../en/diagnose/wizard.html">Diagnostic Wizard</a>
+<a href="../../en/index.html#tools">Tools</a>
+<a href="../../en/index.html#guides">Guides</a>
+<a href="../../en/pages/about.html">About</a>
+<div class="lang-switch"><a href="../../zh/guides/html-readability.html" hreflang="zh-CN">中文</a></div>
+</nav>
+</div>
+</header>
+<main class="container">
+
+<article class="guide-content">
+  <h1>Initial HTML Readable Content Checklist</h1>
+  <p style="color:var(--color-text-secondary);margin-bottom:24px;">Confirm search engines can read core content in initial HTML on first crawl</p>
+  
+<h2>Why Initial HTML Matters</h2>
+<p>When search engines first crawl a page, they primarily read the initial HTML returned by the server. While Google can execute JavaScript, this requires additional crawl resources and time, with no guarantee of complete rendering.</p>
+<h2>What Initial HTML Must Contain</h2>
+<ul class="checklist">
+<li>Complete title tag (not dynamically set by JS)</li>
+<li>meta description tag</li>
+<li>At least one H1 tag containing the page topic</li>
+<li>Core page body content (not dependent on JS loading)</li>
+<li>canonical tag</li>
+<li>Structured data (JSON-LD)</li>
+<li>Internal navigation links</li>
+</ul>
+<h2>JS Rendering Issues</h2>
+<ul>
+<li>SPA without SSR/SSG, initial HTML only has empty div</li>
+<li>Content loaded asynchronously via AJAX</li>
+<li>Key content only inserted into DOM after JS execution</li>
+<li>Using client-side routing, server returns same HTML for all routes</li>
+</ul>
+<h2>Solutions</h2>
+<ul>
+<li>Use SSR (Server-Side Rendering) or SSG (Static Site Generation)</li>
+<li>Ensure key content is visible in initial HTML</li>
+<li>Use frameworks that support SSR like Next.js, Nuxt.js</li>
+<li>Consider pre-rendering solutions for pure client-side apps</li>
+</ul>
+<h2>How to Check</h2>
+<pre><code># 查看初始 HTML（不执行 JS）
+curl -s https://example.com/page | grep -i "h1|title|description"</code></pre>
+<h2>Verification</h2>
+<p>Use <a href="../../en/tools/html-checker.html">HTML Readability Check Tool</a> paste your page source code to check.</p>
+</article>
+<div style="margin-top:24px;">
+  <a href="../../en/index.html#guides" class="btn btn-secondary">&larr; Back to Guides</a>
+</div>
+</main>
+<footer class="site-footer">
+<div class="container">
+<div>&copy; 2024 AI Search Visibility & GSC Indexing Diagnostics</div>
+<div>
+<a href="../../en/pages/about.html">About</a> &middot;
+<a href="../../en/pages/contact.html">Contact</a> &middot;
+<a href="../../en/pages/privacy.html">Privacy</a> &middot;
+<a href="../../en/pages/disclaimer.html">Disclaimer</a>
+</div>
+</div>
+</footer>
+<script src="../../assets/app.js"></script>
+</body>
+</html>

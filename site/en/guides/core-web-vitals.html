@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Impact of Core Web Vitals on Indexing - AI Search Visibility & GSC Indexing Diagnostics</title>
+<meta name="description" content="How the three core metrics LCP, INP, and CLS affect search ranking and indexing priority">
+<link rel="canonical" href="https://seo.jtlcook.com/en/guides/core-web-vitals">
+<link rel="alternate" hreflang="zh-CN" href="../../zh/guides/core-web-vitals">
+<link rel="alternate" hreflang="en" href="https://seo.jtlcook.com/en/guides/core-web-vitals">
+<link rel="alternate" hreflang="x-default" href="../../zh/guides/core-web-vitals">
+<link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+<meta property="og:title" content="Impact of Core Web Vitals on Indexing - AI Search Visibility & GSC Indexing Diagnostics">
+<meta property="og:description" content="How the three core metrics LCP, INP, and CLS affect search ranking and indexing priority">
+<meta property="og:url" content="https://seo.jtlcook.com/en/guides/core-web-vitals">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="AI Search Visibility & GSC Indexing Diagnostics">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"Impact of Core Web Vitals on Indexing","description":"How the three core metrics LCP, INP, and CLS affect search ranking and indexing priority","datePublished":"2024-01-15","dateModified":"2026-05-20","author":{"@type":"Organization","name":"AI Search Visibility & GSC Indexing Diagnostics"},"publisher":{"@type":"Organization","name":"AI Search Visibility & GSC Indexing Diagnostics"},"mainEntityOfPage":{"@type":"WebPage","@id":"https://seo.jtlcook.com/en/guides/core-web-vitals"}}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://seo.jtlcook.com/en/"},{"@type":"ListItem","position":2,"name":"Guides","item":"https://seo.jtlcook.com/en/#guides"},{"@type":"ListItem","position":3,"name":"Impact of Core Web Vitals on Indexing","item":"https://seo.jtlcook.com/en/guides/core-web-vitals"}]}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Core Web Vitals 包含哪些指标？","acceptedAnswer":{"@type":"Answer","text":"包含三个指标：LCP（最大内容绘制，衡量加载速度）、INP（交互到下一次绘制，衡量交互响应）、CLS（累积布局偏移，衡量视觉稳定性）。"}},{"@type":"Question","name":"Core Web Vitals 的Passing Thresholds是什么？","acceptedAnswer":{"@type":"Answer","text":"LCP 应小于 2.5 秒，INP 应小于 200 毫秒，CLS 应小于 0.1。超过这些阈值会被标记为需要改进或差。"}},{"@type":"Question","name":"Core Web Vitals 会影响收录吗？","acceptedAnswer":{"@type":"Answer","text":"不会直接影响收录，但会影响排名。Google 将 Core Web Vitals 作为排名信号之一，性能差的页面在竞争中处于劣势。"}}]}</script>
+<link rel="stylesheet" href="../../assets/styles.css">
+</head>
+<body>
+<header class="site-header">
+<div class="container">
+<a href="../../en/index.html" class="logo">AI Search Visibility & GSC Indexing Diagnostics</a>
+<nav>
+<a href="../../en/index.html">Home</a>
+<a href="../../en/diagnose/wizard.html">Diagnostic Wizard</a>
+<a href="../../en/index.html#tools">Tools</a>
+<a href="../../en/index.html#guides">Guides</a>
+<a href="../../en/pages/about.html">About</a>
+<div class="lang-switch"><a href="../../zh/guides/core-web-vitals.html" hreflang="zh-CN">中文</a></div>
+</nav>
+</div>
+</header>
+<main class="container">
+
+<article class="guide-content">
+  <h1>Impact of Core Web Vitals on Indexing</h1>
+  <p style="color:var(--color-text-secondary);margin-bottom:24px;">How the three core metrics LCP, INP, and CLS affect search ranking and indexing priority</p>
+  
+<h2>What are Core Web Vitals</h2>
+<p>Core Web Vitals（核心网页指标）是 Google 用来衡量用户体验的三个关键指标：LCP（最大内容绘制）、INP（交互到下一次绘制）和 CLS（累积布局偏移）。这些指标直接影响搜索排名。</p>
+<h2>Common Causes（指标不达标）</h2>
+<ul>
+<li>LCP 过慢：大图片未优化、服务器响应慢、渲染阻塞资源多</li>
+<li>INP 过高：JavaScript 执行时间长、主线程阻塞、事件处理器复杂</li>
+<li>CLS 过大：图片/广告没有预留尺寸、动态内容插入、字体加载闪烁</li>
+<li>第三方脚本拖慢页面性能</li>
+<li>未Use CDN 或缓存策略不当</li>
+</ul>
+<h2>Troubleshooting Steps</h2>
+<ol class="step-list">
+<li>在 GSC 的 Core Web Vitals 报告中查看整站状态</li>
+<li>Use PageSpeed Insights 测试具体页面得分</li>
+<li>在 Chrome DevTools Performance 面板录制页面加载</li>
+<li>Check LCP 元素是什么（通常是首屏大图或标题）</li>
+<li>分析 INP 最差的交互是哪个（点击、输入等）</li>
+<li>Use Layout Shift Debugger 定位 CLS 来源</li>
+<li>Check第三方脚本对性能的影响</li>
+</ol>
+<h2>Passing Thresholds</h2>
+<div class="table-wrap"><table>
+<tr><th>指标</th><th>良好</th><th>需改进</th><th>差</th></tr>
+<tr><td>LCP</td><td>&le; 2.5s</td><td>2.5s - 4.0s</td><td>&gt; 4.0s</td></tr>
+<tr><td>INP</td><td>&le; 200ms</td><td>200ms - 500ms</td><td>&gt; 500ms</td></tr>
+<tr><td>CLS</td><td>&le; 0.1</td><td>0.1 - 0.25</td><td>&gt; 0.25</td></tr>
+</table></div>
+<h2>Fix Methods</h2>
+<ul>
+<li>LCP：压缩图片、Use WebP/AVIF、预加载关键资源、优化 TTFB</li>
+<li>INP：拆分长任务、Use Web Worker、延迟非关键 JS</li>
+<li>CLS：为图片/视频设置 width/height、避免动态插入内容、Use font-display: swap</li>
+<li>启用 CDN 和浏览器缓存</li>
+<li>延迟加载非首屏资源</li>
+</ul>
+<h2>Verification</h2>
+<p>修复后Use PageSpeed Insights 重新测试。注意 CrUX 数据（真实用户数据）需要 28 天才能更新。GSC 报告也会在数据积累后反映改善。</p>
+</article>
+<div style="margin-top:24px;">
+  <a href="../../en/index.html#guides" class="btn btn-secondary">&larr; Back to Guides</a>
+</div>
+</main>
+<footer class="site-footer">
+<div class="container">
+<div>&copy; 2024 AI Search Visibility & GSC Indexing Diagnostics</div>
+<div>
+<a href="../../en/pages/about.html">About</a> &middot;
+<a href="../../en/pages/contact.html">Contact</a> &middot;
+<a href="../../en/pages/privacy.html">Privacy</a> &middot;
+<a href="../../en/pages/disclaimer.html">Disclaimer</a>
+</div>
+</div>
+</footer>
+<script src="../../assets/app.js"></script>
+</body>
+</html>

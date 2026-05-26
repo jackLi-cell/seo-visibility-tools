@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>IndexNow Protocol Usage Guide - AI Search Visibility & GSC Indexing Diagnostics</title>
+<meta name="description" content="Proactively notify search engines of content updates via IndexNow protocol to accelerate Bing and Yandex indexing">
+<link rel="canonical" href="https://seo.jtlcook.com/en/guides/indexnow-protocol">
+<link rel="alternate" hreflang="zh-CN" href="../../zh/guides/indexnow-protocol">
+<link rel="alternate" hreflang="en" href="https://seo.jtlcook.com/en/guides/indexnow-protocol">
+<link rel="alternate" hreflang="x-default" href="../../zh/guides/indexnow-protocol">
+<link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+<meta property="og:title" content="IndexNow Protocol Usage Guide - AI Search Visibility & GSC Indexing Diagnostics">
+<meta property="og:description" content="Proactively notify search engines of content updates via IndexNow protocol to accelerate Bing and Yandex indexing">
+<meta property="og:url" content="https://seo.jtlcook.com/en/guides/indexnow-protocol">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="AI Search Visibility & GSC Indexing Diagnostics">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"IndexNow Protocol Usage Guide","description":"Proactively notify search engines of content updates via IndexNow protocol to accelerate Bing and Yandex indexing","datePublished":"2024-01-15","dateModified":"2026-05-20","author":{"@type":"Organization","name":"AI Search Visibility & GSC Indexing Diagnostics"},"publisher":{"@type":"Organization","name":"AI Search Visibility & GSC Indexing Diagnostics"},"mainEntityOfPage":{"@type":"WebPage","@id":"https://seo.jtlcook.com/en/guides/indexnow-protocol"}}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://seo.jtlcook.com/en/"},{"@type":"ListItem","position":2,"name":"Guides","item":"https://seo.jtlcook.com/en/#guides"},{"@type":"ListItem","position":3,"name":"IndexNow Protocol Usage Guide","item":"https://seo.jtlcook.com/en/guides/indexnow-protocol"}]}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"What is IndexNow 协议？","acceptedAnswer":{"@type":"Answer","text":"IndexNow 是一个开放协议，允许网站在内容更新时主动通知搜索引擎，支持 Bing、Yandex、Seznam 和 Naver，可以显著加速收录速度。"}},{"@type":"Question","name":"Google 支持 IndexNow 吗？","acceptedAnswer":{"@type":"Answer","text":"截至目前 Google 不支持 IndexNow，但正在评估中。IndexNow 主要加速 Bing 和 Yandex 的收录。"}},{"@type":"Question","name":"如何配置 IndexNow？","acceptedAnswer":{"@type":"Answer","text":"生成一个 API key，将 key 文件放在网站根目录，然后在内容更新时通过 HTTP GET 或 POST 请求通知 IndexNow API。"}}]}</script>
+<link rel="stylesheet" href="../../assets/styles.css">
+</head>
+<body>
+<header class="site-header">
+<div class="container">
+<a href="../../en/index.html" class="logo">AI Search Visibility & GSC Indexing Diagnostics</a>
+<nav>
+<a href="../../en/index.html">Home</a>
+<a href="../../en/diagnose/wizard.html">Diagnostic Wizard</a>
+<a href="../../en/index.html#tools">Tools</a>
+<a href="../../en/index.html#guides">Guides</a>
+<a href="../../en/pages/about.html">About</a>
+<div class="lang-switch"><a href="../../zh/guides/indexnow-protocol.html" hreflang="zh-CN">中文</a></div>
+</nav>
+</div>
+</header>
+<main class="container">
+
+<article class="guide-content">
+  <h1>IndexNow Protocol Usage Guide</h1>
+  <p style="color:var(--color-text-secondary);margin-bottom:24px;">Proactively notify search engines of content updates via IndexNow protocol to accelerate Bing and Yandex indexing</p>
+  
+<h2>What is IndexNow</h2>
+<p>IndexNow 是一个开放协议，允许网站主动通知搜索引擎内容已更新。支持 IndexNow 的搜索引擎包括 Bing、Yandex、Seznam 和 Naver。Google 目前不支持但在评估中。</p>
+<h2>Common Causes（收录延迟）</h2>
+<ul>
+<li>依赖搜索引擎自然发现，没有主动通知机制</li>
+<li>Sitemap 更新频率低，搜索引擎不知道内容已变化</li>
+<li>新页面发布后没有任何推送动作</li>
+<li>不了解 IndexNow 可以显著加速 Bing 收录</li>
+</ul>
+<h2>Troubleshooting Steps</h2>
+<ol class="step-list">
+<li>确认网站是否已配置 IndexNow（Check根目录是否有 key 文件）</li>
+<li>生成 IndexNow API key（32 位十六进制字符串）</li>
+<li>将 key 文件放置在网站根目录（如 /abc123.txt）</li>
+<li>测试 API 调用是否返回 200 状态码</li>
+<li>Check CMS 或部署流程是否集成了 IndexNow 推送</li>
+<li>验证推送的 URL 列表是否正确</li>
+</ol>
+<h2>Configuration</h2>
+<pre><code># 1. 生成 key 文件
+echo "your-api-key-here" > public/your-api-key-here.txt
+
+# 2. 单个 URL 推送
+curl "https://api.indexnow.org/indexnow?url=https://example.com/new-page&key=your-api-key-here"
+
+# 3. 批量推送（POST 请求）
+curl -X POST "https://api.indexnow.org/indexnow" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "host": "example.com",
+    "key": "your-api-key-here",
+    "urlList": [
+      "https://example.com/page1",
+      "https://example.com/page2"
+    ]
+  }'</code></pre>
+<h2>CMS Integration</h2>
+<ul>
+<li>WordPress：安装 IndexNow 官方插件</li>
+<li>Next.js：在 build 后脚本中调用 API</li>
+<li>Hugo/Jekyll：在 CI/CD 部署后触发推送</li>
+<li>自定义 CMS：在内容发布 hook 中集成</li>
+</ul>
+<h2>Fix Methods</h2>
+<ul>
+<li>生成 API key 并放置验证文件</li>
+<li>在内容发布流程中集成 IndexNow 推送</li>
+<li>批量推送已有但未收录的页面</li>
+<li>设置自动化：每次部署后自动推送变更 URL</li>
+</ul>
+<h2>Verification</h2>
+<p>推送后在 Bing Webmaster Tools 中查看 URL 提交记录。通常 Bing 会在几小时内抓取推送的 URL。Use <a href="../../en/tools/sitemap-audit.html">Sitemap Audit Tool</a> check URL list format.</p>
+</article>
+<div style="margin-top:24px;">
+  <a href="../../en/index.html#guides" class="btn btn-secondary">&larr; Back to Guides</a>
+</div>
+</main>
+<footer class="site-footer">
+<div class="container">
+<div>&copy; 2024 AI Search Visibility & GSC Indexing Diagnostics</div>
+<div>
+<a href="../../en/pages/about.html">About</a> &middot;
+<a href="../../en/pages/contact.html">Contact</a> &middot;
+<a href="../../en/pages/privacy.html">Privacy</a> &middot;
+<a href="../../en/pages/disclaimer.html">Disclaimer</a>
+</div>
+</div>
+</footer>
+<script src="../../assets/app.js"></script>
+</body>
+</html>
