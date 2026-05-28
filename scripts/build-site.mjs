@@ -9,9 +9,14 @@ const ROOT = join(__dirname, '..');
 const SITE = join(ROOT, 'site');
 const DATA = join(ROOT, 'data');
 
-const DOMAIN = 'https://seo.jtlcook.com';
+const DOMAIN = normalizeSiteUrl(process.env.SITE_URL, 'https://seo.jtlcook.com');
 const SITE_NAME = '搜索可见性与 GSC 收录诊断工具';
 const EMAIL = '1055567003@qq.com';
+
+function normalizeSiteUrl(value, fallback) {
+  const raw = String(value || fallback || '').trim().replace(/\/+$/, '');
+  return raw.replace(/^http:\/\//i, 'https://');
+}
 
 const guides = JSON.parse(readFileSync(join(DATA, 'guides.json'), 'utf-8'));
 const tools = JSON.parse(readFileSync(join(DATA, 'tools.json'), 'utf-8'));

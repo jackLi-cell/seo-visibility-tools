@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Core Web Vitals 对收录的影响 - 搜索可见性与 GSC 收录诊断工具</title>
+<meta name="description" content="LCP、INP、CLS 三大核心指标如何影响搜索排名和收录优先级">
+<link rel="canonical" href="https://seo.jtlcook.com/guides/core-web-vitals">
+<link rel="icon" type="image/svg+xml" href="../favicon.svg">
+<meta property="og:title" content="Core Web Vitals 对收录的影响 - 搜索可见性与 GSC 收录诊断工具">
+<meta property="og:description" content="LCP、INP、CLS 三大核心指标如何影响搜索排名和收录优先级">
+<meta property="og:url" content="https://seo.jtlcook.com/guides/core-web-vitals">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="搜索可见性与 GSC 收录诊断工具">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"Core Web Vitals 对收录的影响","description":"LCP、INP、CLS 三大核心指标如何影响搜索排名和收录优先级","datePublished":"2024-01-15","dateModified":"2026-05-27","author":{"@type":"Organization","name":"搜索可见性与 GSC 收录诊断工具"},"publisher":{"@type":"Organization","name":"搜索可见性与 GSC 收录诊断工具"},"mainEntityOfPage":{"@type":"WebPage","@id":"https://seo.jtlcook.com/guides/core-web-vitals"}}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"首页","item":"https://seo.jtlcook.com/"},{"@type":"ListItem","position":2,"name":"指南","item":"https://seo.jtlcook.com/#guides"},{"@type":"ListItem","position":3,"name":"Core Web Vitals 对收录的影响","item":"https://seo.jtlcook.com/guides/core-web-vitals"}]}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Core Web Vitals 包含哪些指标？","acceptedAnswer":{"@type":"Answer","text":"包含三个指标：LCP（最大内容绘制，衡量加载速度）、INP（交互到下一次绘制，衡量交互响应）、CLS（累积布局偏移，衡量视觉稳定性）。"}},{"@type":"Question","name":"Core Web Vitals 的达标阈值是什么？","acceptedAnswer":{"@type":"Answer","text":"LCP 应小于 2.5 秒，INP 应小于 200 毫秒，CLS 应小于 0.1。超过这些阈值会被标记为需要改进或差。"}},{"@type":"Question","name":"Core Web Vitals 会影响收录吗？","acceptedAnswer":{"@type":"Answer","text":"不会直接影响收录，但会影响排名。Google 将 Core Web Vitals 作为排名信号之一，性能差的页面在竞争中处于劣势。"}}]}</script>
+<link rel="stylesheet" href="../assets/styles.css">
+</head>
+<body>
+<header class="site-header">
+<div class="container">
+<a href="../index.html" class="logo">搜索可见性与 GSC 收录诊断工具</a>
+<nav>
+<a href="../index.html">首页</a>
+<a href="../diagnose/wizard.html">诊断向导</a>
+<a href="../index.html#tools">工具</a>
+<a href="../index.html#guides">指南</a>
+<a href="../pages/about.html">关于</a>
+</nav>
+</div>
+</header>
+<main class="container">
+
+<article class="guide-content">
+  <h1>Core Web Vitals 对收录的影响</h1>
+  <p style="color:var(--color-text-secondary);margin-bottom:24px;">LCP、INP、CLS 三大核心指标如何影响搜索排名和收录优先级</p>
+  
+<h2>什么是 Core Web Vitals</h2>
+<p>Core Web Vitals（核心网页指标）是 Google 用来衡量用户体验的三个关键指标：LCP（最大内容绘制）、INP（交互到下一次绘制）和 CLS（累积布局偏移）。这些指标直接影响搜索排名。</p>
+<h2>常见原因（指标不达标）</h2>
+<ul>
+<li>LCP 过慢：大图片未优化、服务器响应慢、渲染阻塞资源多</li>
+<li>INP 过高：JavaScript 执行时间长、主线程阻塞、事件处理器复杂</li>
+<li>CLS 过大：图片/广告没有预留尺寸、动态内容插入、字体加载闪烁</li>
+<li>第三方脚本拖慢页面性能</li>
+<li>未使用 CDN 或缓存策略不当</li>
+</ul>
+<h2>排查步骤</h2>
+<ol class="step-list">
+<li>在 GSC 的 Core Web Vitals 报告中查看整站状态</li>
+<li>使用 PageSpeed Insights 测试具体页面得分</li>
+<li>在 Chrome DevTools Performance 面板录制页面加载</li>
+<li>检查 LCP 元素是什么（通常是首屏大图或标题）</li>
+<li>分析 INP 最差的交互是哪个（点击、输入等）</li>
+<li>使用 Layout Shift Debugger 定位 CLS 来源</li>
+<li>检查第三方脚本对性能的影响</li>
+</ol>
+<h2>达标阈值</h2>
+<div class="table-wrap"><table>
+<tr><th>指标</th><th>良好</th><th>需改进</th><th>差</th></tr>
+<tr><td>LCP</td><td>&le; 2.5s</td><td>2.5s - 4.0s</td><td>&gt; 4.0s</td></tr>
+<tr><td>INP</td><td>&le; 200ms</td><td>200ms - 500ms</td><td>&gt; 500ms</td></tr>
+<tr><td>CLS</td><td>&le; 0.1</td><td>0.1 - 0.25</td><td>&gt; 0.25</td></tr>
+</table></div>
+<h2>修复方法</h2>
+<ul>
+<li>LCP：压缩图片、使用 WebP/AVIF、预加载关键资源、优化 TTFB</li>
+<li>INP：拆分长任务、使用 Web Worker、延迟非关键 JS</li>
+<li>CLS：为图片/视频设置 width/height、避免动态插入内容、使用 font-display: swap</li>
+<li>启用 CDN 和浏览器缓存</li>
+<li>延迟加载非首屏资源</li>
+</ul>
+<h2>验证方法</h2>
+<p>修复后使用 PageSpeed Insights 重新测试。注意 CrUX 数据（真实用户数据）需要 28 天才能更新。GSC 报告也会在数据积累后反映改善。</p>
+</article>
+<div style="margin-top:24px;">
+  <a href="../index.html#guides" class="btn btn-secondary">&larr; 返回指南列表</a>
+</div>
+</main>
+<footer class="site-footer">
+<div class="container">
+<div>&copy; 2024 搜索可见性与 GSC 收录诊断工具</div>
+<div>
+<a href="../pages/about.html">关于</a> &middot;
+<a href="../pages/contact.html">联系</a> &middot;
+<a href="../pages/privacy.html">隐私</a> &middot;
+<a href="../pages/disclaimer.html">免责声明</a>
+</div>
+</div>
+</footer>
+<script src="../assets/app.js"></script>
+</body>
+</html>

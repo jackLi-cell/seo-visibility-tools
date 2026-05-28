@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>结构化数据和 FAQ 基础检查 - 搜索可见性与 GSC 收录诊断工具</title>
+<meta name="description" content="JSON-LD 结构化数据的基本检查方法和常见错误">
+<link rel="canonical" href="https://seo.jtlcook.com/guides/structured-data">
+<link rel="icon" type="image/svg+xml" href="../favicon.svg">
+<meta property="og:title" content="结构化数据和 FAQ 基础检查 - 搜索可见性与 GSC 收录诊断工具">
+<meta property="og:description" content="JSON-LD 结构化数据的基本检查方法和常见错误">
+<meta property="og:url" content="https://seo.jtlcook.com/guides/structured-data">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="搜索可见性与 GSC 收录诊断工具">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"结构化数据和 FAQ 基础检查","description":"JSON-LD 结构化数据的基本检查方法和常见错误","datePublished":"2024-01-15","dateModified":"2026-05-27","author":{"@type":"Organization","name":"搜索可见性与 GSC 收录诊断工具"},"publisher":{"@type":"Organization","name":"搜索可见性与 GSC 收录诊断工具"},"mainEntityOfPage":{"@type":"WebPage","@id":"https://seo.jtlcook.com/guides/structured-data"}}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"首页","item":"https://seo.jtlcook.com/"},{"@type":"ListItem","position":2,"name":"指南","item":"https://seo.jtlcook.com/#guides"},{"@type":"ListItem","position":3,"name":"结构化数据和 FAQ 基础检查","item":"https://seo.jtlcook.com/guides/structured-data"}]}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"什么是结构化数据？","acceptedAnswer":{"@type":"Answer","text":"结构化数据是用标准格式（通常是 JSON-LD）向搜索引擎描述页面内容的方式，帮助搜索引擎理解页面的类型、内容和关系。"}},{"@type":"Question","name":"JSON-LD 常见错误有哪些？","acceptedAnswer":{"@type":"Answer","text":"常见错误包括：JSON 格式错误、使用不存在的 schema 类型或属性、结构化数据与页面可见内容不一致、缺少必需属性、日期格式不正确。"}}]}</script>
+<link rel="stylesheet" href="../assets/styles.css">
+</head>
+<body>
+<header class="site-header">
+<div class="container">
+<a href="../index.html" class="logo">搜索可见性与 GSC 收录诊断工具</a>
+<nav>
+<a href="../index.html">首页</a>
+<a href="../diagnose/wizard.html">诊断向导</a>
+<a href="../index.html#tools">工具</a>
+<a href="../index.html#guides">指南</a>
+<a href="../pages/about.html">关于</a>
+</nav>
+</div>
+</header>
+<main class="container">
+
+<article class="guide-content">
+  <h1>结构化数据和 FAQ 基础检查</h1>
+  <p style="color:var(--color-text-secondary);margin-bottom:24px;">JSON-LD 结构化数据的基本检查方法和常见错误</p>
+  
+<h2>什么是结构化数据</h2>
+<p>结构化数据是用标准格式（通常是 JSON-LD）向搜索引擎描述页面内容的方式。它帮助搜索引擎理解页面的类型、内容和关系。</p>
+<h2>常见原因（结构化数据问题）</h2>
+<ul>
+<li>JSON 格式错误（缺少逗号、引号不匹配）</li>
+<li>使用了不存在的 schema 类型或属性</li>
+<li>结构化数据内容与页面可见内容不一致</li>
+<li>缺少必需属性</li>
+<li>日期格式不正确（应使用 ISO 8601）</li>
+</ul>
+<h2>排查步骤</h2>
+<ol class="step-list">
+<li>查看页面源码，找到所有 script type="application/ld+json" 标签</li>
+<li>将 JSON-LD 内容粘贴到 JSON 验证器中检查格式</li>
+<li>使用 Google 富媒体搜索结果测试工具验证 schema 有效性</li>
+<li>对比结构化数据中的内容与页面可见内容是否一致</li>
+<li>检查是否缺少必需属性（如 Article 需要 headline、author）</li>
+<li>确认日期格式为 ISO 8601（如 2024-01-15）</li>
+<li>验证 URL 字段使用绝对路径而非相对路径</li>
+</ol>
+<h2>JSON-LD 基础</h2>
+<pre><code>&lt;script type="application/ld+json"&gt;
+{
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  "name": "页面标题",
+  "description": "页面描述",
+  "dateModified": "2024-01-15",
+  "author": {
+    "@type": "Person",
+    "name": "作者名"
+  }
+}
+&lt;/script&gt;</code></pre>
+<h2>FAQPage 结构化数据</h2>
+<pre><code>&lt;script type="application/ld+json"&gt;
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "问题1？",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "答案1"
+      }
+    }
+  ]
+}
+&lt;/script&gt;</code></pre>
+<h2>WebApplication 结构化数据</h2>
+<pre><code>&lt;script type="application/ld+json"&gt;
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "工具名称",
+  "description": "工具描述",
+  "applicationCategory": "SEO Tool",
+  "operatingSystem": "Web Browser",
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD"
+  }
+}
+&lt;/script&gt;</code></pre>
+<h2>修复方法</h2>
+<ul>
+<li>使用在线 JSON 验证器修复格式错误</li>
+<li>参考 schema.org 官方文档确认属性名称</li>
+<li>确保结构化数据与页面可见内容完全一致</li>
+<li>添加所有必需属性，补充推荐属性</li>
+<li>统一使用 ISO 8601 日期格式</li>
+</ul>
+<h2>验证方法</h2>
+<p>使用 <a href="../tools/html-checker.html">HTML 可读性检查工具</a> 检查 JSON-LD 格式是否有效。也可以使用 Google 的富媒体搜索结果测试工具在线验证。</p>
+</article>
+<div style="margin-top:24px;">
+  <a href="../index.html#guides" class="btn btn-secondary">&larr; 返回指南列表</a>
+</div>
+</main>
+<footer class="site-footer">
+<div class="container">
+<div>&copy; 2024 搜索可见性与 GSC 收录诊断工具</div>
+<div>
+<a href="../pages/about.html">关于</a> &middot;
+<a href="../pages/contact.html">联系</a> &middot;
+<a href="../pages/privacy.html">隐私</a> &middot;
+<a href="../pages/disclaimer.html">免责声明</a>
+</div>
+</div>
+</footer>
+<script src="../assets/app.js"></script>
+</body>
+</html>

@@ -2,7 +2,12 @@ const fs = require('fs');
 const path = require('path');
 
 const SITE_DIR = path.join(__dirname, 'site');
-const DOMAIN = 'https://seo.jtlcook.com';
+const DOMAIN = normalizeSiteUrl(process.env.SITE_URL, 'https://seo.jtlcook.com');
+
+function normalizeSiteUrl(value, fallback) {
+  const raw = String(value || fallback || '').trim().replace(/\/+$/, '');
+  return raw.replace(/^http:\/\//i, 'https://');
+}
 
 // Translation dictionary for Chinese -> English
 const translations = {

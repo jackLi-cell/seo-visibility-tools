@@ -30,7 +30,7 @@
 <a href="../zh/index.html#tools">工具</a>
 <a href="../zh/index.html#guides">指南</a>
 <a href="../zh/pages/about.html">关于</a>
-<div class="lang-switch"><a href="../en/index.html" hreflang="en">English</a></div>
+<div class="lang-switch"><a href="https://seo.jtlcook.com/en/index" hreflang="en">English</a></div>
 </nav>
 </div>
 </header>
@@ -43,6 +43,7 @@
   </p>
   <a href="../zh/diagnose/wizard.html" class="btn btn-primary">开始诊断</a>
 </section>
+
 <section class="quick-check-section" id="quick-check-section">
   <h2>快速检查</h2>
   <p style="color:var(--color-text-secondary);margin-bottom:16px;">粘贴一个 URL，选择检查工具，快速开始诊断。</p>
@@ -67,7 +68,7 @@
     <div class="card"><h3>服务器错误 5xx</h3><p>服务器返回错误</p><a href="../zh/guides/server-error-5xx.html" class="card-link">排查方法 &rarr;</a></div>
     <div class="card"><h3>Sitemap 问题</h3><p>Sitemap 配置不当</p><a href="../zh/guides/sitemap-best-practices.html" class="card-link">最佳实践 &rarr;</a></div>
     <div class="card"><h3>Canonical 错误</h3><p>Canonical 没有自指</p><a href="../zh/guides/self-referencing-canonical.html" class="card-link">了解详情 &rarr;</a></div>
-    <div class="card"><h3>Robots 屏蔽</h3><p>误用 noindex 或 disallow</p><a href="../zh/guides/robots-noindex.html" class="card-link">排查方法 &rarr;</a></div>
+    <div class="card"><h3>Robots 屏蔽</h3><p>误用 noindex 或 disallow</p><a href="../zh/guides/robots-noindex.html" class="card-link">检查方法 &rarr;</a></div>
   </div>
 </section>
 
@@ -101,26 +102,90 @@
       <a href="../zh/tools/ai-readability-scorer.html" class="card-link">使用工具 &rarr;</a>
     </div></div>
 </section>
+
 <section id="guides" style="margin-top:40px;">
   <h2>排查指南</h2>
   <div class="card-grid">
-    <div class="card"><h3>已发现但未编入索引怎么排查</h3><p>Google 发现了 URL 但还没有抓取，通常是抓取优先级不够或页面质量信号不足</p><a href="../zh/guides/discovered-not-indexed.html" class="card-link">查看指南 &rarr;</a></div>
-    <div class="card"><h3>已抓取但未编入索引怎么排查</h3><p>Google 已抓取但认为不值得收录，通常是内容质量、重复或薄内容问题</p><a href="../zh/guides/crawled-not-indexed.html" class="card-link">查看指南 &rarr;</a></div>
-    <div class="card"><h3>GSC 服务器错误 5xx 怎么定位</h3><p>服务器返回 5xx 错误，需要定位具体 URL 和错误原因</p><a href="../zh/guides/server-error-5xx.html" class="card-link">查看指南 &rarr;</a></div>
-    <div class="card"><h3>Sitemap 应该提交哪些页面</h3><p>sitemap 只收录高质量公开页面，不要把所有文件都塞进去</p><a href="../zh/guides/sitemap-best-practices.html" class="card-link">查看指南 &rarr;</a></div>
-    <div class="card"><h3>Canonical 自指是什么意思</h3><p>每个页面的 canonical 应该指向自己的正式 URL，不要全站指向首页</p><a href="../zh/guides/self-referencing-canonical.html" class="card-link">查看指南 &rarr;</a></div>
-    <div class="card"><h3>Next.js Canonical 配置常见错误</h3><p>Next.js App Router 中 metadata 和 canonical 的正确配置方法</p><a href="../zh/guides/nextjs-canonical.html" class="card-link">查看指南 &rarr;</a></div>
-    <div class="card"><h3>Robots.txt 和 Noindex 怎么检查</h3><p>检查 robots.txt、meta robots 和 X-Robots-Tag 是否误屏蔽页面</p><a href="../zh/guides/robots-noindex.html" class="card-link">查看指南 &rarr;</a></div>
-    <div class="card"><h3>初始 HTML 可读内容检查清单</h3><p>确认搜索引擎首次抓取时能在初始 HTML 中读到核心内容</p><a href="../zh/guides/html-readability.html" class="card-link">查看指南 &rarr;</a></div>
-    <div class="card"><h3>AI 搜索可读性怎么提升</h3><p>让页面能被 AI 搜索引擎和摘要工具有效理解的优化方法</p><a href="../zh/guides/ai-search-readability.html" class="card-link">查看指南 &rarr;</a></div>
-    <div class="card"><h3>结构化数据和 FAQ 基础检查</h3><p>JSON-LD 结构化数据的基本检查方法和常见错误</p><a href="../zh/guides/structured-data.html" class="card-link">查看指南 &rarr;</a></div>
-    <div class="card"><h3>Bing Webmaster Tools 与 GSC 的差异</h3><p>对比 Bing Webmaster Tools 和 Google Search Console 的功能差异与使用策略</p><a href="../zh/guides/bing-vs-gsc.html" class="card-link">查看指南 &rarr;</a></div>
-    <div class="card"><h3>IndexNow 协议使用指南</h3><p>通过 IndexNow 协议主动通知搜索引擎内容更新，加速 Bing 和 Yandex 收录</p><a href="../zh/guides/indexnow-protocol.html" class="card-link">查看指南 &rarr;</a></div>
-    <div class="card"><h3>Core Web Vitals 对收录的影响</h3><p>LCP、INP、CLS 三大核心指标如何影响搜索排名和收录优先级</p><a href="../zh/guides/core-web-vitals.html" class="card-link">查看指南 &rarr;</a></div>
-    <div class="card"><h3>多语言网站 hreflang 配置检查</h3><p>检查 hreflang 标签配置是否正确，避免多语言页面互相竞争排名</p><a href="../zh/guides/hreflang-check.html" class="card-link">查看指南 &rarr;</a></div>
-    <div class="card"><h3>JavaScript 渲染与 SEO 的关系</h3><p>理解搜索引擎如何处理 JavaScript 渲染内容，以及 CSR/SSR/SSG 的 SEO 影响</p><a href="../zh/guides/js-rendering-seo.html" class="card-link">查看指南 &rarr;</a></div>
-    <div class="card"><h3>新站首月 SEO 检查时间表</h3><p>新网站上线第一个月的 SEO 检查清单和时间节点安排</p><a href="../zh/guides/new-site-first-month.html" class="card-link">查看指南 &rarr;</a></div>
-  </div>
+    <div class="card">
+      <h3>已发现但未编入索引怎么排查</h3>
+      <p>Google 发现了 URL 但还没有抓取，通常是抓取优先级不够或页面质量信号不足</p>
+      <a href="../zh/guides/discovered-not-indexed.html" class="card-link">查看指南 &rarr;</a>
+    </div>
+    <div class="card">
+      <h3>已抓取但未编入索引怎么排查</h3>
+      <p>Google 已抓取但认为不值得收录，通常是内容质量、重复或薄内容问题</p>
+      <a href="../zh/guides/crawled-not-indexed.html" class="card-link">查看指南 &rarr;</a>
+    </div>
+    <div class="card">
+      <h3>GSC 服务器错误 5xx 怎么定位</h3>
+      <p>服务器返回 5xx 错误，需要定位具体 URL 和错误原因</p>
+      <a href="../zh/guides/server-error-5xx.html" class="card-link">查看指南 &rarr;</a>
+    </div>
+    <div class="card">
+      <h3>Sitemap 应该提交哪些页面</h3>
+      <p>sitemap 只收录高质量公开页面，不要把所有文件都塞进去</p>
+      <a href="../zh/guides/sitemap-best-practices.html" class="card-link">查看指南 &rarr;</a>
+    </div>
+    <div class="card">
+      <h3>Canonical 自指是什么意思</h3>
+      <p>每个页面的 canonical 应该指向自己的正式 URL，不要全站指向首页</p>
+      <a href="../zh/guides/self-referencing-canonical.html" class="card-link">查看指南 &rarr;</a>
+    </div>
+    <div class="card">
+      <h3>Next.js Canonical 配置常见错误</h3>
+      <p>Next.js App Router 中 metadata 和 canonical 的正确配置方法</p>
+      <a href="../zh/guides/nextjs-canonical.html" class="card-link">查看指南 &rarr;</a>
+    </div>
+    <div class="card">
+      <h3>Robots.txt 和 Noindex 怎么检查</h3>
+      <p>检查 robots.txt、meta robots 和 X-Robots-Tag 是否误屏蔽页面</p>
+      <a href="../zh/guides/robots-noindex.html" class="card-link">查看指南 &rarr;</a>
+    </div>
+    <div class="card">
+      <h3>初始 HTML 可读内容检查清单</h3>
+      <p>确认搜索引擎首次抓取时能在初始 HTML 中读到核心内容</p>
+      <a href="../zh/guides/html-readability.html" class="card-link">查看指南 &rarr;</a>
+    </div>
+    <div class="card">
+      <h3>AI 搜索可读性怎么提升</h3>
+      <p>让页面能被 AI 搜索引擎和摘要工具有效理解的优化方法</p>
+      <a href="../zh/guides/ai-search-readability.html" class="card-link">查看指南 &rarr;</a>
+    </div>
+    <div class="card">
+      <h3>结构化数据和 FAQ 基础检查</h3>
+      <p>JSON-LD 结构化数据的基本检查方法和常见错误</p>
+      <a href="../zh/guides/structured-data.html" class="card-link">查看指南 &rarr;</a>
+    </div>
+    <div class="card">
+      <h3>Bing Webmaster Tools 与 GSC 的差异</h3>
+      <p>对比 Bing Webmaster Tools 和 Google Search Console 的功能差异与使用策略</p>
+      <a href="../zh/guides/bing-vs-gsc.html" class="card-link">查看指南 &rarr;</a>
+    </div>
+    <div class="card">
+      <h3>IndexNow 协议使用指南</h3>
+      <p>通过 IndexNow 协议主动通知搜索引擎内容更新，加速 Bing 和 Yandex 收录</p>
+      <a href="../zh/guides/indexnow-protocol.html" class="card-link">查看指南 &rarr;</a>
+    </div>
+    <div class="card">
+      <h3>Core Web Vitals 对收录的影响</h3>
+      <p>LCP、INP、CLS 三大核心指标如何影响搜索排名和收录优先级</p>
+      <a href="../zh/guides/core-web-vitals.html" class="card-link">查看指南 &rarr;</a>
+    </div>
+    <div class="card">
+      <h3>多语言网站 hreflang 配置检查</h3>
+      <p>检查 hreflang 标签配置是否正确，避免多语言页面互相竞争排名</p>
+      <a href="../zh/guides/hreflang-check.html" class="card-link">查看指南 &rarr;</a>
+    </div>
+    <div class="card">
+      <h3>JavaScript 渲染与 SEO 的关系</h3>
+      <p>理解搜索引擎如何处理 JavaScript 渲染内容，以及 CSR/SSR/SSG 的 SEO 影响</p>
+      <a href="../zh/guides/js-rendering-seo.html" class="card-link">查看指南 &rarr;</a>
+    </div>
+    <div class="card">
+      <h3>新站首月 SEO 检查时间表</h3>
+      <p>新网站上线第一个月的 SEO 检查清单和时间节点安排</p>
+      <a href="../zh/guides/new-site-first-month.html" class="card-link">查看指南 &rarr;</a>
+    </div></div>
 </section>
 
 <section style="margin-top:40px;">

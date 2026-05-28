@@ -7,7 +7,7 @@
 <meta name="description" content="Next.js App Router 中 metadata 和 canonical 的正确配置方法">
 <link rel="canonical" href="https://seo.jtlcook.com/zh/guides/nextjs-canonical">
 <link rel="alternate" hreflang="zh-CN" href="https://seo.jtlcook.com/zh/guides/nextjs-canonical">
-<link rel="alternate" hreflang="en" href="../../en/guides/nextjs-canonical">
+<link rel="alternate" hreflang="en" href="https://seo.jtlcook.com/en/guides/nextjs-canonical">
 <link rel="alternate" hreflang="x-default" href="https://seo.jtlcook.com/zh/guides/nextjs-canonical">
 <link rel="icon" type="image/svg+xml" href="../../favicon.svg">
 <meta property="og:title" content="Next.js Canonical 配置常见错误 - 搜索可见性与 GSC 收录诊断工具">
@@ -15,7 +15,7 @@
 <meta property="og:url" content="https://seo.jtlcook.com/zh/guides/nextjs-canonical">
 <meta property="og:type" content="article">
 <meta property="og:site_name" content="搜索可见性与 GSC 收录诊断工具">
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"Next.js Canonical 配置常见错误","description":"Next.js App Router 中 metadata 和 canonical 的正确配置方法","datePublished":"2024-01-15","dateModified":"2026-05-20","author":{"@type":"Organization","name":"搜索可见性与 GSC 收录诊断工具"},"publisher":{"@type":"Organization","name":"搜索可见性与 GSC 收录诊断工具"},"mainEntityOfPage":{"@type":"WebPage","@id":"https://seo.jtlcook.com/zh/guides/nextjs-canonical"}}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"Next.js Canonical 配置常见错误","description":"Next.js App Router 中 metadata 和 canonical 的正确配置方法","datePublished":"2024-01-15","dateModified":"2026-05-27","author":{"@type":"Organization","name":"搜索可见性与 GSC 收录诊断工具"},"publisher":{"@type":"Organization","name":"搜索可见性与 GSC 收录诊断工具"},"mainEntityOfPage":{"@type":"WebPage","@id":"https://seo.jtlcook.com/zh/guides/nextjs-canonical"}}</script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"首页","item":"https://seo.jtlcook.com/zh/"},{"@type":"ListItem","position":2,"name":"指南","item":"https://seo.jtlcook.com/zh/#guides"},{"@type":"ListItem","position":3,"name":"Next.js Canonical 配置常见错误","item":"https://seo.jtlcook.com/zh/guides/nextjs-canonical"}]}</script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Next.js App Router 如何设置 canonical？","acceptedAnswer":{"@type":"Answer","text":"在 page.tsx 中通过 export const metadata 或 generateMetadata 函数设置 alternates.canonical 属性。设置 metadataBase 后可以使用相对路径。"}},{"@type":"Question","name":"Next.js canonical 最常见的错误是什么？","acceptedAnswer":{"@type":"Answer","text":"最常见的错误包括：忘记在 generateMetadata 中设置 canonical、环境变量未设置导致 URL 为空、canonical 中包含查询参数、动态路由没有包含实际 slug。"}},{"@type":"Question","name":"metadataBase 有什么作用？","acceptedAnswer":{"@type":"Answer","text":"metadataBase 设置后，所有 metadata 中的相对 URL 都会基于它解析为绝对 URL，避免在每个页面重复写完整域名。"}}]}</script>
 <link rel="stylesheet" href="../../assets/styles.css">
@@ -30,7 +30,7 @@
 <a href="../../zh/index.html#tools">工具</a>
 <a href="../../zh/index.html#guides">指南</a>
 <a href="../../zh/pages/about.html">关于</a>
-<div class="lang-switch"><a href="../../en/guides/nextjs-canonical.html" hreflang="en">English</a></div>
+<div class="lang-switch"><a href="https://seo.jtlcook.com/en/guides/nextjs-canonical" hreflang="en">English</a></div>
 </nav>
 </div>
 </header>
